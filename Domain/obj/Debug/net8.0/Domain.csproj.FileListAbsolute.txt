@@ -1,0 +1,12 @@
+D:\Backend\WikiHistory\Domain\bin\Debug\net8.0\Domain.deps.json
+D:\Backend\WikiHistory\Domain\bin\Debug\net8.0\Domain.dll
+D:\Backend\WikiHistory\Domain\bin\Debug\net8.0\Domain.pdb
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\Domain.sourcelink.json
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\Domain.dll
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\refint\Domain.dll
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\Domain.pdb
+D:\Backend\WikiHistory\Domain\obj\Debug\net8.0\ref\Domain.dll

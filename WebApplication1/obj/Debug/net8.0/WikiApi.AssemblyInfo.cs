@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WikiApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05f143947fc528d5d2c13d9669c9e9cf6c00ddcb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b36886398503108f8ee20c9dace64fc525c2e72e")]
 [assembly: System.Reflection.AssemblyProductAttribute("WikiApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WikiApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
