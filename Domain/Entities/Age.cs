@@ -8,21 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public enum CivilizationTerritory
-    {
-        Europe,
-        Asia,
-        Africa,
-        Americas,
-        Oceania
-    }
-    public enum CivilizationState
-    {
-        Active,
-        Dissolved
-    }
-    
-    public class Civilization
+    public class Age
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -30,8 +16,6 @@ namespace Domain.Entities
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
-        public CivilizationTerritory Territory { get; set; }
-        public CivilizationState State { get; set; }
+        public string Date { get; set; }
     }
 }
