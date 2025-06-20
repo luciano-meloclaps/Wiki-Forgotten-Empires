@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,19 +9,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public enum CivilizationTerritory
-    {
-        Europe,
-        Asia,
-        Africa,
-        Americas,
-        Oceania
-    }
-    public enum CivilizationState
-    {
-        Active,
-        Dissolved
-    }
+  
+    
     
     public class Civilization
     {
@@ -31,7 +21,10 @@ namespace Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
-        public CivilizationTerritory Territory { get; set; }
+
+        //Enums
+        public TerritoryType Territory { get; set; }
+        public RoleCharacter Role { get; set; }
         public CivilizationState State { get; set; }
     }
 }

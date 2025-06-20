@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,10 +16,15 @@ namespace Domain.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Civilization { get; set; }
-        public string Victory { get; set; }
-        public string Defeat { get; set; }
-        public string Age { get; set; }
-        public string Location { get; set; }
+        public string Description { get; set; }
+        public string Date { get; set; }
+        //Hacer relacion con Civilización, Age y Battle
+
+
+
+        //Enums
+        public BattleOutcome Outcome { get; set; }
+        public TerritoryType Territory { get; set; }
+
     }
 }
