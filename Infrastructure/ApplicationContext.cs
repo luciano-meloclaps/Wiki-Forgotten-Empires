@@ -13,7 +13,7 @@ namespace Infrastructure
     {
         // Esta entidad seria traducir una entidad a tabla y viceversa, la interaccion 
         public DbSet<Battle> Battles { get; set; }
-        public DbSet<BattleParticipation> BattleParticipations { get; set; }
+        public DbSet<CharacterBattle> BattleParticipations { get; set; }
 
         private readonly bool isTestingEnvironment; // Corregido: "Enviroment" a "Environment"
 

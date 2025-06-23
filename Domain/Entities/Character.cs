@@ -1,4 +1,5 @@
-﻿using Domain.Relations;
+﻿using Domain.Enums;
+using Domain.Relations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,15 +17,27 @@ namespace Domain.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Description { get; set; }
+        [Required]
         public string ImageUrl { get; set; }
+        public string Description { get; set; }
         public string Dynasty { get; set; }
         // Proximamente sera añadido un campo para la fecha de nacimiento y muerte de los personajes
         //De esa manera se podra calcular la edad de los personajes
         public string LifePeriod { get; set; }
 
-        // Propiedad de navegación para las participaciones en batallas
-        public virtual ICollection<BattleParticipation> Participations { get; set; }
+        //Enum
+        public RoleCharacter Role { get; set; }
 
+        //FKs
+        [ForeignKey("Civilization")]
+        public int CivilizationId { get; set; }
+        public Civilization Civilization { get; set; }
+
+        [ForeignKey("Age")]
+        public int AgeId { get; set; }
+        public Age Age { get; set; }
+
+        // Tabla intermedia con Battle
+        public ICollection<CharacterBattle> Battles { get; set; } = new List<CharacterBattle>();
     }
 }
