@@ -28,16 +28,17 @@ namespace Domain.Entities
         //Enum
         public RoleCharacter Role { get; set; }
 
-        //FKs
+        //Relacion N<-1 con Civilization
         [ForeignKey("Civilization")]
         public int CivilizationId { get; set; }
         public Civilization Civilization { get; set; }
 
+        // Relacion N<-1 con Age
         [ForeignKey("Age")]
         public int AgeId { get; set; }
         public Age Age { get; set; }
 
-        // Tabla intermedia con Battle
+        // Relacion N->N con Battle
         public ICollection<CharacterBattle> Battles { get; set; } = new List<CharacterBattle>();
     }
 }

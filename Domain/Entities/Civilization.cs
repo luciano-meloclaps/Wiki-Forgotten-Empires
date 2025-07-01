@@ -24,14 +24,17 @@ namespace Domain.Entities
         public TerritoryType Territory { get; set; }
         public CivilizationState State { get; set; }
 
-        //FKs
+        //Relacion 1->N
+        public ICollection<Character> Characters { get; set; }
+            = new List<Character>();
+
+        //Relacion N->N con Age
         public ICollection<CivilizationAge> Periods { get; set; }
             = new List<CivilizationAge>();
 
+        //Relaciones N->N con Battle
         public ICollection<CivilizationBattle> Battles { get; set; }
             = new List<CivilizationBattle>();
 
-        public ICollection<Character> Characters { get; set; }
-            = new List<Character>();
     }
 }

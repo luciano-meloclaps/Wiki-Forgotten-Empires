@@ -11,9 +11,16 @@ namespace Infrastructure
 {
     public class ApplicationContext : DbContext
     {
-        // Esta entidad seria traducir una entidad a tabla y viceversa, la interaccion 
+        // EF usa estos DbSet<> para mapear ent. -> tablas y relacionar,
+        public DbSet<Character> Characters { get; set; }
+        public DbSet<Civilization> Civilizations { get; set; }
         public DbSet<Battle> Battles { get; set; }
-        public DbSet<CharacterBattle> BattleParticipations { get; set; }
+        public DbSet<Age> Ages { get; set; }
+
+        public DbSet<CharacterBattle> CharacterBattles { get; set; }
+        public DbSet<CivilizationBattle> CivilizationBattles { get; set; }
+        public DbSet<CivilizationAge> CivilizationPeriods { get; set; }
+
 
         private readonly bool isTestingEnvironment; // Corregido: "Enviroment" a "Environment"
 

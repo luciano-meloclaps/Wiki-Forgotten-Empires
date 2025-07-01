@@ -19,11 +19,11 @@ namespace Domain.Entities
         public string Description { get; set; }
         public string Date { get; set; }
 
-        //Relacion 
+        //Relaciones 1->N 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
-
         public ICollection<Battle> Battles { get; set; } = new List<Battle>();
 
+        // Relacion N->N con Civilization
         public ICollection<CivilizationAge> Civilizations { get; set; } = new List<CivilizationAge>();
     }
 }

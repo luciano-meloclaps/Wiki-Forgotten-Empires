@@ -24,11 +24,10 @@ namespace Domain.Entities
         public BattleOutcome Outcome { get; set; }
         public TerritoryType Territory { get; set; }
 
-
-        // Relacion con la entidad CharacterBattle
+        // Relacion N->N con Character
         public ICollection<CharacterBattle> Characters { get; set; }
 
-        // Relacion con la entidad CivilizationBattle
+        // Relacion N->N con Civilization
         public ICollection<CivilizationBattle> Civilizations { get; set; }
     }
 }

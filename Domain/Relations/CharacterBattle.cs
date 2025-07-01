@@ -11,12 +11,12 @@ namespace Domain.Relations
 { 
     public class CharacterBattle
     {
-        //Relacion con Ent. Battle
+        //Tabla con Ent. Battle
         [ForeignKey("Battle")]
         public int BattleId { get; set; }
         public Battle Battle { get; set; }
 
-        //Relacion con Ent. Character
+        //Tabla con Ent. Character
         [ForeignKey("Character")]
         public int CharacterId { get; set; }
         public Character Character { get; set; }
