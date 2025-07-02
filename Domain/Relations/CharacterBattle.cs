@@ -9,27 +9,20 @@ using System.Threading.Tasks;
 
 namespace Domain.Relations
 { 
-    //Resultados posibles
-    public enum BattleOutcome
+    public class CharacterBattle
     {
-        Victory,
-        Defeat,
-        Draw
-    }
-    public class BattleParticipation
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        //Relacion con Ent. Battle
+        //Tabla con Ent. Battle
         [ForeignKey("Battle")]
         public int BattleId { get; set; }
         public Battle Battle { get; set; }
 
-        //Relacion con Ent. Character
+        //Tabla con Ent. Character
         [ForeignKey("Character")]
         public int CharacterId { get; set; }
-        public  BattleOutcome Outcome  { get; set; }
+        public Character Character { get; set; }
+
+        public string FactionName { get; set; }
+
     }
 }
+

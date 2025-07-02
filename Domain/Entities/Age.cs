@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Relations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,15 +15,15 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-
         public string Name { get; set; }
         public string Description { get; set; }
         public string Date { get; set; }
 
-        //Relación 1-N con Personajes
+        //Relaciones 1->N 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
+        public ICollection<Battle> Battles { get; set; } = new List<Battle>();
 
-        //Relación N-M con Civilizaciones
-
+        // Relacion N->N con Civilization
+        public ICollection<CivilizationAge> Civilizations { get; set; } = new List<CivilizationAge>();
     }
 }
