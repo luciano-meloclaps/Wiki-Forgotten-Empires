@@ -3,32 +3,36 @@
   "WorkspaceRootPath": "D:\\Backend\\WikiHistory\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\battle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\battle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{15D53F57-FE93-454A-A9E6-C00901F937A9}|Infrastructure\\Infrastructure.csproj|d:\\backend\\wikihistory\\infrastructure\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15D53F57-FE93-454A-A9E6-C00901F937A9}|Infrastructure\\Infrastructure.csproj|solutionrelative:infrastructure\\applicationcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\age.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\age.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\civilization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\civilization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\relations\\civilizationage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\relations\\civilizationage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\relations\\civilizationbattle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\relations\\civilizationbattle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\relations\\characterbattle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\relations\\characterbattle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\civilization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\civilization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\relations\\civilizationbattle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\relations\\civilizationbattle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\battle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\battle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\entities\\age.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|solutionrelative:domain\\entities\\age.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AF9579B4-91F3-43AE-9F2F-6D139B2C478D}|Domain\\Domain.csproj|d:\\backend\\wikihistory\\domain\\enums\\civilizationstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -82,98 +86,110 @@
       "DocumentGroups": [
         {
           "DockedWidth": 193,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "Age.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Age.cs",
               "RelativeDocumentMoniker": "Domain\\Entities\\Age.cs",
               "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Age.cs",
               "RelativeToolTip": "Domain\\Entities\\Age.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-19T23:01:08.983Z",
               "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "Battle.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Battle.cs",
               "RelativeDocumentMoniker": "Domain\\Entities\\Battle.cs",
               "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Battle.cs",
               "RelativeToolTip": "Domain\\Entities\\Battle.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAawBcAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAawBoAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-20T21:47:23.727Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CivilizationAge.cs",
-              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationAge.cs",
-              "RelativeDocumentMoniker": "Domain\\Relations\\CivilizationAge.cs",
-              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationAge.cs",
-              "RelativeToolTip": "Domain\\Relations\\CivilizationAge.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T00:57:31.52Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CivilizationBattle.cs",
-              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationBattle.cs",
-              "RelativeDocumentMoniker": "Domain\\Relations\\CivilizationBattle.cs",
-              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationBattle.cs",
-              "RelativeToolTip": "Domain\\Relations\\CivilizationBattle.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T14:54:48.138Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CharacterBattle.cs",
-              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CharacterBattle.cs",
-              "RelativeDocumentMoniker": "Domain\\Relations\\CharacterBattle.cs",
-              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CharacterBattle.cs",
-              "RelativeToolTip": "Domain\\Relations\\CharacterBattle.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAADwvxwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T14:49:10.726Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Civilization.cs",
-              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Civilization.cs",
-              "RelativeDocumentMoniker": "Domain\\Entities\\Civilization.cs",
-              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Civilization.cs",
-              "RelativeToolTip": "Domain\\Entities\\Civilization.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAawBoAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T22:44:16.404Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "Character.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Character.cs",
               "RelativeDocumentMoniker": "Domain\\Entities\\Character.cs",
               "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Character.cs",
               "RelativeToolTip": "Domain\\Entities\\Character.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAADwvyAAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAADwvygAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-19T22:44:23.668Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 2,
+              "Title": "CivilizationAge.cs",
+              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationAge.cs",
+              "RelativeDocumentMoniker": "Domain\\Relations\\CivilizationAge.cs",
+              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationAge.cs",
+              "RelativeToolTip": "Domain\\Relations\\CivilizationAge.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T00:57:31.52Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ApplicationContext.cs",
+              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Infrastructure\\ApplicationContext.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\ApplicationContext.cs",
+              "ToolTip": "D:\\Backend\\WikiHistory\\Infrastructure\\ApplicationContext.cs",
+              "RelativeToolTip": "Infrastructure\\ApplicationContext.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAswBgAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-30T23:53:41.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Civilization.cs",
+              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Civilization.cs",
+              "RelativeDocumentMoniker": "Domain\\Entities\\Civilization.cs",
+              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Entities\\Civilization.cs",
+              "RelativeToolTip": "Domain\\Entities\\Civilization.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAIwCgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T22:44:16.404Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CharacterBattle.cs",
+              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CharacterBattle.cs",
+              "RelativeDocumentMoniker": "Domain\\Relations\\CharacterBattle.cs",
+              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CharacterBattle.cs",
+              "RelativeToolTip": "Domain\\Relations\\CharacterBattle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T14:49:10.726Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CivilizationBattle.cs",
+              "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationBattle.cs",
+              "RelativeDocumentMoniker": "Domain\\Relations\\CivilizationBattle.cs",
+              "ToolTip": "D:\\Backend\\WikiHistory\\Domain\\Relations\\CivilizationBattle.cs",
+              "RelativeToolTip": "Domain\\Relations\\CivilizationBattle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T14:54:48.138Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "CivilizationState.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Enums\\CivilizationState.cs",
               "RelativeDocumentMoniker": "Domain\\Enums\\CivilizationState.cs",
@@ -185,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "ForgottenEmpire.csproj",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\WebApplication1\\ForgottenEmpire.csproj",
               "RelativeDocumentMoniker": "WebApplication1\\ForgottenEmpire.csproj",
@@ -197,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Application.csproj",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Application\\Application.csproj",
               "RelativeDocumentMoniker": "Application\\Application.csproj",
@@ -209,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "IAge.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Interfaces\\IAge.cs",
               "RelativeDocumentMoniker": "Domain\\Interfaces\\IAge.cs",
@@ -221,7 +237,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "RoleCharacter.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Enums\\RoleCharacter.cs",
               "RelativeDocumentMoniker": "Domain\\Enums\\RoleCharacter.cs",
@@ -233,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "BattleOutcome.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Enums\\BattleOutcome.cs",
               "RelativeDocumentMoniker": "Domain\\Enums\\BattleOutcome.cs",
@@ -245,7 +261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "TerritoryType.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Domain\\Enums\\TerritoryType.cs",
               "RelativeDocumentMoniker": "Domain\\Enums\\TerritoryType.cs",
@@ -257,7 +273,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "Infrastructure.csproj",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\Infrastructure\\Infrastructure.csproj",
               "RelativeDocumentMoniker": "Infrastructure\\Infrastructure.csproj",
@@ -269,7 +285,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "BattleController.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\WebApplication1\\Controllers\\BattleController.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Controllers\\BattleController.cs",
@@ -281,7 +297,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\WebApplication1\\Program.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Program.cs",
@@ -293,7 +309,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "CharacterController.cs",
               "DocumentMoniker": "D:\\Backend\\WikiHistory\\WebApplication1\\Controllers\\CharacterController.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Controllers\\CharacterController.cs",

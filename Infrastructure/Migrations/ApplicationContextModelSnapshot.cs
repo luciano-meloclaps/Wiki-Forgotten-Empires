@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -16,25 +16,17 @@ namespace Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
 
-            modelBuilder.Entity("Domain.Entities.Battle", b =>
+            modelBuilder.Entity("Domain.Entities.Age", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Age")
+                    b.Property<string>("Date")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Civilization")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Defeat")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Location")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -42,46 +34,278 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Victory")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Battles");
+                    b.ToTable("Ages");
                 });
 
-            modelBuilder.Entity("Domain.Entities.BattleParticipation", b =>
+            modelBuilder.Entity("Domain.Entities.Battle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BattleId")
+                    b.Property<int?>("AgeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Outcome")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Territory")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AgeId");
+
+                    b.ToTable("Battles");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Character", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AgeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CivilizationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Dynasty")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LifePeriod")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgeId");
+
+                    b.HasIndex("CivilizationId");
+
+                    b.ToTable("Characters");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Civilization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Territory")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Civilizations");
+                });
+
+            modelBuilder.Entity("Domain.Relations.CharacterBattle", b =>
+                {
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BattleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FactionName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CharacterId", "BattleId");
 
                     b.HasIndex("BattleId");
 
-                    b.ToTable("BattleParticipations");
+                    b.ToTable("CharacterBattles");
                 });
 
-            modelBuilder.Entity("Domain.Entities.BattleParticipation", b =>
+            modelBuilder.Entity("Domain.Relations.CivilizationAge", b =>
+                {
+                    b.Property<int>("CivilizationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AgeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CivilizationId", "AgeId");
+
+                    b.HasIndex("AgeId");
+
+                    b.ToTable("CivilizationPeriods");
+                });
+
+            modelBuilder.Entity("Domain.Relations.CivilizationBattle", b =>
+                {
+                    b.Property<int>("CivilizationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BattleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CivilizationId", "BattleId");
+
+                    b.HasIndex("BattleId");
+
+                    b.ToTable("CivilizationBattles");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Battle", b =>
+                {
+                    b.HasOne("Domain.Entities.Age", null)
+                        .WithMany("Battles")
+                        .HasForeignKey("AgeId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Character", b =>
+                {
+                    b.HasOne("Domain.Entities.Age", "Age")
+                        .WithMany("Characters")
+                        .HasForeignKey("AgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Civilization", "Civilization")
+                        .WithMany("Characters")
+                        .HasForeignKey("CivilizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Age");
+
+                    b.Navigation("Civilization");
+                });
+
+            modelBuilder.Entity("Domain.Relations.CharacterBattle", b =>
                 {
                     b.HasOne("Domain.Entities.Battle", "Battle")
-                        .WithMany()
+                        .WithMany("Characters")
                         .HasForeignKey("BattleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Character", "Character")
+                        .WithMany("Battles")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Battle");
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("Domain.Relations.CivilizationAge", b =>
+                {
+                    b.HasOne("Domain.Entities.Age", "Age")
+                        .WithMany("Civilizations")
+                        .HasForeignKey("AgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Civilization", "Civilization")
+                        .WithMany("Periods")
+                        .HasForeignKey("CivilizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Age");
+
+                    b.Navigation("Civilization");
+                });
+
+            modelBuilder.Entity("Domain.Relations.CivilizationBattle", b =>
+                {
+                    b.HasOne("Domain.Entities.Battle", "Battle")
+                        .WithMany("Civilizations")
+                        .HasForeignKey("BattleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Civilization", "Civilization")
+                        .WithMany("Battles")
+                        .HasForeignKey("CivilizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Battle");
+
+                    b.Navigation("Civilization");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Age", b =>
+                {
+                    b.Navigation("Battles");
+
+                    b.Navigation("Characters");
+
+                    b.Navigation("Civilizations");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Battle", b =>
+                {
+                    b.Navigation("Characters");
+
+                    b.Navigation("Civilizations");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Character", b =>
+                {
+                    b.Navigation("Battles");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Civilization", b =>
+                {
+                    b.Navigation("Battles");
+
+                    b.Navigation("Characters");
+
+                    b.Navigation("Periods");
                 });
 #pragma warning restore 612, 618
         }
