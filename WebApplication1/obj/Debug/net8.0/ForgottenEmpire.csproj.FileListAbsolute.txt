@@ -165,3 +165,4 @@ D:\Backend\WikiHistory\WebApplication1\obj\Debug\net8.0\rpswa.dswa.cache.json
 D:\Backend\WikiHistory\WebApplication1\obj\Debug\net8.0\rjimswa.dswa.cache.json
 D:\Backend\WikiHistory\WebApplication1\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 D:\Backend\WikiHistory\WebApplication1\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\Backend\WikiHistory\WebApplication1\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
