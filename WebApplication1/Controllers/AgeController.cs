@@ -8,6 +8,7 @@ namespace ForgottenEmpire.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //Hacer Dtos
     public class AgeController : ControllerBase
     {
         private readonly IAgeService _ageService;
