@@ -1,4 +1,7 @@
 
+using Application.Interfaces;
+using Application.Services;
+using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
@@ -34,7 +37,11 @@ options.MigrationsAssembly("ForgottenEmpire")));
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString"))); 
 
-builder.Services.AddScoped<BatlleRepository>();
+builder.Services.AddScoped<IAgeRepository, AgeRepository>();
+builder.Services.AddScoped<IAgeService, AgeService>();
+// Register other services and repositories as needed
+// For example, if you have a UserService and UserRepository
+
 
 var app = builder.Build();
 

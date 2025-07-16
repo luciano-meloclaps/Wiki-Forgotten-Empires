@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Entities
@@ -23,7 +24,7 @@ namespace Domain.Entities
         public ICollection<Character> Characters { get; set; } = new List<Character>();
         public ICollection<Battle> Battles { get; set; } = new List<Battle>();
 
-        // Relacion N->N con Civilization
+        // / Relacion N->N con Civilization
         public ICollection<CivilizationAge> Civilizations { get; set; } = new List<CivilizationAge>();
     }
 }

@@ -87,7 +87,7 @@ namespace Infrastructure
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Chacater N--1 Age
-            modelBuilder.Entity<Character>()
+           modelBuilder.Entity<Character>()
                 .HasOne(c => c.Age)
                 .WithMany(a => a.Characters)
                 .HasForeignKey(c => c.AgeId)
