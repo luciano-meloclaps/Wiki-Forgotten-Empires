@@ -22,3 +22,7 @@
 
 # Configuración local
 appsettings.Development.json
+
+# Ignorar carpetas bin y obj en **todos** los proyectos
+**/bin/
+**/obj/
