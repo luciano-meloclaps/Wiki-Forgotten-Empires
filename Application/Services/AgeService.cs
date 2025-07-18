@@ -17,30 +17,18 @@ namespace Application.Services
         {
             _ageRepository = ageRepository ?? throw new ArgumentNullException(nameof(ageRepository));
         }
-
-        public async Task<IEnumerable<Age>> GetAllAges()
+        public async IAsyncEnumerable<Age> GetAgeDto()
         {
-            return await _ageRepository.GetAllAges();
+            var ages = await _ageRepository.GetAllAges();
+            foreach (var age in ages)
+            {
+                yield return age;
+            }
         }
-        public async Task<Age> CreateAge(Age age)
+        public async Task<Age> CreateAgeDto(Age age)
         {
             if (age == null) throw new ArgumentNullException(nameof(age));
             return await _ageRepository.CreateAge(age);
         }
-        public async Task<Age> GetAgeById(int id)
-        {
-            return await _ageRepository.GetAgeById(id);
-        }
-        public async Task<bool> UpdateAge(int id, Age age)
-        {
-            if (age == null) throw new ArgumentNullException(nameof(age));
-            return await _ageRepository.UpdateAge(id, age);
-        }
-        public async Task<bool> DeleteAge(int id)
-        {
-            return await _ageRepository.DeleteAge(id);
-        }
-
     }
-        
-}
+    }

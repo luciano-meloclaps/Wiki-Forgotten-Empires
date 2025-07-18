@@ -11,13 +11,12 @@ namespace Infrastructure
 {
     public class ApplicationContext : DbContext
     {
-        private readonly bool isTestingEnvironment;
+        
 
         // Constructor de la clase ApplicationContext que recibe las opciones de DbContext y un booleano para indicar si es un entorno de prueba
-        public ApplicationContext(DbContextOptions<ApplicationContext> options, bool isTestingEnvironment = false) : base(options)
-        {
-            this.isTestingEnvironment = isTestingEnvironment;
-        }
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+        : base(options)
+        { }
 
         // EF usa estos DbSet<> para mapear ent. -> tablas y relacionar
         //Tablas principales

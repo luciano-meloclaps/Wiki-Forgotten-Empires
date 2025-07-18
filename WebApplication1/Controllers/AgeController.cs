@@ -1,8 +1,10 @@
 ﻿using Application.Interfaces;
+using Application.Models.Dto;
 using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ForgottenEmpire.Controllers
 {
@@ -15,46 +17,48 @@ namespace ForgottenEmpire.Controllers
         public AgeController(IAgeService ageService)
         {
             _ageService = ageService ?? throw new ArgumentNullException(nameof(ageService));
-        }
+        } 
         [HttpGet]
         public async Task<IActionResult> GetAllAges()
         {
-            var ages = await _ageService.GetAllAges();
+            var ages = new List<AgeDto>();
+            await foreach (var age in _ageService.GetAgeDto())
+            {
+                ages.Add(new AgeDto
+                {
+                    
+                    Name = age.Name,
+                    Description = age.Description,
+                    Date = age.Date
+                   
+                });
+            }
             return Ok(ages);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAge([FromBody] Age age)
+        public async Task<IActionResult> CreateAgeDto([FromBody] AgeDto ageDto)
         {
-            if (age == null)
+            if (ageDto == null)
             {
-                return BadRequest("Age cannot be null");
+                return BadRequest("AgeDto no puede ser nulo");
             }
-            var createdAge = await _ageService.CreateAge(age);
-            return CreatedAtAction(nameof(GetAgeById), new { id = createdAge.Id }, createdAge);
-        }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAgeById(int id)
-        {
-            var age = await _ageService.GetAgeById(id);
-            if (age == null)
+
+            var age = new Age
             {
-                return NotFound();
-            }
-            return Ok(age);
-        }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAge(int id, [FromBody] Age age)
-        {
-            if (age == null)
+                Name = ageDto.Name,
+                Description = ageDto.Description,
+                Date = ageDto.Date
+            };
+
+            var createdAge = await _ageService.CreateAgeDto(age);
+
+            if (createdAge == null)
             {
-                return BadRequest("Age cannot be null");
+                return StatusCode(StatusCodes.Status500InternalServerError, "No se pudo crear la edad.");
             }
-            var result = await _ageService.UpdateAge(id, age);
-            if (!result)
-            {
-                return NotFound();
-            }
-            return NoContent();
+
+            var createdDto = AgeDto.ToDto(createdAge);
+            return CreatedAtAction(nameof(GetAllAges), createdDto);
         }
     }
 }
