@@ -9,10 +9,7 @@ namespace Application.Interfaces
 {
     public interface IAgeService
     {
-        public Task<IEnumerable<Age>> GetAllAges();
-        public Task<Age> CreateAge(Age age);
-        public Task<Age> GetAgeById(int id);
-        public Task<bool> UpdateAge(int id, Age age);
-        public Task<bool> DeleteAge(int id);
+        public IAsyncEnumerable<Age> GetAgeDto();
+        public Task<Age> CreateAgeDto(Age age);
     }
 }
