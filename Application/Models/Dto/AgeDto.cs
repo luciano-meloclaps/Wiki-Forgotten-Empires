@@ -24,16 +24,5 @@ namespace Application.Models.Dto
                 Date = age.Date
             };
         }
-
-        //Request → Entidad, entrada
-        public static Age ToEntity(AgeRequest req)
-        {
-            return new Age
-            {
-                Name = req.Name,
-                Description = req.Description,
-                Date = req.Date
-            };
-        }
     }
 }

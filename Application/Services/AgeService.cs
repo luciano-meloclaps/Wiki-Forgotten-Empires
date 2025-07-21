@@ -17,6 +17,7 @@ namespace Application.Services
         {
             _ageRepository = ageRepository ?? throw new ArgumentNullException(nameof(ageRepository));
         }
+        //Cambiar a Task<IEnumerable<Age>> para no hacer streaming de datos
         public async IAsyncEnumerable<Age> GetAgeDto()
         {
             var ages = await _ageRepository.GetAllAges();
