@@ -27,6 +27,7 @@ namespace Application.Services
                 Summary = c.Summary
             });
         }
+
         public async Task<CivilizationDto> CreateCivilization(CivilizationDto civilizationDto)
         {
             var civilization = new Civilization
