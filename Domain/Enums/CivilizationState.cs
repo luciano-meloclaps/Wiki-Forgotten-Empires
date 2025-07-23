@@ -10,7 +10,8 @@ namespace Domain.Enums
     {
 
             Active,
-            Dissolved
-        
+            Dissolved,
+            None
+
     }
 }

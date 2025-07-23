@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
+using Application.Models.Request;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,21 +17,23 @@ namespace ForgottenEmpire.Controllers
             _civilizationService = civilizationService ?? throw new ArgumentNullException(nameof(civilizationService));
         }
         [HttpGet]
-        public IActionResult GetAllCivilization() {
-            var civilizations = _civilizationService.GetAllCivilization();
-            
-            return Ok(civilizations);
+        public async Task<ActionResult<IEnumerable<CivilizationDto>>> GetAllCivilization()
+        {
+            var list = await _civilizationService.GetAllCivilization();
+            return Ok(list);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> CreateCivilization([FromBody] CivilizationDto civilizationDto)
+        public async Task<IActionResult> CreateCivilization([FromBody] CivilizationRequest request)
         {
-            if (civilizationDto == null)
-            {
-                return BadRequest("Civilization data is null.");
-            }
-            var createdCivilization = await _civilizationService.CreateCivilization(civilizationDto);
-            return CreatedAtAction(nameof(CreateCivilization), new { id = createdCivilization.Id }, createdCivilization);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var dto = await _civilizationService.CreateCivilization(request);
+            return CreatedAtAction(nameof(GetAllCivilization),
+                new { id = dto.Id }, dto);
         }
+
     }
 }

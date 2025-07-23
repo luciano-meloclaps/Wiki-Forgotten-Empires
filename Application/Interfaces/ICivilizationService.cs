@@ -1,4 +1,5 @@
 ﻿using Application.Models.Dto;
+using Application.Models.Request;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Application.Interfaces
 {
     public interface ICivilizationService
     {
-        public Task<IEnumerable<CivilizationDto>> GetAllCivilization();
-        public Task<CivilizationDto> CreateCivilization(CivilizationDto civilizationDto);
+        Task<IEnumerable<CivilizationDto>> GetAllCivilization();
+        Task<CivilizationDto> CreateCivilization(CivilizationRequest req);
     }
 }

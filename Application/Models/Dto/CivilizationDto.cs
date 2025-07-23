@@ -11,10 +11,11 @@ namespace Application.Models.Dto
         public string Name { get; set; }
         public string Summary { get; set; }
         public string ImageUrl { get; set; }
+        public string State { get; set; }
         //Enums
         public string Territory { get; set; }
         public int Id { get; internal set; }
-
+        public string Description { get; set; }
         //Entidad → DTO, salida
         public static CivilizationDto ToDto(Domain.Entities.Civilization civilization)
         {
@@ -23,6 +24,7 @@ namespace Application.Models.Dto
                 Name = civilization.Name,
                 Summary = civilization.Summary,
                 ImageUrl = civilization.ImageUrl,
+                State = civilization.State.ToString(),
                 Territory = civilization.Territory.ToString(),
             };
         }
