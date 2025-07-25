@@ -12,6 +12,7 @@ namespace Domain.Enums
         Asia,
         Africa,
         Americas,
-        Oceania
+        Oceania,
+        None
     }
 }
