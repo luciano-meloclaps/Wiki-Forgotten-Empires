@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForgottenEmpire.Controllers
@@ -7,11 +8,11 @@ namespace ForgottenEmpire.Controllers
     [ApiController]
     public class BattleController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public IActionResult GetBattleById(int id)
+       private readonly IBattleService _battleService;
+        public BattleController(IBattleService battleService)
         {
-            // Placeholder for actual implementation
-            return Ok($"Battle with ID: {id}");
+            _battleService = battleService ?? throw new ArgumentNullException(nameof(battleService));
         }
+
     }
 }
