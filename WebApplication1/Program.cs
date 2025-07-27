@@ -37,12 +37,17 @@ options.MigrationsAssembly("ForgottenEmpire")));
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString"))); 
 
+//Age
 builder.Services.AddScoped<IAgeRepository, AgeRepository>();
 builder.Services.AddScoped<IAgeService, AgeService>();
 
 //Civilization
 builder.Services.AddScoped<ICivilizationRepository, CivilizationRepository>();
 builder.Services.AddScoped<ICivilizationService, CivilizationService>();
+
+// Battle
+builder.Services.AddScoped<IBattleRepository, BatlleRepository>();
+builder.Services.AddScoped<IBattleService, BattleService>();
 // Register other services and repositories as needed
 // For example, if you have a UserService and UserRepository
 
