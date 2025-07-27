@@ -11,15 +11,15 @@ namespace Application.Models.Dto
         public string Name { get; set; }
         public string Summary { get; set; }
         public string Date { get; set; }
-
-        public static BattleDto ToDto(BattleDto dto)
+        //Entidad → DTO, salida
+        public static BattleDto ToDto(Domain.Entities.Battle battle)
         {
             return new BattleDto
             {
-                Name = dto.Name,
-                Summary = dto.Summary,
-                Date = dto.Date
+                Name = battle.Name,
+                Summary = battle.Summary,
+                Date = battle.Date
             };
-        } }
+        }
     }
 }

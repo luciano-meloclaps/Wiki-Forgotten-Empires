@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+namespace Application.Models.Request
+{
     namespace Application.Models.Request
     {
         public class AgeRequest
@@ -28,3 +29,4 @@ using System.Threading.Tasks;
 
 
     }
+}

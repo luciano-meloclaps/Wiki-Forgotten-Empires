@@ -37,6 +37,7 @@ options.MigrationsAssembly("ForgottenEmpire")));
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString"))); 
 
+//Age
 builder.Services.AddScoped<IAgeRepository, AgeRepository>();
 builder.Services.AddScoped<IAgeService, AgeService>();
 

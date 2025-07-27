@@ -9,10 +9,11 @@ using Domain.Entities;
 namespace Domain.Interfaces
 {
     public interface IBattleRepository
-    {   /*Task<IEnumerable<Battle>> GetAllBattlesAsync();
-        Task<Battle> GetBattleByIdAsync(int id);
-        Task AddBattleAsync(Battle battle);
-        Task UpdateBattleAsync(Battle battle);
-        Task DeleteBattleAsync(int id);*/
+    {
+        Task<IEnumerable<Battle>> GetAllAsync();
+        Task<Battle> GetByIdAsync(int id);
+        Task<Battle> CreateAsync(Battle battle);
+        Task<Battle> UpdateAsync(Battle battle);
+        Task<bool> DeleteAsync(int id);
     }
 }
