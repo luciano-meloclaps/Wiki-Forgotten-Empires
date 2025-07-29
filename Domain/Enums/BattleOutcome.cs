@@ -8,5 +8,6 @@ namespace Domain.Enums
 {
     public enum  BattleOutcome
     {
+        Unknown,
     }
 }

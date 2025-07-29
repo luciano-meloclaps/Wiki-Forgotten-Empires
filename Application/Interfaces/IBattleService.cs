@@ -12,7 +12,7 @@ namespace Application.Interfaces
     {
       Task<IEnumerable<BattleDto>> GetAllBattlesAsync();
         Task<BattleDto> GetBattleByIdAsync(int id);
-        Task<BattleDto> CreateBattleAsync(BattleRequest request);
+        Task<BattleDto> CreateBattleAsync(BattleDto battle);
         Task<BattleDto> UpdateBattleAsync(int id, BattleRequest request);
         Task<bool> DeleteBattleAsync(int id);
     }

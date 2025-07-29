@@ -7,7 +7,10 @@ using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
+using Domain.Relations;
+
 
 namespace Application.Services
 {
@@ -39,21 +42,23 @@ namespace Application.Services
                 Date = battle.Date
             };
         }
-        public async Task<BattleDto> CreateBattleAsync(BattleRequest req)
+        public async Task<BattleDto> CreateBattleAsync(BattleDto battleDto)
         {
-            if (req == null) throw new ArgumentNullException(nameof(req));
+            if (battleDto == null) throw new ArgumentNullException(nameof(battleDto));
             var battle = new Battle
             {
-                Name = req.Name,
-                Summary = req.Summary,
-                Date = req.Date
+                Name = battleDto.Name,
+                Summary = battleDto.Summary,
+                Date = battleDto.Date,
+                Territory = battleDto.Territory
             };
             var createdBattle = await _battleRepository.CreateAsync(battle);
             return new BattleDto
             {
                 Name = createdBattle.Name,
                 Summary = createdBattle.Summary,
-                Date = createdBattle.Date
+                Date = createdBattle.Date,
+                Territory = createdBattle.Territory
             };
         }
         public async Task<BattleDto> UpdateBattleAsync(int id, BattleRequest request)
@@ -69,7 +74,8 @@ namespace Application.Services
             {
                 Name = updatedBattle.Name,
                 Summary = updatedBattle.Summary,
-                Date = updatedBattle.Date
+                Date = updatedBattle.Date,
+                Territory = updatedBattle.Territory
             };
         }
         public async Task<bool> DeleteBattleAsync(int id)

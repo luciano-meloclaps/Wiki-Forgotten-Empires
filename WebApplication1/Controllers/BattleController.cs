@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models.Dto;
 using Application.Models.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,11 +29,11 @@ namespace ForgottenEmpire.Controllers
             return Ok(battle);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateBattle([FromBody] BattleRequest request)
+        public async Task<IActionResult> CreateBattle([FromBody] BattleDto battleDto)
         {
-            if (request == null) return BadRequest("Invalid battle data.");
-            var createdBattle = await _battleService.CreateBattleAsync(request);
-            return CreatedAtAction(nameof(GetBattleById), new { createdBattle });
+            if (battleDto == null) return BadRequest("Invalid battle data.");
+            var createdBattle = await _battleService.CreateBattleAsync(battleDto);
+            return CreatedAtAction(nameof(GetBattleById), createdBattle);
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBattle(int id, [FromBody] BattleRequest request)
