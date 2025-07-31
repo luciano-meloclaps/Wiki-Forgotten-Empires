@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Models.Dto;
 
 namespace Application.Interfaces
 {
-    internal interface ICharacterService
+    public interface ICharacterService
     {
+        Task<IEnumerable<CharacterDto>> GetAllCharactersAsync();
     }
 }
