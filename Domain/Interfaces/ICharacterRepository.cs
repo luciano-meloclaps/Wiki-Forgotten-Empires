@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    internal interface ICharacterRepository
+    public interface ICharacterRepository
     {
+        Task<IEnumerable<object>> GetAllCharactersAsync();
     }
 }
