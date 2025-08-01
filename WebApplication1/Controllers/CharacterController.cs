@@ -14,7 +14,7 @@ namespace ForgottenEmpire.Controllers
             _characterService = characterService ?? throw new ArgumentNullException(nameof(characterService));
         }
         [HttpGet]
-        public IActionResult GetAllCharacter(int id)
+        /*public IActionResult GetAllCharacter(int id)
         {
             try
             {
@@ -29,8 +29,24 @@ namespace ForgottenEmpire.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
-
-
+        }*/
+        [HttpGet("{id}")]
+        public IActionResult GetCharacter(int id)
+        {
+            try
+            {
+                var character = _characterService.CharacterDetail(id).Result;
+                if (character == null)
+                {
+                    return NotFound($"Personaje con {id} no se encontro");
+                }
+                return Ok(character);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+            }
         }
+
     }
 }
