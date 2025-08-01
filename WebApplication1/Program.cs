@@ -48,6 +48,10 @@ builder.Services.AddScoped<ICivilizationService, CivilizationService>();
 // Battle
 builder.Services.AddScoped<IBattleRepository, BatlleRepository>();
 builder.Services.AddScoped<IBattleService, BattleService>();
+
+//Character
+builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 // Register other services and repositories as needed
 // For example, if you have a UserService and UserRepository
 
