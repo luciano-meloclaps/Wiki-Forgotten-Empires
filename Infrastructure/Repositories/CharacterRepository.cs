@@ -17,15 +17,6 @@ namespace Infrastructure.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public async Task<IEnumerable<Character>> GetAllCharactersAsync()
-        {
-            return await _context.Characters
-                .Include(c => c.Civilization)
-                .Include(c => c.Age)
-                .Include(c => c.Battles)
-                .ThenInclude(cb => cb.Battle)
-                .ToListAsync();
-        }   
         public async Task<Character> GetCharacterByIdAsync(int id)
         {
             return await _context.Characters
@@ -35,5 +26,20 @@ namespace Infrastructure.Repositories
                 .ThenInclude(cb => cb.Battle)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+        public async Task<IEnumerable<Character>> GetAllCharactersAsync()
+        {
+            return await _context.Characters
+                .Include(c => c.Civilization)
+                .Include(c => c.Age)
+                .Include(c => c.Battles)
+                .ThenInclude(cb => cb.Battle)
+                .ToListAsync();
+        }
+        public async Task AddCharacterAsync(Character character)
+        {
+            _context.Characters.Add(character);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

@@ -10,5 +10,7 @@ namespace Domain.Interfaces
     public interface ICharacterRepository
     {
         Task<Character> GetCharacterByIdAsync(int id);
+        Task<IEnumerable<Character>> GetAllCharactersAsync();
+        Task AddCharacterAsync(Character character);
     }
 }

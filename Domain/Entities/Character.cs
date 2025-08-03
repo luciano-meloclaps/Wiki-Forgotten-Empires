@@ -12,13 +12,13 @@ namespace Domain.Entities
 {
         public class Character
         {
-            [Key]
+            [Key] //MOdificar BD por NULL Desc,
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public int Id { get; set; }
             [Required]
             public string Name { get; set; }
             public string? ImageUrl { get; set; }
-            public string Description { get; set; }
+            public string? Description { get; set; }
             public string? HonorificTitle { get; set; }
             public string? Dynasty { get; set; }
             // Proximamente sera añadido un campo para la fecha de nacimiento y muerte de los personajes
@@ -29,13 +29,13 @@ namespace Domain.Entities
             public RoleCharacter? Role { get; set; }
 
             //Relacion N<-1 con Civilization
-            [ForeignKey("Civilization")]
-            public int CivilizationId { get; set; }
-            public Civilization Civilization { get; set; }
+           [ForeignKey("Civilization")]
+            public int? CivilizationId { get; set; } //Los hice nulleabe por la autoreferencia ID del problema referencia. Una vez con personajes SACARLO
+        public Civilization Civilization { get; set; }
 
             // Relacion N<-1 con Age
             [ForeignKey("Age")]
-            public int AgeId { get; set; }
+            public int? AgeId { get; set; }
             public Age Age { get; set; }
 
             // Relacion N->N con Battle
