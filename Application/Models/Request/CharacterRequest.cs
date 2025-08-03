@@ -11,7 +11,7 @@ namespace Application.Models.Request
     public class CharacterCreateRequest
     {
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public Character ToEntity (CharacterCreateRequest req)
             {
