@@ -5,23 +5,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Models.Dto.BattleDto;
+using static Application.Models.Dto.CivilizationDto;
+using static Application.Models.Dto.CharacterDtoCard;
 
 namespace Application.Models.Dto
 {
-    public class AgeDto
+    public class AgeAccordionDto
     {
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string Date { get; set; }
+        public string? Summary { get; set; }
+        public string? Date { get; set; }
 
         //Entidad → DTO, salida
-        public static AgeDto ToDto(Age age)
+        public static AgeAccordionDto ToDto(Age age)
         {
-            return new AgeDto
+            return new AgeAccordionDto
             {
                 Name = age.Name,
-                Description = age.Description,
+                Summary = age.Summary,
                 Date = age.Date
+            };
+        } 
+    }
+    public class AgeDetailDto
+    {
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public string? Date { get; set; }
+        public string? Overview { get; set; }
+
+        public ICollection<CharacterDtoCard> Characters { get; set; } = new List<CharacterDtoCard>();
+        public ICollection<BattleDto> Battles { get; set; } = new List<BattleDto>();
+        public ICollection<CivilizationDto> Civilizations { get; set; } = new List<CivilizationDto>();
+
+
+        public static AgeDetailDto ToDto(Age age)
+        {
+            return new AgeDetailDto
+            {
+                Name = age.Name,
+                Description = age.Summary,
+                Date = age.Date,
+                Overview = age.Overview,
+                Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),
+                Battles = age.Battles.Select(BattleDto.ToDto).ToList(),
+                Civilizations = age.Civilizations.Select(c => CivilizationDto.ToDto(c.Civilization)).ToList()
             };
         }
     }

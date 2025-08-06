@@ -40,7 +40,7 @@ namespace Application.Models.Dto
 
         // Relacion N<-1 con Civilization
         public CivilizationDto? Civilization { get; set; }
-       public AgeDto? Age { get; set; }
+       public AgeAccordionDto? Age { get; set; }
         //Enums 
         public RoleCharacter? Role { get; set; }
         //Relacion N-N con Battle
@@ -60,7 +60,7 @@ namespace Application.Models.Dto
                 LifePeriod = character.LifePeriod,
                 Dynasty = character.Dynasty,
                 Civilization = character.Civilization != null ? CivilizationDto.ToDto(character.Civilization) : null,
-               Age = character.Age != null ? AgeDto.ToDto(character.Age) : null,
+               Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
                 Battles = character.Battles?.Select(cb => new BattleDto
                 {
                     Name = cb.Battle.Name,

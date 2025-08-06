@@ -41,7 +41,7 @@ namespace Application.Services
             var character = await _characterRepository.GetCharacterByIdAsync(id);
             if (character == null)
             {
-                return null;
+                return null; 
             }
             return new CharacterDtoDetail
             {
@@ -50,7 +50,7 @@ namespace Application.Services
                 ImageUrl = character.ImageUrl,
                 LifePeriod = character.LifePeriod,
                  Civilization = character.Civilization != null ? CivilizationDto.ToDto(character.Civilization) : null,
-                  Age = character.Age != null ? AgeDto.ToDto(character.Age) : null, //Necesito insrtarlos en BD para tenes sus ids 
+                  Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null, //Necesito insrtarlos en BD para tenes sus ids 
                  Battles = character.Battles?.Select(cb => new BattleDto
                   {
                       Name = cb.Battle.Name,

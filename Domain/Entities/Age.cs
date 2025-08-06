@@ -17,8 +17,9 @@ namespace Domain.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string Date { get; set; }
+        public string? Summary { get; set; }
+        public string? Date { get; set; }
+        public string? Overview { get; set; }
 
         //Relaciones 1->N 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
