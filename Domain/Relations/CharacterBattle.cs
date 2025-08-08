@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,7 +22,9 @@ namespace Domain.Relations
         public int CharacterId { get; set; }
         public Character Character { get; set; }
 
-        public string FactionName { get; set; }
+        //public string FactionName { get; set; } Pensar en como implementar la facción, ya que puede ser por paises o pj
+
+        public ParticipantOutcome Outcome { get; set; } = ParticipantOutcome.Unknown;
 
     }
 }

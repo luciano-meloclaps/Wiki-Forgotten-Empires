@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Application.Models.Dto.BattleDto;
+using static Application.Models.Dto.BattleTableDto;
 using static Application.Models.Dto.CivilizationDto;
 using static Application.Models.Dto.CharacterDtoCard;
 
@@ -36,7 +36,7 @@ namespace Application.Models.Dto
         public string? Overview { get; set; }
 
         public ICollection<CharacterDtoCard> Characters { get; set; } = new List<CharacterDtoCard>();
-        public ICollection<BattleDto> Battles { get; set; } = new List<BattleDto>();
+        public ICollection<BattleTableDto> Battles { get; set; } = new List<BattleTableDto>();
         public ICollection<CivilizationDto> Civilizations { get; set; } = new List<CivilizationDto>();
 
 
@@ -49,7 +49,7 @@ namespace Application.Models.Dto
                 Date = age.Date,
                 Overview = age.Overview,
                 Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),
-                Battles = age.Battles.Select(BattleDto.ToDto).ToList(),
+                Battles = age.Battles.Select(BattleTableDto.ToDto).ToList(),
                 Civilizations = age.Civilizations.Select(c => CivilizationDto.ToDto(c.Civilization)).ToList()
             };
         }

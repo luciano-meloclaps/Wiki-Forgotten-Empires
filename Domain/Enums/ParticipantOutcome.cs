@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Enums
 {
-    public enum  BattleOutcome
+    public enum ParticipantOutcome
     {
         Unknown,
+        Victory,
+        Defeat,
+        Stalemate
     }
 }

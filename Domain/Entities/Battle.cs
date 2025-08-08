@@ -17,18 +17,17 @@ namespace Domain.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string Summary { get; set; }
-        public string Date { get; set; }
+        public string? DetailedDescription { get; set; }
+        public string? Summary { get; set; }
+        public string? Date { get; set; }
 
         //Enums
-        public BattleOutcome Outcome { get; set; }
-        public TerritoryType Territory { get; set; }
+        public TerritoryType? Territory { get; set; }
 
         // Relacion N->N con Character
-        public ICollection<CharacterBattle> Characters { get; set; }
+        public ICollection<CharacterBattle>? Characters { get; set; }
 
         // Relacion N->N con Civilization
-        public ICollection<CivilizationBattle> Civilizations { get; set; }
+        public ICollection<CivilizationBattle>? Civilizations { get; set; }
     }
 }

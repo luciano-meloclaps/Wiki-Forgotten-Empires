@@ -10,6 +10,9 @@ using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Relations;
+using Microsoft.EntityFrameworkCore;
+using static Application.Models.Dto.BattleTableDto;
+using static Application.Models.Request.CreateBattleDto;
 
 
 namespace Application.Services
@@ -21,66 +24,40 @@ namespace Application.Services
         {
             _battleRepository = battleRepository ?? throw new ArgumentNullException(nameof(battleRepository));
         }
-        public async Task<IEnumerable<BattleDto>> GetAllBattlesAsync()
+        public async Task<IEnumerable<BattleTableDto>> GetBattleTable()
         {
-            var battles = await _battleRepository.GetAllAsync();
-            return battles.Select(b => new BattleDto
-            {
-                Name = b.Name,
-                Summary = b.Summary,
-                Date = b.Date
-            });
+            var battles = await _battleRepository.GetAllBattles();
+            return battles.Select(BattleTableDto.ToDto);
         }
-        public async Task<BattleDto> GetBattleByIdAsync(int id)
+
+        public async Task<BattleDetailDto?> GetBattleDetail(int id)
         {
-            var battle = await _battleRepository.GetByIdAsync(id);
-            if (battle == null) return null;
-            return new BattleDto
-            {
-                Name = battle.Name,
-                Summary = battle.Summary,
-                Date = battle.Date
-            };
+            var battle = await _battleRepository.GetBattleById(id);
+            return battle is null
+                ? null
+                : BattleDetailDto.ToDto(battle);
         }
-        public async Task<BattleDto> CreateBattleAsync(BattleDto battleDto)
+
+        public async Task<Battle> CreateBattle(CreateBattleDto dto)
         {
-            if (battleDto == null) throw new ArgumentNullException(nameof(battleDto));
-            var battle = new Battle
-            {
-                Name = battleDto.Name,
-                Summary = battleDto.Summary,
-                Date = battleDto.Date,
-                Territory = battleDto.Territory
-            };
-            var createdBattle = await _battleRepository.CreateAsync(battle);
-            return new BattleDto
-            {
-                Name = createdBattle.Name,
-                Summary = createdBattle.Summary,
-                Date = createdBattle.Date,
-                Territory = createdBattle.Territory
-            };
+            var battle = CreateBattleDto.ToEntity(dto);
+            return await _battleRepository.CreateBattle(battle);
         }
-        public async Task<BattleDto> UpdateBattleAsync(int id, BattleRequest request)
+
+        public async Task<Battle?> UpdateBattle(int id, UpdateBattleDto dto)
         {
-            if (request == null) throw new ArgumentNullException(nameof(request));
-            var battle = await _battleRepository.GetByIdAsync(id);
-            if (battle == null) return null;
-            battle.Name = request.Name;
-            battle.Summary = request.Summary;
-            battle.Date = request.Date;
-            var updatedBattle = await _battleRepository.UpdateAsync(battle);
-            return new BattleDto
-            {
-                Name = updatedBattle.Name,
-                Summary = updatedBattle.Summary,
-                Date = updatedBattle.Date,
-                Territory = updatedBattle.Territory
-            };
+            var battle = await _battleRepository.GetBattleById(id);
+            if (battle is null) return null;
+
+            UpdateBattleDto.ApplyToEntity(dto, battle);
+            return await _battleRepository.UpdateBattle(battle);
         }
-        public async Task<bool> DeleteBattleAsync(int id)
+
+        public async Task<bool> DeleteBattle(int id)
         {
-            return await _battleRepository.DeleteAsync(id);
+            return await _battleRepository.DeleteBattleAsync(id);
         }
+
+
     }
 }
