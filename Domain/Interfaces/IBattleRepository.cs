@@ -10,10 +10,11 @@ namespace Domain.Interfaces
 {
     public interface IBattleRepository
     {
-        Task<IEnumerable<Battle>> GetAllAsync();
-        Task<Battle> GetByIdAsync(int id);
-        Task<Battle> CreateAsync(Battle battle);
-        Task<Battle> UpdateAsync(Battle battle);
-        Task<bool> DeleteAsync(int id);
+       Task<IEnumerable<Battle>> GetAllBattles();
+       Task<Battle?> GetBattleById(int id);
+         Task<Battle> CreateBattle(Battle battle);
+            Task<Battle?> UpdateBattle(Battle battle);
+            Task<bool> DeleteBattleAsync(int id);
+
     }
 }

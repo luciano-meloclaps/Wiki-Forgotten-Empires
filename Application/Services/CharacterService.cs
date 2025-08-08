@@ -18,24 +18,6 @@ namespace Application.Services
         {
             _characterRepository = characterRepository ?? throw new ArgumentNullException(nameof(characterRepository));
         }
-
-
-        /*
-       public async Task<IEnumerable<CharacterDto>> GetAllCharactersAsync()
-        {
-            var characters = await _characterRepository.GetAllCharactersAsync();
-            if (characters == null || !characters.Any())
-            {
-                return Enumerable.Empty<CharacterDto>();
-            }
-            return characters.Select(c => new CharacterDto
-            {
-                Name = c.Name,
-                HonorificTitle = c.HonorificTitle,
-                ImageUrl = c.ImageUrl,
-                LifePeriod = c.LifePeriod
-            });
-        }*/
         public async Task<CharacterDtoDetail> CharacterDetail(int id)
         {
             var character = await _characterRepository.GetCharacterByIdAsync(id);
@@ -51,10 +33,10 @@ namespace Application.Services
                 LifePeriod = character.LifePeriod,
                  Civilization = character.Civilization != null ? CivilizationDto.ToDto(character.Civilization) : null,
                   Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null, //Necesito insrtarlos en BD para tenes sus ids 
-                 Battles = character.Battles?.Select(cb => new BattleDto
-                  {
+                 Battles = character.Battles?.Select(cb => new BattleTableDto
+                 {
                       Name = cb.Battle.Name,
-                      Summary = cb.Battle.Summary,
+                      Date = cb.Battle.Date,
                   }).ToList()
             };
         }
