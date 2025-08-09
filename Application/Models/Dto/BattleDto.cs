@@ -43,7 +43,7 @@ namespace Application.Models.Dto
 
             // Relaciones a mostrar con DTOs ya existentes
             public ICollection<CharacterDtoCard> Characters { get; set; } = new List<CharacterDtoCard>();
-            public ICollection<CivilizationDto> Civilizations { get; set; } = new List<CivilizationDto>();
+            public ICollection<CivilizationGalleryDto> Civilizations { get; set; } = new List<CivilizationGalleryDto>();
 
             public static BattleDetailDto ToDto(Battle battle)
             {
@@ -62,9 +62,9 @@ namespace Application.Models.Dto
                                   ?? new List<CharacterDtoCard>(),
 
                     Civilizations = battle.Civilizations?
-                                         .Select(cb => CivilizationDto.ToDto(cb.Civilization))
+                                         .Select(cb => CivilizationGalleryDto.ToDto(cb.Civilization))
                                          .ToList()
-                                     ?? new List<CivilizationDto>(),
+                                     ?? new List<CivilizationGalleryDto>(),
                    /*Winner = battle.Characters.FirstOrDefault(cb => cb.Outcome == ParticipantOutcome.Victory)?.Character.Name
                     Loser = battle.Characters.Where(cb => cb.Outcome == ParticipantOutcome.Defeat).Select(cb => cb.Character.Name).FirstOrDefault()*/ //Tengo que hacer un DTOde la tabla intermedia para traer los datos
                 };
