@@ -30,12 +30,11 @@ namespace Domain.Entities
             = new List<Character>();
 
         //Relacion N->N con Age
-        public ICollection<CivilizationAge> Periods { get; set; }
+        public ICollection<CivilizationAge> Ages { get; set; }
             = new List<CivilizationAge>();
 
         //Relaciones N->N con Battle
         public ICollection<CivilizationBattle> Battles { get; set; }
             = new List<CivilizationBattle>();
-
     }
 }

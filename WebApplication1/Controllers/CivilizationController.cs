@@ -17,22 +17,56 @@ namespace ForgottenEmpire.Controllers
             _civilizationService = civilizationService ?? throw new ArgumentNullException(nameof(civilizationService));
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CivilizationDto>>> GetAllCivilization()
+        public async Task<ActionResult<IEnumerable<CivilizationGalleryDto>>> GetAllCivilizations()
         {
-            var list = await _civilizationService.GetAllCivilization();
-            return Ok(list);
+            var civilizations = await _civilizationService.GetAllCivilization();
+            return Ok(civilizations);
         }
-
-
-        [HttpPost]
-        public async Task<IActionResult> CreateCivilization([FromBody] CivilizationRequest request)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<CivilizationDetailDto?>> GetCivilizationById(int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var civilization = await _civilizationService.GetCivilizationById(id);
+            if (civilization == null)
+            {
+                return NotFound();
+            }
+            return Ok(civilization);
+        }
+        [HttpPost]
+        public async Task<ActionResult<CivilizationDetailDto>> CreateCivilizationAsync([FromBody] CreateCivilizationRequest req)
+        {
+            if (req == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+            var createdCivilization = await _civilizationService.CreateCivilization(req);
+            return Ok($"La civilización '{createdCivilization.Name}' fue creado con éxito.");
+        }
+       
 
-            var dto = await _civilizationService.CreateCivilization(request);
-            return CreatedAtAction(nameof(GetAllCivilization),
-                new { id = dto.Id }, dto);
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<CivilizationDetailDto>> UpdateCivilizationAsync(int id, [FromBody] UpdateCivilizationRequest req)
+        {
+            if (req == null)
+            {
+                return BadRequest("Invalid request data.");
+            }
+            var updatedCivilization = await _civilizationService.UpdateCivilizationAsync(id, req);
+            if (updatedCivilization == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedCivilization);
+        }
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<bool>> DeleteCivilization(int id)
+        {
+            var result = await _civilizationService.DeleteCivilization(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
 
     }

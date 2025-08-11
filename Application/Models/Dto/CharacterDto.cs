@@ -38,7 +38,7 @@ namespace Application.Models.Dto
         public string? Dynasty { get; set; }
 
         // Relacion N<-1 con Civilization
-        public CivilizationDto? Civilization { get; set; }
+        public CivilizationGalleryDto? Civilization { get; set; }
        public AgeAccordionDto? Age { get; set; }
         //Enums 
         public RoleCharacter? Role { get; set; }
@@ -57,7 +57,7 @@ namespace Application.Models.Dto
                 ImageUrl = character.ImageUrl,
                 LifePeriod = character.LifePeriod,
                 Dynasty = character.Dynasty,
-                Civilization = character.Civilization != null ? CivilizationDto.ToDto(character.Civilization) : null,
+                Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
                Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
                 Battles = character.Battles?.Select(cb => new BattleTableDto
                 {
