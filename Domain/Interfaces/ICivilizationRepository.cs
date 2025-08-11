@@ -9,7 +9,13 @@ namespace Domain.Interfaces
 {
     public interface ICivilizationRepository
     {
-        public Task<IEnumerable<Civilization>> GetCivilizationDto();
-        public Task AddCivilization(Civilization civilization);
+       Task<IEnumerable<Civilization>> GetAll();
+      Task<Civilization?> GetById(int id);
+     Task<Civilization> Create(Civilization civilization);
+     
+       Task<Civilization> Update(Civilization civilization);
+
+        Task<bool> Delete(int id);
+
     }
 }

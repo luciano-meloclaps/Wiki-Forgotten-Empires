@@ -69,7 +69,7 @@ namespace Infrastructure
                 .HasKey(ca => new { ca.CivilizationId, ca.AgeId });
             modelBuilder.Entity<CivilizationAge>()
                 .HasOne(ca => ca.Civilization)
-                .WithMany(c => c.Periods)
+                .WithMany(c => c.Ages)
                 .HasForeignKey(ca => ca.CivilizationId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<CivilizationAge>()
