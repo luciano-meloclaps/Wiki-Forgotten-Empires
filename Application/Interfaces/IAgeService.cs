@@ -11,9 +11,10 @@ namespace Application.Interfaces
 {
     public interface IAgeService
     {
-        IAsyncEnumerable<AgeAccordionDto> GetAgeDto();
-        Task<Age> CreateAsync(CreateAgeDto dto);
-        Task<AgeDetailDto?> GetAgeDetailById(int id);
+        Task<List<AgeAccordionDto>> GetAllAsync(CancellationToken ct = default);
+        Task<AgeDetailDto?> GetAgeDetailByIdAsync(int id, CancellationToken ct = default);
+
+        Task<AgeDetailDto> CreateFromDtoAsync(CreateAgeDto dto, CancellationToken ct = default);
 
         Task<Age> UpdateAgeDto(int id, Age age);
         Task<bool> DeleteAgeAsync(int id);

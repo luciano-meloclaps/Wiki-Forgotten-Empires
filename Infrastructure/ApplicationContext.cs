@@ -11,8 +11,6 @@ namespace Infrastructure
 {
     public class ApplicationContext : DbContext
     {
-        
-
         // Constructor de la clase ApplicationContext que recibe las opciones de DbContext y un booleano para indicar si es un entorno de prueba
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
