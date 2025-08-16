@@ -23,34 +23,31 @@ namespace Application.Services
             _ageRepository = ageRepository ?? throw new ArgumentNullException(nameof(ageRepository));
         }
 
-        public async IAsyncEnumerable<AgeAccordionDto> GetAgeDto()
+        public async Task<List<AgeAccordionDto>> GetAllAsync(CancellationToken ct = default)
         {
-            var ages = await _ageRepository.GetAllAges();
-            foreach (var age in ages)
-            {
-                yield return new AgeAccordionDto
-                {
-                  
-                    Name = age.Name,
-                    Summary = age.Summary
-                };
-            }
+            var entities = await _ageRepository.GetAllAsync(ct);
+            return entities.Select(AgeAccordionDto.ToDto).ToList();
         }
-        public async Task<Age> CreateAsync(CreateAgeDto dto)
+
+        public async Task<AgeDetailDto?> GetAgeDetailByIdAsync(int id, CancellationToken ct = default)
         {
-            if (dto == null) throw new ArgumentNullException(nameof(dto));
-            var age = new Age
-            {
-                Name = dto.Name,
-                Date = dto.Date,
-                Overview = dto.Overview
-            };
-            return await _ageRepository.CreateAge(age);
-        }
-        public async Task<AgeDetailDto?> GetAgeDetailById(int id)
-        {
-            var age = await _ageRepository.GetAgeDetailById(id);
+            var age = await _ageRepository.GetAgeDetailByIdAsync(id, ct);
             return age is null ? null : AgeDetailDto.ToDto(age);
+        }
+
+        public async Task<AgeDetailDto> CreateFromDtoAsync(CreateAgeDto dto, CancellationToken ct = default)
+        {
+            if (dto is null)
+                throw new ArgumentException("El objeto AgeDto no puede ser nulo.");
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                throw new ArgumentException("El nombre es obligatorio.");
+            if (dto.Summary?.Length > 150)
+                throw new ArgumentException("El resumen no debe superar los 150 caracteres.");
+
+            var entity = CreateAgeDto.ToEntity(dto);
+            var created = await _ageRepository.CreateAgeAsync(entity, ct);
+
+            return AgeDetailDto.ToDto(created);
         }
 
         public async Task<Age> UpdateAgeDto(int id, Age age)

@@ -3,6 +3,7 @@ using Application.Models.Dto;
 using Application.Models.Request.Application.Models.Request;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 
 namespace ForgottenEmpire.Controllers
@@ -18,40 +19,73 @@ namespace ForgottenEmpire.Controllers
             _ageService = ageService ?? throw new ArgumentNullException(nameof(ageService));
         }
 
-       
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AgeAccordionDto>>> GetAllAges()
+        public async Task<ActionResult<IEnumerable<AgeAccordionDto>>> GetAllAgesAsync(CancellationToken ct)
         {
-            var ages = new List<AgeAccordionDto>();
-            await foreach (var age in _ageService.GetAgeDto())
+            try
             {
-                ages.Add(age);
+                var ages = await _ageService.GetAllAsync(ct);
+
+                if (!ages.Any())
+                    return NotFound("No se encontraron edades registradas.");
+
+                return Ok(ages);
             }
-            return Ok(ages);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Ocurrió un error al obtener las edades: {ex.Message}");
+            }
         }
 
-
-        [HttpGet("detail/{id}")]
-        public async Task<ActionResult<AgeDetailDto>> GetById(int id)
+        [HttpGet("detail/{id:int}")]
+        public async Task<ActionResult<AgeDetailDto>> GetByIdAsync(int id, CancellationToken ct)
         {
-            var result = await _ageService.GetAgeDetailById(id);
+            try
+            {
+                if (id <= 0)
+                    return BadRequest("El identificador debe ser un número positivo.");
 
-            if (result is null)
-                return NotFound();
+                var result = await _ageService.GetAgeDetailByIdAsync(id, ct);
 
-            return Ok(result);
+                if (result is null)
+                    return NotFound($"No se encontró la edad con ID {id}.");
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Ocurrió un error al obtener el detalle de la edad: {ex.Message}");
+            }
         }
-        
+
         [HttpPost]
-        public async Task<IActionResult> CreateAgeDto([FromBody] CreateAgeDto ageDto)
+        public async Task<IActionResult> CreateAgeAsync([FromBody] CreateAgeDto ageDto, CancellationToken ct)
         {
-            if (ageDto == null)
+            try
             {
-                return BadRequest("AgeDto no puede ser nulo");
+                var createdAge = await _ageService.CreateFromDtoAsync(ageDto, ct);
+
+                return CreatedAtAction(
+                    nameof(GetByIdAsync),
+                    new { id = createdAge.Name }, 
+                    createdAge
+                );
             }
-            var createdAge = await _ageService.CreateAsync(ageDto);
-            return CreatedAtAction(nameof(GetById), new { id = createdAge.Id }, AgeDetailDto.ToDto(createdAge));
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { mensaje = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { mensaje = $"Ocurrió un error al crear la edad: {ex.Message}" });
+            }
         }
 
         [HttpPut("{id}")] 
@@ -64,7 +98,7 @@ namespace ForgottenEmpire.Controllers
             var age = new Age
             {
                 Name = ageDto.Name,
-                Summary = ageDto.Description,
+                Summary = ageDto.Summary,
                 Date = ageDto.Date,
                 Overview = ageDto.Overview
             };

@@ -14,17 +14,18 @@ namespace Application.Models.Request
         {
             [Required(ErrorMessage = "El campo Name es obligatorio.")]
             public string Name { get; set; }
+            [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
             public string? Summary { get; set; }
             public string? Date { get; set; }
-            public string? Overview { get; set; }
+            // public string? Overview { get; set; } No deberia para sobrecargar al usuario
 
             public static Age ToEntity(CreateAgeDto req)
             {
                 return new Age
                 {
                     Name = req.Name,
-                    Summary = req.Summary,
-                    Overview = req.Overview
+                    Date = req.Date,
+                    Summary = req.Summary
                 };
             }
         }

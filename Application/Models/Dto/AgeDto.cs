@@ -31,9 +31,9 @@ namespace Application.Models.Dto
     public class AgeDetailDto
     {
         public string Name { get; set; }
-        public string? Description { get; set; }
         public string? Date { get; set; }
         public string? Overview { get; set; }
+        public string? Summary { get; set; }
 
         public ICollection<CharacterDtoCard> Characters { get; set; } = new List<CharacterDtoCard>();
         public ICollection<BattleTableDto> Battles { get; set; } = new List<BattleTableDto>();
@@ -45,7 +45,7 @@ namespace Application.Models.Dto
             return new AgeDetailDto
             {
                 Name = age.Name,
-                Description = age.Summary,
+                Summary = age.Summary,
                 Date = age.Date,
                 Overview = age.Overview,
                 Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),

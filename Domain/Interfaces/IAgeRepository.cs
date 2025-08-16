@@ -9,10 +9,12 @@ namespace Domain.Interfaces
 {
     public interface IAgeRepository 
     {
-        public  Task<IEnumerable<Age>> GetAllAges();
-        public Task<Age> CreateAge(Age age);
-        Task<Age?> GetAgeDetailById(int id);
+        Task<List<Age>> GetAllAsync(CancellationToken ct = default);
+
+        Task<Age?> GetAgeDetailByIdAsync(int id, CancellationToken ct = default);
+        Task<Age> CreateAgeAsync(Age age, CancellationToken ct = default);
         Task<Age> PutDto(int id, Age age);
         Task<bool> DeleteAgeAsync(int id);
+       
     }
 }
