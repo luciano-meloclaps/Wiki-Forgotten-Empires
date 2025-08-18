@@ -13,8 +13,9 @@ namespace Domain.Interfaces
 
         Task<Age?> GetAgeDetailByIdAsync(int id, CancellationToken ct = default);
         Task<Age> CreateAgeAsync(Age age, CancellationToken ct = default);
-        Task<Age> PutDto(int id, Age age);
-        Task<bool> DeleteAgeAsync(int id);
-       
+        Task<Age> UpdateAsync(int id, Age age, CancellationToken ct = default);
+        Task<bool> DeleteAsync(int id, CancellationToken ct = default);
+
+
     }
 }

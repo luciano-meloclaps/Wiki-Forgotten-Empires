@@ -40,25 +40,38 @@ namespace Infrastructure.Repositories
         }
 
 
-        public async Task<Age> PutDto(int id, Age age)
+        public async Task<Age> UpdateAsync(int id, Age age, CancellationToken ct = default)
         {
-            var existingAge = await GetAgeDetailById(id);
-            if (existingAge == null) throw new KeyNotFoundException($"No se encuentra a la entidad Age: {id}.");
-            existingAge.Name = age.Name;
-            existingAge.Date = age.Date;
-            existingAge.Summary = age.Summary;
+            var existingAge = await _context.Ages
+                .FirstOrDefaultAsync(a => a.Id == id, ct);
+
+            if (existingAge is null)
+                throw new KeyNotFoundException($"No se encontró la Edad con ID {id}.");
+
+            existingAge.Name = age.Name ?? existingAge.Name;
+            existingAge.Summary = age.Summary ?? existingAge.Summary;
+            existingAge.Date = age.Date ?? existingAge.Date;
+            existingAge.Overview = age.Overview ?? existingAge.Overview;
+
             _context.Ages.Update(existingAge);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
+
             return existingAge;
         }
-        public async Task<bool> DeleteAgeAsync(int id)
+
+        public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
         {
-            var age = await GetAgeDetailById(id);
-            if (age == null) return false;
-            _context.Ages.Remove(age);
-            await _context.SaveChangesAsync();
-            return true; 
+            var entity = await _context.Ages
+                .FirstOrDefaultAsync(a => a.Id == id, ct);
+
+            if (entity is null)
+                return false;
+
+            _context.Ages.Remove(entity);
+            await _context.SaveChangesAsync(ct);
+            return true;
         }
+
 
     }
 }

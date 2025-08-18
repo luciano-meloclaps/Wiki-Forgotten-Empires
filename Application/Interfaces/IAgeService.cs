@@ -15,9 +15,8 @@ namespace Application.Interfaces
         Task<AgeDetailDto?> GetAgeDetailByIdAsync(int id, CancellationToken ct = default);
 
         Task<AgeDetailDto> CreateFromDtoAsync(CreateAgeDto dto, CancellationToken ct = default);
-
-        Task<Age> UpdateAgeDto(int id, Age age);
-        Task<bool> DeleteAgeAsync(int id);
+        Task<AgeDetailDto> UpdateAsync(int id, UpdateAgeDto dto, CancellationToken ct = default);
+        Task<bool> DeleteAsync(int id, CancellationToken ct = default);
     }
 
 }

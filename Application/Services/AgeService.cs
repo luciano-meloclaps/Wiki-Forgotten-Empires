@@ -50,30 +50,38 @@ namespace Application.Services
             return AgeDetailDto.ToDto(created);
         }
 
-        public async Task<Age> UpdateAgeDto(int id, Age age)
+        public async Task<AgeDetailDto> UpdateAsync(int id, UpdateAgeDto dto, CancellationToken ct = default)
         {
-            if (age == null) throw new ArgumentNullException(nameof(age));
-            try
-            {
-                return await _ageRepository.PutDto(id, age);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                // Log the exception or handle it as needed
-                throw new Exception($"No se encuentra a la entidad Age: {id}.", ex);
-            }
+            if (dto is null)
+                throw new ArgumentException("No puede ser NULL");
+
+            var entity = UpdateAgeDto.ToEntity(dto);
+
+            var updated = await _ageRepository.UpdateAsync(id, entity, ct);
+
+            return AgeDetailDto.ToDto(updated);
         }
-        public async Task<bool> DeleteAgeAsync(int id)
+
+
+        public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
         {
+            if (id <= 0)
+                throw new ArgumentException("El id debe ser mayor a cero.", nameof(id));
+
             try
             {
-                return await _ageRepository.DeleteAgeAsync(id);
+                return await _ageRepository.DeleteAsync(id, ct);
             }
             catch (DbUpdateException ex)
             {
-                // Log the exception or handle it as needed
-                throw new Exception($"Ocurrio un error al intentar eliminar la entidad AGE con ID: {id}.", ex);
+                throw new InvalidOperationException(
+                    "No se puede eliminar la edad porque tiene relaciones asociadas.",
+                    ex
+                );
             }
         }
+
+
+
     }
 }
