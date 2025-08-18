@@ -27,14 +27,14 @@ namespace ForgottenEmpire.Controllers
                 var ages = await _ageService.GetAllAsync(ct);
 
                 if (!ages.Any())
-                    return NotFound("No se encontraron edades registradas.");
+                    return NotFound("No se encontraron Edades registradas.");
 
                 return Ok(ages);
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Ocurrió un error al obtener las edades: {ex.Message}");
+                    $"Ocurrió un error al obtener las Edades: {ex.Message}");
             }
         }
 
@@ -43,8 +43,8 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                if (id <= 0)
-                    return BadRequest("El identificador debe ser un número positivo.");
+                if (id < 0)
+                    return BadRequest("El ID, debe ser al menos 1");
 
                 var result = await _ageService.GetAgeDetailByIdAsync(id, ct);
 
@@ -56,7 +56,7 @@ namespace ForgottenEmpire.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Ocurrió un error al obtener el detalle de la edad: {ex.Message}");
+                    $"Ocurrió un error al obtener el detalle de la Edad: {ex.Message}");
             }
         }
 
@@ -84,49 +84,47 @@ namespace ForgottenEmpire.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { mensaje = $"Ocurrió un error al crear la edad: {ex.Message}" });
+                    new { mensaje = $"Ocurrió un error al crear la Edad: {ex.Message}" });
             }
         }
 
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> UpdateAgeDto(int id, [FromBody] AgeDetailDto ageDto)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateAgeAsync(int id, [FromBody] UpdateAgeDto dto, CancellationToken ct)
         {
-            if (ageDto == null)
-            {
-                return BadRequest("AgeDto no puede ser nulo");
-            }
-            var age = new Age
-            {
-                Name = ageDto.Name,
-                Summary = ageDto.Summary,
-                Date = ageDto.Date,
-                Overview = ageDto.Overview
-            };
             try
             {
-                var updatedAge = await _ageService.UpdateAgeDto(id, age);
-                return Ok(AgeDetailDto.ToDto(updatedAge));
+                var updatedAge = await _ageService.UpdateAsync(id, dto, ct);
+                return Ok(updatedAge);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
             }
             catch (KeyNotFoundException)
             {
-                return NotFound($"La entidad Age: {id} no se encuentra.");
+                return NotFound(new { mensaje = $"No se encontró la Edad con ID {id}." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { mensaje = $"Ocurrió un error al actualizar la Edad: {ex.Message}" });
             }
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAgeAsync(int id)
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAgeAsync(int id, CancellationToken ct)
         {
-            var age = await _ageService.GetAgeDetailById(id);
-            if (age == null)
-            {
-                return NotFound($"La entidad Age: {id} no se encuentra.");
-            }
-            var deleted = await _ageService.DeleteAgeAsync(id);
-            if (!deleted)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "No se pudo eliminar la edad.");
-            }
+            if (id < 0)
+                return BadRequest(new { mensaje = "El ID debe ser al menos 1" });
+
+            var eliminado = await _ageService.DeleteAsync(id, ct);
+
+            if (!eliminado)
+                return NotFound(new { mensaje = $"No se encontró la edad con ID {id}." });
+
             return NoContent();
         }
+
 
     }
 }
