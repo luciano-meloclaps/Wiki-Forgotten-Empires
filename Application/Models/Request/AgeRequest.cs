@@ -8,11 +8,9 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Request
 {
-    namespace Application.Models.Request
-    {
         public class CreateAgeDto
         {
-            [Required(ErrorMessage = "El campo Name es obligatorio.")]
+            [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Name es obligatorio.")]
             public string Name { get; set; }
             [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
             public string? Summary { get; set; }
@@ -31,7 +29,10 @@ namespace Application.Models.Request
         }
         public class UpdateAgeDto
         {
+            [Required(ErrorMessage = "El campo 'Nombre' no puede quedar vacío al actualizar la información de la Edad.")]
+            [StringLength(50, ErrorMessage = "El campo Name no debe superar los 50 caracteres.")]
             public string? Name { get; set; }
+            [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
             public string? Summary { get; set; }
             public string? Date { get; set; }
             public string? Overview { get; set; }
@@ -47,4 +48,3 @@ namespace Application.Models.Request
             }
         }
     }
-}

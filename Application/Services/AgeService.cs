@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
-using Application.Models.Request.Application.Models.Request;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.Services
 {
@@ -22,66 +20,43 @@ namespace Application.Services
         {
             _ageRepository = ageRepository ?? throw new ArgumentNullException(nameof(ageRepository));
         }
-
-        public async Task<List<AgeAccordionDto>> GetAllAsync(CancellationToken ct = default)
+        public async Task<List<AgeAccordionDto>> GetAllAsync(CancellationToken ct)
         {
-            var entities = await _ageRepository.GetAllAsync(ct);
-            return entities.Select(AgeAccordionDto.ToDto).ToList();
+            var ages = await _ageRepository.GetAllAsync(ct);
+            return ages.Select(AgeAccordionDto.ToDto).ToList();
         }
-
-        public async Task<AgeDetailDto?> GetAgeDetailByIdAsync(int id, CancellationToken ct = default)
+        public async Task<AgeDetailDto?> GetByIdAsync(int id, CancellationToken ct)
         {
-            var age = await _ageRepository.GetAgeDetailByIdAsync(id, ct);
-            return age is null ? null : AgeDetailDto.ToDto(age);
+            var age = await _ageRepository.GetByIdAsync(id, ct);
+            return age == null ? null : AgeDetailDto.ToDto(age);
         }
-
-        public async Task<AgeDetailDto> CreateFromDtoAsync(CreateAgeDto dto, CancellationToken ct = default)
+        public async Task<AgeAccordionDto> CreateAsync(CreateAgeDto dto, CancellationToken ct)
         {
-            if (dto is null)
-                throw new ArgumentException("El objeto AgeDto no puede ser nulo.");
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ArgumentException("El nombre es obligatorio.");
-            if (dto.Summary?.Length > 150)
-                throw new ArgumentException("El resumen no debe superar los 150 caracteres.");
-
-            var entity = CreateAgeDto.ToEntity(dto);
-            var created = await _ageRepository.CreateAgeAsync(entity, ct);
-
-            return AgeDetailDto.ToDto(created);
+            var age = CreateAgeDto.ToEntity(dto);
+            await _ageRepository.CreateAsync(age, ct);
+            await _ageRepository.SaveChangesAsync(ct);
+            return AgeAccordionDto.ToDto(age);
         }
-
-        public async Task<AgeDetailDto> UpdateAsync(int id, UpdateAgeDto dto, CancellationToken ct = default)
+        public async Task<AgeAccordionDto?> UpdateAsync(int id, UpdateAgeDto dtoUpdate, CancellationToken ct)
         {
-            if (dto is null)
-                throw new ArgumentException("No puede ser NULL");
+            var age = await _ageRepository.GetByIdAsync(id, ct);
+            if (age == null) return null;
 
-            var entity = UpdateAgeDto.ToEntity(dto);
+            if (dtoUpdate.Name != null) age.Name = dtoUpdate.Name;
+            if (dtoUpdate.Summary != null) age.Summary = dtoUpdate.Summary;
+            if (dtoUpdate.Date != null) age.Date = dtoUpdate.Date;
+            if (dtoUpdate.Overview != null) age.Overview = dtoUpdate.Overview;
 
-            var updated = await _ageRepository.UpdateAsync(id, entity, ct);
-
-            return AgeDetailDto.ToDto(updated);
+            await _ageRepository.SaveChangesAsync(ct);
+            return AgeAccordionDto.ToDto(age);
         }
-
-
-        public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
+        public async Task<(bool Eliminado, string? Nombre)> DeleteAsync(int id, CancellationToken ct)
         {
-            if (id <= 0)
-                throw new ArgumentException("El id debe ser mayor a cero.", nameof(id));
+            var (dtoDelete, nombre) = await _ageRepository.DeleteAsync(id, ct);
+            if (dtoDelete)
+                await _ageRepository.SaveChangesAsync(ct);
 
-            try
-            {
-                return await _ageRepository.DeleteAsync(id, ct);
-            }
-            catch (DbUpdateException ex)
-            {
-                throw new InvalidOperationException(
-                    "No se puede eliminar la edad porque tiene relaciones asociadas.",
-                    ex
-                );
-            }
+            return (dtoDelete, nombre);
         }
-
-
-
     }
 }
