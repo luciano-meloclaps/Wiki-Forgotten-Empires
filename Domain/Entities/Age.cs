@@ -15,7 +15,7 @@ namespace Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo 'Nombre' es obligatorio para registrar una nueva Edad.")]
         public string Name { get; set; }
         public string? Summary { get; set; } //Description
         public string? Date { get; set; }

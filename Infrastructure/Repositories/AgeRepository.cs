@@ -16,62 +16,53 @@ namespace Infrastructure.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public async Task<List<Age>> GetAllAsync(CancellationToken ct = default)
+
+        public async Task<List<Age>> GetAllAsync(CancellationToken ct)
         {
             return await _context.Ages
                 .AsNoTracking()
+                .OrderBy(a => a.Name)
                 .ToListAsync(ct);
         }
-        public async Task<Age?> GetAgeDetailByIdAsync(int id, CancellationToken ct = default)
+
+        public async Task<Age?> GetByIdAsync(int id, CancellationToken ct)
         {
             return await _context.Ages
                 .AsNoTracking()
                 .Include(a => a.Characters).ThenInclude(c => c.Civilization)
                 .Include(a => a.Battles)
-                .Include(a => a.Civilizations).ThenInclude(ac => ac.Civilization)
+                .Include(a => a.Civilizations).ThenInclude(ca => ca.Civilization)
                 .FirstOrDefaultAsync(a => a.Id == id, ct);
         }
-
-        public async Task<Age> CreateAgeAsync(Age age, CancellationToken ct = default)
+        public async Task CreateAsync(Age age, CancellationToken ct)
         {
             await _context.Ages.AddAsync(age, ct);
-            await _context.SaveChangesAsync(ct);
-            return age;
         }
 
-
-        public async Task<Age> UpdateAsync(int id, Age age, CancellationToken ct = default)
+        public async Task<Age?> UpdateAsync(int id, CancellationToken ct)
         {
-            var existingAge = await _context.Ages
-                .FirstOrDefaultAsync(a => a.Id == id, ct);
-
-            if (existingAge is null)
-                throw new KeyNotFoundException($"No se encontró la Edad con ID {id}.");
-
-            existingAge.Name = age.Name ?? existingAge.Name;
-            existingAge.Summary = age.Summary ?? existingAge.Summary;
-            existingAge.Date = age.Date ?? existingAge.Date;
-            existingAge.Overview = age.Overview ?? existingAge.Overview;
-
-            _context.Ages.Update(existingAge);
-            await _context.SaveChangesAsync(ct);
-
-            return existingAge;
+            return await _context.Ages
+                .Include(a => a.Characters).ThenInclude(c => c.Civilization)
+                .Include(a => a.Battles)
+                .Include(a => a.Civilizations).ThenInclude(ca => ca.Civilization)
+                .FirstOrDefaultAsync(a => a.Id == id, ct); 
         }
 
-        public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
+        public async Task<(bool Eliminado, string? Nombre)> DeleteAsync(int id, CancellationToken ct)
         {
-            var entity = await _context.Ages
-                .FirstOrDefaultAsync(a => a.Id == id, ct);
+            var age = await _context.Ages.FindAsync(new object[] { id }, ct);
+            if (age == null)
+                return (false, null);
 
-            if (entity is null)
-                return false;
+            var nombre = age.Name;
 
-            _context.Ages.Remove(entity);
-            await _context.SaveChangesAsync(ct);
-            return true;
+            _context.Ages.Remove(age);
+            return (true, nombre);
         }
-
-
+        public async Task SaveChangesAsync(CancellationToken ct)
+        {
+            await _context.SaveChangesAsync(ct);
+        }
     }
 }
+    

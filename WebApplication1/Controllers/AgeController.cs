@@ -1,9 +1,10 @@
-﻿using Application.Interfaces;
+﻿using System.Linq;
+using Application.Interfaces;
 using Application.Models.Dto;
-using Application.Models.Request.Application.Models.Request;
+using Application.Models.Request;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace ForgottenEmpire.Controllers
@@ -20,111 +21,138 @@ namespace ForgottenEmpire.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AgeAccordionDto>>> GetAllAgesAsync(CancellationToken ct)
+        public async Task<IActionResult> GetAll(CancellationToken ct)
         {
             try
             {
                 var ages = await _ageService.GetAllAsync(ct);
 
                 if (!ages.Any())
-                    return NotFound("No se encontraron Edades registradas.");
+                    return NoContent();
 
                 return Ok(ages);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Ocurrió un error al obtener las Edades: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    error = "ErrorInterno",
+                    mensaje = "Ocurrio un inconveniente al procesar la solicitud. Intente nuevamente en unos minutos."
+                });
             }
         }
 
-        [HttpGet("detail/{id:int}")]
-        public async Task<ActionResult<AgeDetailDto>> GetByIdAsync(int id, CancellationToken ct)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id, CancellationToken ct)
         {
             try
             {
-                if (id < 0)
-                    return BadRequest("El ID, debe ser al menos 1");
+                var age = await _ageService.GetByIdAsync(id, ct);
 
-                var result = await _ageService.GetAgeDetailByIdAsync(id, ct);
+                if (age == null)
+                {
+                    return NotFound(new
+                    {
+                        error = "NoEncontrado",
+                        mensaje = $"No encontramos la Edad con ID {id}."
+                    });
+                }
 
-                if (result is null)
-                    return NotFound($"No se encontró la edad con ID {id}.");
-
-                return Ok(result);
+                return Ok(age);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Ocurrió un error al obtener el detalle de la Edad: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    error = "ErrorInterno",
+                    mensaje = "Tuvimos un problema interno. Volve a intentar más tarde."
+                });
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAgeAsync([FromBody] CreateAgeDto ageDto, CancellationToken ct)
+        public async Task<IActionResult> Create(CreateAgeDto dto, CancellationToken ct)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    error = "DatosInvalidos",
+                    mensaje = "Revisa los datos enviados.",
+                    detalles = ModelState
+                });
+            }
+
             try
             {
-                var createdAge = await _ageService.CreateFromDtoAsync(ageDto, ct);
-
-                return CreatedAtAction(
-                    nameof(GetByIdAsync),
-                    new { id = createdAge.Name }, 
-                    createdAge
-                );
+                var newAge = await _ageService.CreateAsync(dto, ct);
+                return Ok(newAge);
             }
-            catch (ArgumentException ex)
+            catch (Exception)
             {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(new { mensaje = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { mensaje = $"Ocurrió un error al crear la Edad: {ex.Message}" });
+                return StatusCode(500, new
+                {
+                    error = "ErrorInterno",
+                    mensaje = "Tuvimos un problema. Volve a intentar más tarde."
+                });
             }
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateAgeAsync(int id, [FromBody] UpdateAgeDto dto, CancellationToken ct)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateAgeDto dto, CancellationToken ct)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    error = "DatosInvalidos",
+                    mensaje = "Revisá los datos enviados.",
+                    detalles = ModelState
+                });
+            }
+
             try
             {
                 var updatedAge = await _ageService.UpdateAsync(id, dto, ct);
+                if (updatedAge == null)
+                {
+                    return NotFound(new
+                    {
+                        error = "NoEncontrado",
+                        mensaje = $"No encontramos la Edad con ID {id}."
+                    });
+                }
+
                 return Ok(updatedAge);
             }
-            catch (ArgumentException ex)
+            catch (Exception)
             {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound(new { mensaje = $"No se encontró la Edad con ID {id}." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { mensaje = $"Ocurrió un error al actualizar la Edad: {ex.Message}" });
+                return StatusCode(500, new
+                {
+                    error = "ErrorInterno",
+                    mensaje = "Ocurrió un inconveniente al procesar la solicitud en el registro histórico. Por favor, intente nuevamente en unos minutos."
+                });
             }
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteAgeAsync(int id, CancellationToken ct)
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
-            if (id < 0)
-                return BadRequest(new { mensaje = "El ID debe ser al menos 1" });
+            try
+            {
+                var (eliminado, nombre) = await _ageService.DeleteAsync(id, ct);
 
-            var eliminado = await _ageService.DeleteAsync(id, ct);
+                if (!eliminado)
+                    return NoContent(); // No existía → 204
 
-            if (!eliminado)
-                return NotFound(new { mensaje = $"No se encontró la edad con ID {id}." });
-
-            return NoContent();
+                return Ok(new { mensaje = $"Edad '{nombre}' eliminada." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { mensaje = "Ocurrió un error inesperado." });
+            }
         }
-
-
     }
 }
+
+
