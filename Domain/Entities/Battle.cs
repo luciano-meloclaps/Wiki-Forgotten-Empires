@@ -15,7 +15,7 @@ namespace Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Name es obligatorio.")]
         public string Name { get; set; }
         public string? DetailedDescription { get; set; }
         public string? Summary { get; set; }

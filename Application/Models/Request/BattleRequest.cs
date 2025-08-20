@@ -11,7 +11,9 @@ namespace Application.Models.Request
 {
     public class CreateBattleDto
     {
-        [Required]
+        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo 'Nombre' no puede contener solo espacios.")]
+        [MinLength(10, ErrorMessage = "El campo 'Nombre' debe tener al menos 10 caracteres.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Name { get; set; } = default!;
         public string? Date { get; set; }
 
@@ -27,6 +29,8 @@ namespace Application.Models.Request
 
         public class UpdateBattleDto
         {
+            [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo 'Nombre' no puede contener solo espacios.")]
+            [MinLength(10, ErrorMessage = "El campo 'Nombre' debe tener al menos 10 caracteres.")]    
             public string? Name { get; set; }
             public string? Summary { get; set; }
             public string? DetailedDescription { get; set; }
@@ -41,8 +45,5 @@ namespace Application.Models.Request
                 if (dto.Date is not null) battle.Date = dto.Date;
                 if (dto.Territory is not null) battle.Territory = dto.Territory;
             }
-        
-
-
-    }
+        }
 }

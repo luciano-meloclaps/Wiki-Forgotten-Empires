@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class BatlleRepository: IBattleRepository
+    public class BatlleRepository : IBattleRepository
     {
         private readonly ApplicationContext _context;
         public BatlleRepository(ApplicationContext context)
@@ -18,41 +18,63 @@ namespace Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<Battle>> GetAllBattles()
+        public async Task<List<Battle>> GetAll(CancellationToken ct)
         {
             return await _context.Battles
-                .Include(b => b.Civilizations).ThenInclude(cb => cb.Civilization)
-                .Include(b => b.Characters).ThenInclude(cb => cb.Character)
-                .ToListAsync();
+                .AsNoTracking()
+                .Include(b => b.Civilizations)
+                    .ThenInclude(cb => cb.Civilization)
+                .OrderBy(b => b.Name)
+                .ToListAsync(ct);
         }
 
-        public async Task<Battle?> GetBattleById(int id)
+        public async Task<Battle?> GetByIdAsync(int id, CancellationToken ct)
         {
             return await _context.Battles
-                .Include(b => b.Civilizations).ThenInclude(cb => cb.Civilization)
-                .Include(b => b.Characters).ThenInclude(cb => cb.Character)
-                .FirstOrDefaultAsync(b => b.Id == id);
+                .AsNoTracking()
+                .Include(b => b.Characters)
+                    .ThenInclude(cb => cb.Character)
+                        .ThenInclude(ch => ch.Civilization)
+                .Include(b => b.Characters)
+                    .ThenInclude(cb => cb.Character)
+                        .ThenInclude(ch => ch.Age)
+                .Include(b => b.Civilizations)
+                    .ThenInclude(cb => cb.Civilization)
+                .FirstOrDefaultAsync(b => b.Id == id, ct);
         }
-        public async Task<Battle> CreateBattle(Battle battle)
+
+        public async Task CreateAsync(Battle battle, CancellationToken ct)
         {
-            _context.Battles.Add(battle);
-            await _context.SaveChangesAsync();
-            return battle;
+            await _context.Battles.AddAsync(battle, ct);
         }
-        public async Task<Battle?> UpdateBattle(Battle battle)
+
+        public async Task<Battle?> UpdateAsync(int id, CancellationToken ct)
         {
-            _context.Battles.Update(battle);
-            var result = await _context.SaveChangesAsync();
-            return result > 0 ? battle : null;
+            return await _context.Battles
+                .Include(b => b.Characters)
+                    .ThenInclude(cb => cb.Character)
+                        .ThenInclude(ch => ch.Civilization)
+                .Include(b => b.Characters)
+                    .ThenInclude(cb => cb.Character)
+                        .ThenInclude(ch => ch.Age)
+                .Include(b => b.Civilizations)
+                    .ThenInclude(cb => cb.Civilization)
+                .FirstOrDefaultAsync(b => b.Id == id, ct);
         }
-        public async Task<bool> DeleteBattleAsync(int id)
+
+        public async Task<(bool Eliminado, string? Nombre)> DeleteAsync(int id, CancellationToken ct)
         {
-            var battle = await GetBattleById(id);
-            if (battle == null) return false;
+            var battle = await _context.Battles.FindAsync(new object[] { id }, ct);
+            if (battle is null) return (false, null);
+
+            var nombre = battle.Name;
             _context.Battles.Remove(battle);
-            var result = await _context.SaveChangesAsync();
-            return result > 0;
+            return (true, nombre);
         }
 
+        public async Task SaveChangesAsync(CancellationToken ct)
+        {
+            await _context.SaveChangesAsync(ct);
         }
+    }
 }
