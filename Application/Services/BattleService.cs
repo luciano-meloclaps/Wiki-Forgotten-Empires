@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using static Application.Models.Dto.BattleTableDto;
 using static Application.Models.Request.CreateBattleDto;
 
-
 namespace Application.Services
 {
     public class BattleService : IBattleService
@@ -24,40 +23,42 @@ namespace Application.Services
         {
             _battleRepository = battleRepository ?? throw new ArgumentNullException(nameof(battleRepository));
         }
-        public async Task<IEnumerable<BattleTableDto>> GetBattleTable()
+        public async Task<List<BattleTableDto>> GetAllBattles(CancellationToken ct)
         {
-            var battles = await _battleRepository.GetAllBattles();
-            return battles.Select(BattleTableDto.ToDto);
+            var battles = await _battleRepository.GetAll(ct);
+            return battles.Select(BattleTableDto.ToDto).ToList();
         }
 
-        public async Task<BattleDetailDto?> GetBattleDetail(int id)
+        public async Task<BattleDetailDto?> GetBattleById(int id, CancellationToken ct)
         {
-            var battle = await _battleRepository.GetBattleById(id);
-            return battle is null
-                ? null
-                : BattleDetailDto.ToDto(battle);
+            var battle = await _battleRepository.GetByIdAsync(id, ct);
+            return battle is null ? null : BattleDetailDto.ToDto(battle);
         }
 
-        public async Task<Battle> CreateBattle(CreateBattleDto dto)
+        public async Task<BattleDetailDto> CreateBattle(CreateBattleDto dto, CancellationToken ct)
         {
             var battle = CreateBattleDto.ToEntity(dto);
-            return await _battleRepository.CreateBattle(battle);
+            await _battleRepository.CreateAsync(battle, ct); 
+            await _battleRepository.SaveChangesAsync(ct);   
+            return BattleDetailDto.ToDto(battle);
         }
-
-        public async Task<Battle?> UpdateBattle(int id, UpdateBattleDto dto)
+        //DRY: Don't Repeat Yourself a diferncia de Age se usa un Helper para hacer DPE
+        public async Task<BattleDetailDto?> UpdateBattle(int id, UpdateBattleDto dto, CancellationToken ct)
         {
-            var battle = await _battleRepository.GetBattleById(id);
+            var battle = await _battleRepository.UpdateAsync(id, ct);
             if (battle is null) return null;
 
             UpdateBattleDto.ApplyToEntity(dto, battle);
-            return await _battleRepository.UpdateBattle(battle);
+
+            await _battleRepository.SaveChangesAsync(ct);
+            return BattleDetailDto.ToDto(battle);
         }
 
-        public async Task<bool> DeleteBattle(int id)
+        public async Task<(bool Eliminado, string? Nombre)> DeleteBattle(int id, CancellationToken ct)
         {
-            return await _battleRepository.DeleteBattleAsync(id);
+            var (deletedBattle, nameBattle) = await _battleRepository.DeleteAsync(id, ct);
+            return (deletedBattle, nameBattle);
         }
-
-
     }
 }
+

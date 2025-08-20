@@ -90,6 +90,5 @@ namespace Infrastructure
                 .HasForeignKey(c => c.AgeId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
-
     }
 }

@@ -13,11 +13,11 @@ namespace Application.Interfaces
 {
     public interface IBattleService
     {
-        Task<IEnumerable<BattleTableDto>> GetBattleTable();
-        Task<BattleDetailDto?> GetBattleDetail(int id);
-        Task<Battle> CreateBattle(CreateBattleDto dto);
-        Task<Battle?> UpdateBattle(int id, UpdateBattleDto dto);
-        Task<bool> DeleteBattle(int id);
+        Task<List<BattleTableDto>> GetAllBattles(CancellationToken ct);
+        Task<BattleDetailDto?> GetBattleById(int id, CancellationToken ct);
+        Task<BattleDetailDto> CreateBattle(CreateBattleDto dto, CancellationToken ct);
+        Task<BattleDetailDto?> UpdateBattle(int id, UpdateBattleDto dto, CancellationToken ct);
+        Task<(bool Eliminado, string? Nombre)> DeleteBattle(int id, CancellationToken ct);
     }
 
 }
