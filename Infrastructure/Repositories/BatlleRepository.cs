@@ -21,11 +21,12 @@ namespace Infrastructure.Repositories
         public async Task<List<Battle>> GetAll(CancellationToken ct)
         {
             return await _context.Battles
-                .AsNoTracking()
-                .Include(b => b.Civilizations)
-                    .ThenInclude(cb => cb.Civilization)
-                .OrderBy(b => b.Name)
-                .ToListAsync(ct);
+            .AsNoTracking()
+            .Include(b => b.Civilizations)
+                .ThenInclude(cb => cb.Civilization)
+            .OrderBy(b => b.Name)
+            .ToListAsync(ct);
+            
         }
 
         public async Task<Battle?> GetByIdAsync(int id, CancellationToken ct)

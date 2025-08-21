@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Enums;
@@ -12,29 +13,33 @@ namespace Application.Models.Dto
     public class BattleTableDto
     {
         public string Name { get; set; } = default!;
-        // public string? Winner { get; set; } Hacer DTO de la tabla intermedia
-        // public string? Loser { get; set; }
         public string? Date { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public TerritoryType? Territory { get; set; }
-        public ICollection<string> Civilizations { get; set; } = new List<string>();
+
+        public List<int> CharacterIds { get; set; }
+        public List<int> CivilizationIds { get; set; }
+
         public static BattleTableDto ToDto(Battle battle)
         {
             return new BattleTableDto
             {
                 Date = battle.Date,
                 Name = battle.Name,
-                Civilizations = battle.Civilizations ?.Select(cb => cb.Civilization.Name).ToList() ?? new List<string>(),
-                Territory = battle.Territory ?? TerritoryType.None
+                Territory = battle.Territory,
+                CharacterIds = battle?.Characters?.Select(cb => cb.CharacterId).ToList(),
+                CivilizationIds = battle?.Civilizations?.Select(cb => cb.CivilizationId).ToList()
             };
         }
+        
         public class BattleDetailDto
         {
             public string Name { get; set; } = default!;
             public string? Summary { get; set; }
             public string? DetailedDescription { get; set; }
             public string? Date { get; set; }
-            public string? Territory { get; set; }
-
+            [JsonConverter(typeof(JsonStringEnumConverter))]
+            public TerritoryType? Territory { get; set; }
             public ICollection<CharacterDtoCard> Characters { get; set; } = new List<CharacterDtoCard>();
             public ICollection<CivilizationGalleryDto> Civilizations { get; set; } = new List<CivilizationGalleryDto>();
 
@@ -46,7 +51,7 @@ namespace Application.Models.Dto
                     Summary = battle.Summary,
                     DetailedDescription = battle.DetailedDescription,
                     Date = battle.Date,
-                    Territory = battle.Territory?.ToString(),
+                    Territory = battle.Territory,
 
                     Characters = battle.Characters?
                                       .Select(cb => CharacterDtoCard.ToDto(cb.Character))

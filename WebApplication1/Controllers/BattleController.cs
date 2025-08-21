@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Application.Models.Dto.BattleTableDto;
@@ -17,19 +18,21 @@ namespace ForgottenEmpire.Controllers
         {
             _battleService = battleService ?? throw new ArgumentNullException(nameof(battleService));
         }
+
         [HttpGet]
-        public async Task<ActionResult<List<BattleTableDto>>> Get(CancellationToken ct)
+        public async Task<ActionResult<List<AgeAccordionDto>>> Get(CancellationToken ct)
         {
             try
             {
                 var battles = await _battleService.GetAllBattles(ct);
                 return Ok(battles);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrio un error al obtener las Batallas");
+                return StatusCode(500, $"Ocurrió un error al obtener las Batallas: {ex.Message}");
             }
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<BattleDetailDto>> GetBattleDetailById(int id, CancellationToken ct)
         {
@@ -41,62 +44,59 @@ namespace ForgottenEmpire.Controllers
 
                 return Ok(battle);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrio un error al obtener la Batalla");
+                return StatusCode(500, $"Ocurrió un error al obtener la Batallas: {ex.Message}");
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateBattleDto dto, CancellationToken ct)
+        public async Task<ActionResult<BattleDetailDto>> Create([FromBody] CreateBattleDto dto,CancellationToken ct)
         {
             try
             {
                 var newBattle = await _battleService.CreateBattle(dto, ct);
-                return Ok(newBattle); // Sin CreatedAtAction, como en Age
+                return Ok(newBattle);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, new
-                {
-                    error = "ErrorInterno",
-                    mensaje = "Tuvimos un problema. Vuelve a intentarlo."
-                });
+                return StatusCode(500, $"Ocurrió un error al crear las Batallas: {ex.Message}");
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] UpdateBattleDto updateBattleDto, CancellationToken ct)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateBattleDto dto,CancellationToken ct)
         {
             try
             {
-                var existingBattle = await _battleService.GetBattleById(id, ct);
-                if (existingBattle == null)
-                    return NotFound($"No se encontro la Batalla con ID: {id}");
+                var existing = await _battleService.GetBattleById(id, ct);
+                if (existing == null)
+                    return NotFound($"No se encontró la Batalla con ID {id}");
 
-                await _battleService.UpdateBattle(id, updateBattleDto, ct);
-                return NoContent();
+                await _battleService.UpdateBattle(id, dto, ct);
+                return NoContent(); //204 sin contenido para el payload
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrio un error al actualizar la Batalla");
+                return StatusCode(500, $"Ocurrió un error al modificar la Batalla: {ex.Message}");
             }
         }
-        [HttpDelete("{id}")]
+
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
             try
             {
-                var existingBattle = await _battleService.GetBattleById(id, ct);
-                if (existingBattle == null)
-                    return NotFound($"No se encontro la Batalla con ID: {id}");
+                var existing = await _battleService.GetBattleById(id, ct);
+                if (existing == null)
+                    return NotFound($"No se encontró la Batalla con ID {id}");
 
                 await _battleService.DeleteBattle(id, ct);
-                return NoContent();
+                return NoContent(); // 204
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrio un error al eliminar la Batalla");
+                return StatusCode(500, $"Ocurrió un error al eliminar la Batalla: {ex.Message}");
             }
         }
     }
