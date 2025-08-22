@@ -13,7 +13,7 @@ namespace Domain.Entities
     public class Civilization
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //Actualizar BD por NULL and Desc.
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
