@@ -1,11 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;//Mirar usings
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -30,7 +25,6 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id, ct);
         }
 
-
         public async Task<Civilization> CreateCivilization(Civilization civilization, CancellationToken ct)
         {
             await _context.Civilizations.AddAsync(civilization);
@@ -49,4 +43,4 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync(ct);
         }
     }
-    }
+}

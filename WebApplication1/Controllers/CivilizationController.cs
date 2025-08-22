@@ -1,9 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
-using Domain.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForgottenEmpire.Controllers
@@ -13,6 +10,7 @@ namespace ForgottenEmpire.Controllers
     public class CivilizationController : ControllerBase
     {
         private readonly ICivilizationService _civilizationService;
+
         public CivilizationController(ICivilizationService civilizationService)
         {
             _civilizationService = civilizationService ?? throw new ArgumentNullException(nameof(civilizationService));
@@ -26,7 +24,7 @@ namespace ForgottenEmpire.Controllers
                 var civilizations = await _civilizationService.GetAllCivilization(ct);
                 return Ok(civilizations);
             }
-            catch (Exception ex)
+            catch (Exception ex) //Dejo el error para ver por si pasa algo. Sino scar
             {
                 return StatusCode(500, $"Ocurrio un error al obtener las Civilizaciones: {ex.Message}");
             }
@@ -37,14 +35,13 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                await _civilizationService.GetCivizlizationById(id, ct);
                 var civilization = await _civilizationService.GetCivizlizationById(id, ct);
+
+                if (civilization == null)
+                {
+                    return NotFound($"No se encontró la Civilización con id {id}.");
+                }
                 return Ok(civilization);
-            }
-            
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"No se encontró la Civilización con id {id}.");
             }
             catch (Exception ex)
             {
@@ -57,7 +54,7 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var civilization = await _civilizationService.CreateCivilization(request, ct);
+                var civilization = await _civilizationService.CreateCivilization(request, ct); //Ver como devovler 201 segun normas REST
                 return Ok(civilization);
             }
             catch (Exception ex)
@@ -67,16 +64,17 @@ namespace ForgottenEmpire.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCivilization(int id, UpdateCivilizationRequest request, CancellationToken ct)
+        public async Task<IActionResult> UpdateCivilization(int id, [FromBody] UpdateCivilizationRequest request, CancellationToken ct)
         {
             try
             {
-                await _civilizationService.UpdateCivilization(id, request, ct);
-                return Ok();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"No se encontró la Civilizacion con id {id}.");
+                var civilizationSuccess = await _civilizationService.UpdateCivilization(id, request, ct);
+
+                if (!civilizationSuccess)
+                {
+                    return NotFound($"No se encontró la civilización con id {id}.");
+                }
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -89,18 +87,19 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                await _civilizationService.DeleteCivilization(id, ct);
-                return Ok();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"No se encontró la Civilización con id {id}.");
+                var civilizationSuccess = await _civilizationService.DeleteCivilization(id, ct);
+
+                if (!civilizationSuccess)
+                {
+                    return NotFound($"No se encontró la civilización con id {id}");
+                }
+
+                return NoContent();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrio un error al obtener las Civilizaciones: {ex.Message}");
+                return StatusCode(500, $"Ocurrió un error inesperado al eliminar la Civilización: {ex.Message}");
             }
         }
-
     }
 }

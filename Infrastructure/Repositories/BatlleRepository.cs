@@ -1,18 +1,13 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace Infrastructure.Repositories
 {
     public class BatlleRepository : IBattleRepository
     {
         private readonly ApplicationContext _context;
+
         public BatlleRepository(ApplicationContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -26,7 +21,6 @@ namespace Infrastructure.Repositories
                 .ThenInclude(cb => cb.Civilization)
             .OrderBy(b => b.Name)
             .ToListAsync(ct);
-            
         }
 
         public async Task<Battle?> GetByIdAsync(int id, CancellationToken ct)

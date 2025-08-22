@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Domain.Entities;
 using Domain.Enums;
 
@@ -30,16 +24,19 @@ namespace Application.Models.Request
             };
         }
     }
+
     public class UpdateCivilizationRequest
     {
         [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         public string? Name { get; set; }
+
         public string? Summary { get; set; }
         public string? Overview { get; set; }
         public string? ImageUrl { get; set; }
         public TerritoryType? Territory { get; set; }
         public CivilizationState? State { get; set; }
+
         public static void ApplyToEntity(UpdateCivilizationRequest req, Civilization civilization)
         {
             if (req.Name is not null) civilization.Name = req.Name;
@@ -51,4 +48,3 @@ namespace Application.Models.Request
         }
     }
 }
-
