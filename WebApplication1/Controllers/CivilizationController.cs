@@ -3,6 +3,7 @@ using Application.Models.Dto;
 using Application.Models.Request;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForgottenEmpire.Controllers
@@ -16,57 +17,89 @@ namespace ForgottenEmpire.Controllers
         {
             _civilizationService = civilizationService ?? throw new ArgumentNullException(nameof(civilizationService));
         }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CivilizationGalleryDto>>> GetAllCivilizations()
-        {
-            var civilizations = await _civilizationService.GetAllCivilization();
-            return Ok(civilizations);
-        }
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<CivilizationDetailDto?>> GetCivilizationById(int id)
-        {
-            var civilization = await _civilizationService.GetCivilizationById(id);
-            if (civilization == null)
-            {
-                return NotFound();
-            }
-            return Ok(civilization);
-        }
-        [HttpPost]
-        public async Task<ActionResult<CivilizationDetailDto>> CreateCivilizationAsync([FromBody] CreateCivilizationRequest req)
-        {
-            if (req == null)
-            {
-                return BadRequest("Invalid request data.");
-            }
-            var createdCivilization = await _civilizationService.CreateCivilization(req);
-            return Ok($"La civilización '{createdCivilization.Name}' fue creado con éxito.");
-        }
-       
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<CivilizationDetailDto>> UpdateCivilizationAsync(int id, [FromBody] UpdateCivilizationRequest req)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CivilizationGalleryDto>>> GetCivilizationsAll(CancellationToken ct)
         {
-            if (req == null)
+            try
             {
-                return BadRequest("Invalid request data.");
+                var civilizations = await _civilizationService.GetAllCivilization(ct);
+                return Ok(civilizations);
             }
-            var updatedCivilization = await _civilizationService.UpdateCivilizationAsync(id, req);
-            if (updatedCivilization == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(500, $"Ocurrio un error al obtener las Civilizaciones: {ex.Message}");
             }
-            return Ok(updatedCivilization);
         }
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<bool>> DeleteCivilization(int id)
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CivilizationDetailDto>> GetCivilizationById(int id, CancellationToken ct)
         {
-            var result = await _civilizationService.DeleteCivilization(id);
-            if (!result)
+            try
             {
-                return NotFound();
+                await _civilizationService.GetCivizlizationById(id, ct);
+                var civilization = await _civilizationService.GetCivizlizationById(id, ct);
+                return Ok(civilization);
             }
-            return Ok(result);
+            
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"No se encontró la Civilización con id {id}.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al obtener las Civilizaciones: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CivilizationDetailDto>> CreateCivilization(CreateCivilizationRequest request, CancellationToken ct)
+        {
+            try
+            {
+                var civilization = await _civilizationService.CreateCivilization(request, ct);
+                return Ok(civilization);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al obtener las Civilizaciones: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCivilization(int id, UpdateCivilizationRequest request, CancellationToken ct)
+        {
+            try
+            {
+                await _civilizationService.UpdateCivilization(id, request, ct);
+                return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"No se encontró la Civilizacion con id {id}.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al obtener las Civilizaciones: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCivilization(int id, CancellationToken ct)
+        {
+            try
+            {
+                await _civilizationService.DeleteCivilization(id, ct);
+                return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"No se encontró la Civilización con id {id}.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al obtener las Civilizaciones: {ex.Message}");
+            }
         }
 
     }

@@ -12,7 +12,9 @@ namespace Application.Models.Request
 {
     public class CreateCivilizationRequest
     {
-        [Required(ErrorMessage = "El Nombre es obligatorio.")]
+        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
+        [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Name { get; set; }
 
         public TerritoryType Territory { get; set; } = TerritoryType.None;
@@ -30,6 +32,8 @@ namespace Application.Models.Request
     }
     public class UpdateCivilizationRequest
     {
+        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
+        [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         public string? Name { get; set; }
         public string? Summary { get; set; }
         public string? Overview { get; set; }

@@ -13,11 +13,10 @@ namespace Application.Interfaces
 {
     public interface ICivilizationService
     {
-       Task<IEnumerable<CivilizationGalleryDto>> GetAllCivilization();
-       Task<CivilizationDetailDto?> GetCivilizationById(int id);
-       Task<CivilizationGalleryDto> CreateCivilization(CreateCivilizationRequest request);
-        Task<CivilizationDetailDto> UpdateCivilizationAsync(int id, UpdateCivilizationRequest req);
-        Task<bool> DeleteCivilization(int id);
-
+        Task<IEnumerable<CivilizationGalleryDto>> GetAllCivilization(CancellationToken ct);
+        Task<CivilizationDetailDto?> GetCivizlizationById(int id, CancellationToken ct);
+        Task<Civilization> CreateCivilization(CreateCivilizationRequest request, CancellationToken ct);
+        Task UpdateCivilization(int id, UpdateCivilizationRequest request, CancellationToken ct);
+        Task DeleteCivilization(int id, CancellationToken ct);
     }
 }

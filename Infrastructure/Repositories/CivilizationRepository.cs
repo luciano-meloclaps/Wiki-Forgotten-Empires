@@ -13,42 +13,40 @@ namespace Infrastructure.Repositories
     {
         private readonly ApplicationContext _context = context;
 
-        public async Task<IEnumerable<Civilization>> GetAll()
+        public async Task<IEnumerable<Civilization>> GetAllCivilization(CancellationToken ct)
         {
             return await _context.Civilizations
-                .Include(c => c.Characters)
-                .Include(c => c.Ages)
-                .Include(c => c.Battles)
-                .ToListAsync();
+                .AsNoTracking()
+                .ToListAsync(ct);
         }
-        public async Task<Civilization?> GetById(int id)
+
+        public async Task<Civilization?> GetCivizlizationById(int id, CancellationToken ct)
         {
             return await _context.Civilizations
-                .Include(c => c.Characters)
-                .Include(c => c.Ages)
-                .Include(c => c.Battles)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .Include(c => c.Characters).ThenInclude(ch => ch.Age)
+                .Include(c => c.Ages).ThenInclude(ca => ca.Age)
+                .Include(c => c.Battles).ThenInclude(cb => cb.Battle)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id, ct);
         }
-        public async Task<Civilization> Create(Civilization civilization)
+
+
+        public async Task<Civilization> CreateCivilization(Civilization civilization, CancellationToken ct)
         {
-            _context.Civilizations.Add(civilization);
-            await _context.SaveChangesAsync();
+            await _context.Civilizations.AddAsync(civilization);
+            await _context.SaveChangesAsync(ct);
             return civilization;
         }
 
-        public async Task<Civilization> Update(Civilization civilization)
+        public async Task UpdateCivilization(Civilization civilization, CancellationToken ct)
         {
-            _context.Civilizations.Update(civilization);
-            await _context.SaveChangesAsync();
-            return civilization;
+            await _context.SaveChangesAsync(ct);
         }
-        public async Task<bool> Delete(int id)
+
+        public async Task DeleteCivilization(Civilization civilization, CancellationToken ct)
         {
-            var civilization = await _context.Civilizations.FindAsync(id);
-            if (civilization == null) return false;
             _context.Civilizations.Remove(civilization);
-            await _context.SaveChangesAsync();
-            return true;
+            await _context.SaveChangesAsync(ct);
         }
     }
-}
+    }
