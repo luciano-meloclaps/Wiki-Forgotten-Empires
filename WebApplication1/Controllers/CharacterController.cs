@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Application.Services;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
+using Microsoft.AspNetCore.Mvc;
+
 namespace ForgottenEmpire.Controllers
 {
     [Route("api/[controller]")]
@@ -11,76 +10,91 @@ namespace ForgottenEmpire.Controllers
     public class CharacterController : ControllerBase
     {
         private readonly ICharacterService _characterService;
+
         public CharacterController(ICharacterService characterService)
         {
             _characterService = characterService ?? throw new ArgumentNullException(nameof(characterService));
         }
-        /* [HttpGet]
-         public IActionResult GetAllCharacter(int id)
-         public IActionResult GetAllCharacter(int id)
-         {
-             try
-             {
-                 var characters = _characterService.GetAllCharactersAsync().Result;
-                 if (characters == null || !characters.Any())
-                 {
-                     return NotFound("No characters found.");
-                 }
-                 return Ok(characters);
-             }
-             catch (Exception ex)
-             {
-                 return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
-             }
-         }*/
-        [HttpGet("{id}")]
-        public IActionResult GetCharacter(int id)
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CharacterDtoCard>>> GetCharactersAll(CancellationToken ct)
         {
             try
             {
-                var character = _characterService.CharacterDetail(id).Result;
-                if (character == null)
-                {
-                    return NotFound($"Personaje con {id} no se encontro");
-                }
-                return Ok(character);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
-            }
-        }
-        [HttpGet("all")]
-        public IActionResult GetAllCharacters()
-        {
-            try
-            {
-                var characters = _characterService.GetAllCharactersAsync().Result;
-                if (characters == null || !characters.Any())
-                {
-                    return NotFound("No characters found.");
-                }
+                var characters = await _characterService.GetAllCharacters(ct);
                 return Ok(characters);
             }
-            catch (Exception ex)
+            catch (Exception) 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+                return StatusCode(500, "Ocurrió un error al obtener los Personajes");
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateCharacter([FromBody] CharacterCreateRequest request)
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CharacterDtoDetail>> GetCharacter(int id, CancellationToken ct)
         {
-            if (request == null)
-                return BadRequest("Invalid request.");
+            try
+            {
+                var character = await _characterService.GetCharacterById(id, ct);
+                if (character == null)
+                    return NotFound($"No se encontró el Personaje con id {id}");
 
-           var createdCharacter = await _characterService.CreateCharacterAsync(request);
-
-            return Ok($"El personaje '{createdCharacter.Name}' fue creado con éxito.");
+                return Ok(character);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Ocurrió un error al obtener el Personaje");
+            }
         }
 
+        [HttpPost]
+        public async Task<ActionResult<CharacterDtoDetail>> CreateCharacter([FromBody] CharacterCreateRequest request, CancellationToken ct)
+        {
+            try
+            {
+                var character = await _characterService.CreateCharacter(request, ct);
+                return CreatedAtAction(nameof(GetCharacter), new { id = character.Id }, character);
+            }
+            catch (Exception ex)
+            {//Testing trucho SACALO 
+                return StatusCode(500, $"Ocurrió un error al crear el Personaje: {ex.GetType().Name}{ex.Message}");
+            }
+        }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCharacter(int id, [FromBody] CharacterUpdateRequest request, CancellationToken ct)
+        {
+            try
+            {
+                var characterSuccess = await _characterService.UpdateCharacter(id, request, ct);
+                if (!characterSuccess)
+                {
+                    return NotFound($"No se encontró el Personaje con id {id}");
+                }
+                return NoContent(); //204
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error al crear el Personaje {ex.InnerException}{ex.Message}");
+            }
+        }
 
-
-
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCharacter(int id, CancellationToken ct)
+        {
+            try
+            {
+                var characterSuccess = await _characterService.DeleteCharacter(id, ct);
+                if (!characterSuccess)
+                {
+                    return NotFound($"No se encontró el Personaje con id {id}");
+                }
+                return NoContent(); //204
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error al crear el Personaje: {ex.Message}");
+            }
+        }
     }
 }

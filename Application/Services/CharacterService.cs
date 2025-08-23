@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
 using Domain.Entities;
@@ -14,61 +9,51 @@ namespace Application.Services
     public class CharacterService : ICharacterService
     {
         private readonly ICharacterRepository _characterRepository;
+
         public CharacterService(ICharacterRepository characterRepository)
         {
             _characterRepository = characterRepository ?? throw new ArgumentNullException(nameof(characterRepository));
         }
-        public async Task<CharacterDtoDetail> CharacterDetail(int id)
+
+        public async Task<IEnumerable<CharacterDtoCard>> GetAllCharacters(CancellationToken ct)
         {
-            var character = await _characterRepository.GetCharacterByIdAsync(id);
-            if (character == null)
+            var characters = await _characterRepository.GetAllCharacters(ct);
+            return characters.Select(CharacterDtoCard.ToDto);
+        }
+
+        public async Task<CharacterDtoDetail?> GetCharacterById(int id, CancellationToken ct)
+        {
+            var character = await _characterRepository.GetCharacterById(id, ct);
+            return character is null ? null : CharacterDtoDetail.ToDto(character);
+        }
+
+        public async Task<Character> CreateCharacter(CharacterCreateRequest request, CancellationToken ct)
+        {
+            var character = CharacterCreateRequest.ToEntity(request);
+            return await _characterRepository.CreateCharacter(character, ct);
+        }
+
+        public async Task<bool> UpdateCharacter(int id, CharacterUpdateRequest request, CancellationToken ct)
+        {
+            var character = await _characterRepository.GetCharacterById(id, ct);
+            if (character is null)
             {
-                return null; 
+                return false;
             }
-            return new CharacterDtoDetail
-            {
-                Name = character.Name,
-                HonorificTitle = character.HonorificTitle,
-                ImageUrl = character.ImageUrl,
-                LifePeriod = character.LifePeriod,
-                 Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
-                  Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null, //Necesito insrtarlos en BD para tenes sus ids 
-                 Battles = character.Battles?.Select(cb => new BattleTableDto
-                 {
-                      Name = cb.Battle.Name,
-                      Date = cb.Battle.Date,
-                  }).ToList()
-            };
+            CharacterUpdateRequest.ApplyToEntity(request, character);
+            await _characterRepository.UpdateCharacter(character, ct);
+            return true;
         }
-        public async Task<IEnumerable<CharacterDtoCard>> GetAllCharactersAsync()
+
+        public async Task<bool> DeleteCharacter(int id, CancellationToken ct)
         {
-            var characters = await _characterRepository.GetAllCharactersAsync();
-            if (characters == null || !characters.Any())
+            var character = await _characterRepository.GetCharacterById(id, ct);
+            if (character is null)
             {
-                return Enumerable.Empty<CharacterDtoCard>();
+                return false;
             }
-            return characters.Select(c => CharacterDtoCard.ToDto(c));
+            await _characterRepository.DeleteCharacter(character, ct);
+            return true;
         }
-        public async Task<CharacterDtoCard> CreateCharacterAsync(CharacterCreateRequest request)
-        {
-            // Crear entidad (Domain)
-            var character = new Character
-            {
-                Name = request.Name,
-                // Mapear otras propiedades si las hay
-            };
-
-            // Guardar en DB (la DB generará el Id)
-            await _characterRepository.AddCharacterAsync(character);
-
-            // character.Id ya tiene valor luego de SaveChangesAsync()
-
-            // Retornar un DTO para no exponer la entidad completa
-            return new CharacterDtoCard
-            {
-                Name = character.Name,
-            };
-        }
-
     }
 }

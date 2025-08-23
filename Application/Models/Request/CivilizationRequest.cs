@@ -6,7 +6,6 @@ namespace Application.Models.Request
 {
     public class CreateCivilizationRequest
     {
-        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Name { get; set; }
@@ -27,8 +26,8 @@ namespace Application.Models.Request
 
     public class UpdateCivilizationRequest
     {
-        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string? Name { get; set; }
 
         public string? Summary { get; set; }
