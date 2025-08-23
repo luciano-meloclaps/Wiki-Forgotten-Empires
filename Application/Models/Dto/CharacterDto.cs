@@ -11,7 +11,6 @@ namespace Application.Models.Dto
 {
     public class CharacterDtoCard
     {
-        [Required]
         public string Name { get; set; }
         public string? HonorificTitle { get; set; }
         public string? ImageUrl { get; set; }
@@ -50,7 +49,7 @@ namespace Application.Models.Dto
 
         public static CharacterDtoDetail ToDto(Character character)
         {
-            return new CharacterDtoDetail
+            return new CharacterDtoDetail //Ver relacion
             {
                 Name = character.Name,
                 HonorificTitle = character.HonorificTitle,
@@ -58,7 +57,7 @@ namespace Application.Models.Dto
                 LifePeriod = character.LifePeriod,
                 Dynasty = character.Dynasty,
                 Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
-               Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
+                Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
                 Battles = character.Battles?.Select(cb => new BattleTableDto
                 {
                     Name = cb.Battle.Name,

@@ -12,7 +12,7 @@ namespace Domain.Entities
 {
         public class Character
         {
-            [Key] //MOdificar BD por NULL Desc,
+            [Key] 
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public int Id { get; set; }
             [Required]

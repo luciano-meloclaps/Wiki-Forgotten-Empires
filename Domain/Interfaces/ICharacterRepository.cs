@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities;
+﻿using Domain.Entities;
 
 namespace Domain.Interfaces
 {
     public interface ICharacterRepository
     {
-        Task<Character> GetCharacterByIdAsync(int id);
-        Task<IEnumerable<Character>> GetAllCharactersAsync();
-        Task AddCharacterAsync(Character character);
+        Task<IEnumerable<Character>> GetAllCharacters(CancellationToken ct);
+        Task<Character?> GetCharacterById(int id, CancellationToken ct);
+        // Se elimina FindByIdAsync para simplificar.
+
+        // Se añade el método para crear que faltaba.
+        Task<Character> CreateCharacter(Character character, CancellationToken ct);
+        Task UpdateCharacter(Character character, CancellationToken ct);
+        Task DeleteCharacter(Character character, CancellationToken ct);
     }
 }
