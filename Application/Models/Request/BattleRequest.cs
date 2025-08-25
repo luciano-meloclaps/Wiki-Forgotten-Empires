@@ -16,6 +16,7 @@ namespace Application.Models.Request
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Name { get; set; } = default!;
         public string? Date { get; set; }
+        public int AgeId { get; set; }
 
         public static Battle ToEntity(CreateBattleDto dto)
         {
@@ -23,6 +24,7 @@ namespace Application.Models.Request
             {
                 Name = dto.Name,
                 Date = dto.Date,
+                AgeId = dto.AgeId
             };
         }
     }
