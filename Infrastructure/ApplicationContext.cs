@@ -89,6 +89,13 @@ namespace Infrastructure
                 .WithMany(a => a.Characters)
                 .HasForeignKey(c => c.AgeId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Battle N--1 Age
+            modelBuilder.Entity<Battle>()
+                .HasOne(b => b.Age)
+                .WithMany(a => a.Battles)
+                .HasForeignKey(b => b.AgeId)
+                .OnDelete(DeleteBehavior.Restrict); //Impide borrar una edad si tiene batallas
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Application.Models.Dto
 {
     public class BattleTableDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string? Date { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -34,6 +35,7 @@ namespace Application.Models.Dto
         
         public class BattleDetailDto
         {
+            public int Id { get; set; }
             public string Name { get; set; } = default!;
             public string? Summary { get; set; }
             public string? DetailedDescription { get; set; }

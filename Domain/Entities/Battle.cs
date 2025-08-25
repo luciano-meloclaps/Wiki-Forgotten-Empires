@@ -30,5 +30,9 @@ namespace Domain.Entities
 
         // Relacion N->N con Civilization
         public ICollection<CivilizationBattle>? Civilizations { get; set; }
+
+        //Relacion N->1 con Age
+        public int? AgeId { get; set; }
+        public Age? Age { get; set; }
     }
 }
