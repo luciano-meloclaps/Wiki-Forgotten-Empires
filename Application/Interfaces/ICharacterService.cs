@@ -10,7 +10,7 @@ namespace Application.Interfaces
 
         Task<CharacterDtoDetail?> GetCharacterById(int id, CancellationToken ct);
 
-        Task<Character> CreateCharacter(CharacterCreateRequest request, CancellationToken ct);
+        Task<CharacterDtoDetail> CreateCharacter(CharacterCreateRequest request, CancellationToken ct);
 
         Task<bool> UpdateCharacter(int id, CharacterUpdateRequest request, CancellationToken ct);
 

@@ -25,9 +25,9 @@ namespace Infrastructure
 
         //Tablas de relaciones N->N
         public DbSet<CharacterBattle> CharacterBattles { get; set; }
-        public DbSet<CivilizationBattle> CivilizationBattles { get; set; }
+        //public DbSet<CivilizationBattle> CivilizationBattles { get; set; }
         public DbSet<CivilizationAge> CivilizationPeriods { get; set; }
-
+        public DbSet<CivilizationAge> CivilizationAges { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

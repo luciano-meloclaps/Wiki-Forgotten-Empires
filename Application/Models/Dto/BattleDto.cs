@@ -25,6 +25,7 @@ namespace Application.Models.Dto
         {
             return new BattleTableDto
             {
+                Id = battle.Id,
                 Date = battle.Date,
                 Name = battle.Name,
                 Territory = battle.Territory,

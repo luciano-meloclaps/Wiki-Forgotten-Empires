@@ -11,10 +11,10 @@ namespace Application.Interfaces
 {
     public interface IAgeService
     {
-        Task<List<AgeAccordionDto>> GetAllAsync(CancellationToken ct);
-        Task<AgeDetailDto?> GetByIdAsync(int id, CancellationToken ct);
-        Task<AgeAccordionDto> CreateAsync(CreateAgeDto dto, CancellationToken ct);
-        Task<AgeAccordionDto?> UpdateAsync(int id, UpdateAgeDto dto, CancellationToken ct);
-        Task<(bool Eliminado, string? Nombre)> DeleteAsync(int id, CancellationToken ct);
+        Task<IEnumerable<AgeAccordionDto>> GetAllAges(CancellationToken ct);
+        Task<AgeDetailDto?> GetAgeById(int id, CancellationToken ct);
+        Task<AgeDetailDto> CreateAge(CreateAgeDto request, CancellationToken ct);
+        Task<bool> UpdateAge(int id, UpdateAgeDto request, CancellationToken ct);
+        Task<bool> DeleteAge(int id, CancellationToken ct);
     }
 }

@@ -52,8 +52,8 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var character = await _characterService.CreateCharacter(request, ct);
-                return CreatedAtAction(nameof(GetCharacter), new { id = character.Id }, character);
+                var characterDto = await _characterService.CreateCharacter(request, ct);
+                return Ok(characterDto);
             }
             catch (Exception ex)
             {//Testing trucho SACALO 
