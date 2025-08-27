@@ -1,50 +1,65 @@
-﻿ using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities;
 
 namespace Application.Models.Request
 {
-        public class CreateAgeDto
-        {
-            [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Name es obligatorio.")]
-            public string Name { get; set; }
-            [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
-            public string? Summary { get; set; }
-            public string? Date { get; set; }
-            // public string? Overview { get; set; } No deberia para sobrecargar al usuario
+    public class CreateAgeDto
+    {
+        [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
+        [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
+        public string Name { get; set; }
 
-            public static Age ToEntity(CreateAgeDto req)
-            {
-                return new Age
-                {
-                    Name = req.Name,
-                    Date = req.Date,
-                    Summary = req.Summary
-                };
-            }
-        }
-        public class UpdateAgeDto
+        [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
+        public string? Summary { get; set; }
+
+        public string? Date { get; set; }
+
+        //Relacion N-N
+       public List<int>? CivilizationsIds { get; set; }
+        // Relaciónes 1-N
+        public List<int>? CharactersIds { get; set; }
+        public List<int>? BattlesIds { get; set; }
+
+
+
+        public static Age ToEntity(CreateAgeDto dto)
         {
-            [Required(ErrorMessage = "El campo 'Nombre' no puede quedar vacío al actualizar la información de la Edad.")]
-            [StringLength(50, ErrorMessage = "El campo Name no debe superar los 50 caracteres.")]
-            public string? Name { get; set; }
-            [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
-            public string? Summary { get; set; }
-            public string? Date { get; set; }
-            public string? Overview { get; set; }
-            public static Age ToEntity(UpdateAgeDto req)
+            return new Age
             {
-                return new Age
-                {
-                    Name = req.Name,
-                    Summary = req.Summary,
-                    Date = req.Date,
-                    Overview = req.Overview
-                };
-            }
+                Name = dto.Name,
+                Summary = dto.Summary,
+                Date = dto.Date
+            };
         }
     }
+
+    public class UpdateAgeDto
+    {
+        [Required(ErrorMessage = "El campo 'Nombre' no puede quedar vacío al actualizar la información de la Edad.")]
+        [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres."),
+        StringLength(50, ErrorMessage = "El campo Nombre no debe superar los 50 caracteres.")]
+        public string? Name { get; set; }
+
+        [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
+        public string? Summary { get; set; }
+
+        public string? Date { get; set; }
+        public string? Overview { get; set; }
+        //Relacion N-N
+        public List<int>? CivilizationsIds { get; set; }
+
+        // Relaciónes 1-N
+        public List<int>? CharactersIds { get; set; }
+
+        public List<int>? BattlesIds { get; set; }
+
+        public static void ApplyToEntity(UpdateAgeDto dto, Age age)
+
+        {
+            if (dto.Name is not null) age.Name = dto.Name;
+            if (dto.Summary is not null) age.Summary = dto.Summary;
+            if (dto.Date is not null) age.Date = dto.Date;
+            if (dto.Overview is not null) age.Overview = dto.Overview;
+        }
+    }
+}

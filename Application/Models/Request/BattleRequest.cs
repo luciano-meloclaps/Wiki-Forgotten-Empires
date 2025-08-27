@@ -15,7 +15,10 @@ namespace Application.Models.Request
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Name { get; set; } = default!;
+
         public string? Date { get; set; }
+
+        [Required(ErrorMessage = "Toda Batalla debe pertenecer a una Edad.")]
         public int AgeId { get; set; }
 
         public static Battle ToEntity(CreateBattleDto dto)
@@ -29,23 +32,26 @@ namespace Application.Models.Request
         }
     }
 
-        public class UpdateBattleDto
-        {
-            [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
-            [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]    
-            public string? Name { get; set; }
-            public string? Summary { get; set; }
-            public string? DetailedDescription { get; set; }
-            public string? Date { get; set; }
-            public TerritoryType? Territory { get; set; }
+    public class UpdateBattleDto
+    {
+        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
+        [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
+        public string? Name { get; set; }
 
-            public static void ApplyToEntity(UpdateBattleDto dto, Battle battle)
-            {
-                if (dto.Name is not null) battle.Name = dto.Name;
-                if (dto.Summary is not null) battle.Summary = dto.Summary;
-                if (dto.DetailedDescription is not null) battle.DetailedDescription = dto.DetailedDescription;
-                if (dto.Date is not null) battle.Date = dto.Date;
-                if (dto.Territory is not null) battle.Territory = dto.Territory;
-            }
+        public string? Summary { get; set; }
+        public string? DetailedDescription { get; set; }
+        public string? Date { get; set; }
+        public TerritoryType? Territory { get; set; }
+        public int? AgeId { get; set; }
+
+        public static void ApplyToEntity(UpdateBattleDto dto, Battle battle)
+        {
+            if (dto.Name is not null) battle.Name = dto.Name;
+            if (dto.Summary is not null) battle.Summary = dto.Summary;
+            if (dto.DetailedDescription is not null) battle.DetailedDescription = dto.DetailedDescription;
+            if (dto.Date is not null) battle.Date = dto.Date;
+            if (dto.Territory is not null) battle.Territory = dto.Territory;
+            if (dto.AgeId.HasValue) battle.AgeId = dto.AgeId.Value;
         }
+    }
 }

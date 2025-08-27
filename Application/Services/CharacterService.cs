@@ -27,10 +27,11 @@ namespace Application.Services
             return character is null ? null : CharacterDtoDetail.ToDto(character);
         }
 
-        public async Task<Character> CreateCharacter(CharacterCreateRequest request, CancellationToken ct)
+        public async Task<CharacterDtoDetail> CreateCharacter(CharacterCreateRequest request, CancellationToken ct)
         {
             var character = CharacterCreateRequest.ToEntity(request);
-            return await _characterRepository.CreateCharacter(character, ct);
+            await _characterRepository.CreateCharacter(character, ct);
+            return CharacterDtoDetail.ToDto(character);
         }
 
         public async Task<bool> UpdateCharacter(int id, CharacterUpdateRequest request, CancellationToken ct)

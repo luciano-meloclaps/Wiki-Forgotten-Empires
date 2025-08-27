@@ -22,6 +22,7 @@ namespace Application.Models.Dto
         {
             return new AgeAccordionDto
             {
+                Id = age.Id,
                 Name = age.Name,
                 Summary = age.Summary,
                 Date = age.Date
