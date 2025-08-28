@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Domain.Entities;
 using Domain.Enums;
 
@@ -8,8 +7,8 @@ namespace Application.Models.Dto
     public class CivilizationGalleryDto
     {
         public int Id { get; set; }
-    
-        public string Name { get; set; }
+
+        public string Name { get; set; } = default!;
 
         public string? ImageUrl { get; set; }
 
@@ -24,6 +23,7 @@ namespace Application.Models.Dto
         {
             return new CivilizationGalleryDto
             {
+                Id = civilization.Id,
                 Name = civilization.Name,
                 ImageUrl = civilization.ImageUrl,
                 //Summary = civilization.Summary,
@@ -36,7 +36,7 @@ namespace Application.Models.Dto
     public class CivilizationDetailDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
         public string? Overview { get; set; } //Agregar en BD
         public string? ImageUrl { get; set; }
 
@@ -60,6 +60,7 @@ namespace Application.Models.Dto
         {
             return new CivilizationDetailDto
             {
+                Id = civilization.Id,
                 Name = civilization.Name,
                 Overview = civilization.Overview,
                 ImageUrl = civilization.ImageUrl,

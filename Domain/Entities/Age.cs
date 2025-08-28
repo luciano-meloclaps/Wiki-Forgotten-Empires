@@ -11,7 +11,7 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo 'Nombre' es obligatorio para registrar una nueva Edad.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;    
 
         public string? Summary { get; set; } //Description
         public string? Date { get; set; }

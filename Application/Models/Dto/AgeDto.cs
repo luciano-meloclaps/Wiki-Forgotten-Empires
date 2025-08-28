@@ -5,9 +5,10 @@ namespace Application.Models.Dto
     public class AgeAccordionDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
         public string? Summary { get; set; }
         public string? Date { get; set; }
+
 
         //Entidad → DTO, salida
         public static AgeAccordionDto ToDto(Age age)
@@ -25,7 +26,7 @@ namespace Application.Models.Dto
     public class AgeDetailDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
         public string? Date { get; set; }
         public string? Overview { get; set; }
         public string? Summary { get; set; }

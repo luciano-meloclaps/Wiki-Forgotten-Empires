@@ -53,8 +53,8 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var newAgeDetailDto = await _ageService.CreateAge(dto, ct);
-                return Ok(newAgeDetailDto);
+                var ageDto = await _ageService.CreateAge(dto, ct);
+                return Ok(ageDto);
             }
             catch (Exception ex)
             {

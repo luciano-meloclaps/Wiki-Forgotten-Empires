@@ -8,7 +8,7 @@ namespace Application.Models.Request
     {
         [Required(ErrorMessage = "El campo nombre es obligatorio.")]
         [MinLength(5, ErrorMessage = "El campo nombre debe tener al menos 3 caracteres.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
 

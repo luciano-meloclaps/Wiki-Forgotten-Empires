@@ -35,13 +35,13 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var civilization = await _civilizationService.GetCivizlizationById(id, ct);
+                var civilizationDetail = await _civilizationService.GetCivizlizationById(id, ct);
 
-                if (civilization == null)
+                if (civilizationDetail == null)
                 {
                     return NotFound($"No se encontró la Civilización con id {id}.");
                 }
-                return Ok(civilization);
+                return Ok(civilizationDetail);
             }
             catch (Exception ex)
             {
@@ -54,8 +54,8 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var civilization = await _civilizationService.CreateCivilization(request, ct); //Ver como devovler 201 segun normas REST
-                return Ok(civilization);
+                var civilizationDto = await _civilizationService.CreateCivilization(request, ct); //Ver como devovler 201 segun normas REST
+                return Ok(civilizationDto);
             }
             catch (Exception ex)
             {
@@ -93,7 +93,6 @@ namespace ForgottenEmpire.Controllers
                 {
                     return NotFound($"No se encontró la civilización con id {id}");
                 }
-
                 return NoContent();
             }
             catch (Exception ex)
