@@ -1,12 +1,4 @@
 ﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Application.Models.Dto.BattleTableDto;
-using static Application.Models.Dto.CivilizationGalleryDto;
-using static Application.Models.Dto.CharacterDtoCard;
 
 namespace Application.Models.Dto
 {
@@ -27,10 +19,12 @@ namespace Application.Models.Dto
                 Summary = age.Summary,
                 Date = age.Date
             };
-        } 
+        }
     }
+
     public class AgeDetailDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string? Date { get; set; }
         public string? Overview { get; set; }
@@ -40,11 +34,11 @@ namespace Application.Models.Dto
         public ICollection<BattleTableDto> Battles { get; set; } = new List<BattleTableDto>();
         public ICollection<CivilizationGalleryDto> Civilizations { get; set; } = new List<CivilizationGalleryDto>();
 
-
         public static AgeDetailDto ToDto(Age age)
         {
             return new AgeDetailDto
             {
+                Id = age.Id,
                 Name = age.Name,
                 Summary = age.Summary,
                 Date = age.Date,

@@ -47,6 +47,5 @@ namespace Infrastructure.Repositories
             _context.Characters.Remove(character);
             await _context.SaveChangesAsync(ct);
         }
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Application.Models.Dto;
 using Application.Models.Request;
-using Domain.Entities;
 
 namespace Application.Interfaces
 {
@@ -10,7 +9,7 @@ namespace Application.Interfaces
 
         Task<CivilizationDetailDto?> GetCivizlizationById(int id, CancellationToken ct);
 
-        Task<Civilization> CreateCivilization(CreateCivilizationRequest request, CancellationToken ct);
+        Task<CivilizationDetailDto> CreateCivilization(CreateCivilizationRequest request, CancellationToken ct);
 
         Task<bool> UpdateCivilization(int id, UpdateCivilizationRequest request, CancellationToken ct);
 

@@ -63,7 +63,7 @@ namespace ForgottenEmpire.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id,[FromBody] UpdateAgeDto dto, CancellationToken ct)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateAgeDto dto, CancellationToken ct)
         {
             try
             {

@@ -1,6 +1,5 @@
 ﻿using Application.Models.Dto;
 using Application.Models.Request;
-using Domain.Entities;
 
 namespace Application.Interfaces
 {
@@ -12,7 +11,7 @@ namespace Application.Interfaces
 
         Task<CharacterDtoDetail> CreateCharacter(CharacterCreateRequest request, CancellationToken ct);
 
-        Task<bool> UpdateCharacter(int id, CharacterUpdateRequest request, CancellationToken ct);
+        Task<CharacterDtoDetail?> UpdateCharacter(int id, CharacterUpdateRequest request, CancellationToken ct);
 
         Task<bool> DeleteCharacter(int id, CancellationToken ct);
     }

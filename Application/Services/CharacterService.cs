@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
-using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Application.Services
@@ -34,16 +33,16 @@ namespace Application.Services
             return CharacterDtoDetail.ToDto(character);
         }
 
-        public async Task<bool> UpdateCharacter(int id, CharacterUpdateRequest request, CancellationToken ct)
+        public async Task<CharacterDtoDetail?> UpdateCharacter(int id, CharacterUpdateRequest request, CancellationToken ct)
         {
             var character = await _characterRepository.GetCharacterById(id, ct);
             if (character is null)
             {
-                return false;
+                return null;
             }
             CharacterUpdateRequest.ApplyToEntity(request, character);
             await _characterRepository.UpdateCharacter(character, ct);
-            return true;
+            return CharacterDtoDetail.ToDto(character);
         }
 
         public async Task<bool> DeleteCharacter(int id, CancellationToken ct)
