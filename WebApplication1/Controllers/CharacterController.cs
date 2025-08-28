@@ -24,9 +24,9 @@ namespace ForgottenEmpire.Controllers
                 var characters = await _characterService.GetAllCharacters(ct);
                 return Ok(characters);
             }
-            catch (Exception) 
+            catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al obtener los Personajes");
+                return StatusCode(500, $"Ocurrió un error al obtener los Personajes: {ex.Message}");
             }
         }
 
@@ -37,13 +37,13 @@ namespace ForgottenEmpire.Controllers
             {
                 var character = await _characterService.GetCharacterById(id, ct);
                 if (character == null)
-                    return NotFound($"No se encontró el Personaje con id {id}");
+                    return NotFound($"No se encontró el Personaje con ID: {id}");
 
                 return Ok(character);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Ocurrió un error al obtener el Personaje");
+                return StatusCode(500, $"Ocurrió un error al obtener el Personaje: {ex.Message}");
             }
         }
 
@@ -56,7 +56,7 @@ namespace ForgottenEmpire.Controllers
                 return Ok(characterDto);
             }
             catch (Exception ex)
-            {//Testing trucho SACALO 
+            {//Testing trucho SACALO
                 return StatusCode(500, $"Ocurrió un error al crear el Personaje: {ex.GetType().Name}{ex.Message}");
             }
         }
@@ -67,7 +67,7 @@ namespace ForgottenEmpire.Controllers
             try
             {
                 var characterSuccess = await _characterService.UpdateCharacter(id, request, ct);
-                if (!characterSuccess)
+                if (characterSuccess is null)
                 {
                     return NotFound($"No se encontró el Personaje con id {id}");
                 }

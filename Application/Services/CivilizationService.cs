@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
-using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Application.Services
@@ -27,11 +26,12 @@ namespace Application.Services
             return civilization is null ? null : CivilizationDetailDto.ToDto(civilization);
         }
 
-        public async Task<Civilization> CreateCivilization(CreateCivilizationRequest request, CancellationToken ct)
+        public async Task<CivilizationDetailDto> CreateCivilization(CreateCivilizationRequest request, CancellationToken ct)
 
         {
             var civilization = CreateCivilizationRequest.ToEntity(request);
-            return await _civilizationRepository.CreateCivilization(civilization, ct);
+            await _civilizationRepository.CreateCivilization(civilization, ct);
+            return CivilizationDetailDto.ToDto(civilization);
         }
 
         public async Task<bool> UpdateCivilization(int id, UpdateCivilizationRequest request, CancellationToken ct)

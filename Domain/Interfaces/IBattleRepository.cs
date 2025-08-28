@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities;
-
+﻿using Domain.Entities;
 
 namespace Domain.Interfaces
 {
     public interface IBattleRepository
     {
-        Task<List<Battle>> GetAll(CancellationToken ct);
-        Task<Battle?> GetByIdAsync(int id, CancellationToken ct);
-        Task CreateAsync(Battle battle, CancellationToken ct);
-        Task<Battle?> UpdateAsync(int id, CancellationToken ct);
-        Task<(bool Eliminado, string? Nombre)> DeleteAsync(int id, CancellationToken ct);
-        Task SaveChangesAsync(CancellationToken ct);
+        Task<IEnumerable<Battle>> GetAllBattles(CancellationToken ct);
+
+        Task<Battle?> GetByIdBattle(int id, CancellationToken ct);
+
+        Task<Battle> CreateBattle(Battle battle, CancellationToken ct);
+
+        Task UpdateBattle(Battle battle, CancellationToken ct);
+
+        Task DeleteBattle(Battle battle, CancellationToken ct);
     }
 }

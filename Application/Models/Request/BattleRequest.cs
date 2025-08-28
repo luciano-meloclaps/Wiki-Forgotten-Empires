@@ -1,40 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Domain.Entities;
 using Domain.Enums;
 
 namespace Application.Models.Request
 {
-    public class CreateBattleDto
+    public class BattleCreateRequest
     {
-        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Name { get; set; } = default!;
 
         public string? Date { get; set; }
 
-        [Required(ErrorMessage = "Toda Batalla debe pertenecer a una Edad.")]
-        public int AgeId { get; set; }
+        //[Required(ErrorMessage = "Toda Batalla debe pertenecer a una Edad.")]
+        //public int AgeId { get; set; }
 
-        public static Battle ToEntity(CreateBattleDto dto)
+        public static Battle ToEntity(BattleCreateRequest dto)
         {
             return new Battle
             {
                 Name = dto.Name,
                 Date = dto.Date,
-                AgeId = dto.AgeId
+                //AgeId = dto.AgeId
             };
         }
     }
 
-    public class UpdateBattleDto
+    public class BattleUpdateRequest
     {
-        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "El campo Nombre no puede contener solo espacios.")]
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         public string? Name { get; set; }
 
@@ -42,16 +35,16 @@ namespace Application.Models.Request
         public string? DetailedDescription { get; set; }
         public string? Date { get; set; }
         public TerritoryType? Territory { get; set; }
-        public int? AgeId { get; set; }
+        //public int? AgeId { get; set; }
 
-        public static void ApplyToEntity(UpdateBattleDto dto, Battle battle)
+        public static void ApplyToEntity(BattleUpdateRequest dto, Battle battle)
         {
             if (dto.Name is not null) battle.Name = dto.Name;
             if (dto.Summary is not null) battle.Summary = dto.Summary;
             if (dto.DetailedDescription is not null) battle.DetailedDescription = dto.DetailedDescription;
             if (dto.Date is not null) battle.Date = dto.Date;
             if (dto.Territory is not null) battle.Territory = dto.Territory;
-            if (dto.AgeId.HasValue) battle.AgeId = dto.AgeId.Value;
+            //if (dto.AgeId.HasValue) battle.AgeId = dto.AgeId.Value;
         }
     }
 }

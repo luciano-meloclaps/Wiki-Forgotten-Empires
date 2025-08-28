@@ -1,11 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Relations;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -19,20 +14,24 @@ namespace Infrastructure
         // EF usa estos DbSet<> para mapear ent. -> tablas y relacionar
         //Tablas principales
         public DbSet<Character> Characters { get; set; }
+
         public DbSet<Civilization> Civilizations { get; set; }
         public DbSet<Battle> Battles { get; set; }
         public DbSet<Age> Ages { get; set; }
 
         //Tablas de relaciones N->N
         public DbSet<CharacterBattle> CharacterBattles { get; set; }
+
         //public DbSet<CivilizationBattle> CivilizationBattles { get; set; }
         public DbSet<CivilizationAge> CivilizationPeriods { get; set; }
+
         public DbSet<CivilizationAge> CivilizationAges { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //CharacterBattle N--N Character ⇄ Battle
+            //CharacterBattle N--N Character >< Battle
             modelBuilder.Entity<CharacterBattle>()
                 .HasKey(cb => new { cb.CharacterId, cb.BattleId });
 
@@ -48,7 +47,7 @@ namespace Infrastructure
                 .HasForeignKey(cb => cb.BattleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //CivilizationBattle N--N Civilization ⇄ Battle
+            //CivilizationBattle N--N Civilization >< Battle
             modelBuilder.Entity<CivilizationBattle>()
                 .HasKey(cb => new { cb.CivilizationId, cb.BattleId });
             modelBuilder.Entity<CivilizationBattle>()
@@ -62,7 +61,7 @@ namespace Infrastructure
                 .HasForeignKey(cb => cb.BattleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //CivilizationAge N--N Civilization ⇄ Age
+            //CivilizationAge N--N Civilization >< Age
             modelBuilder.Entity<CivilizationAge>()
                 .HasKey(ca => new { ca.CivilizationId, ca.AgeId });
             modelBuilder.Entity<CivilizationAge>()
@@ -84,11 +83,11 @@ namespace Infrastructure
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Chacater N--1 Age
-           modelBuilder.Entity<Character>()
-                .HasOne(c => c.Age)
-                .WithMany(a => a.Characters)
-                .HasForeignKey(c => c.AgeId)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Character>()
+                 .HasOne(c => c.Age)
+                 .WithMany(a => a.Characters)
+                 .HasForeignKey(c => c.AgeId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             // Battle N--1 Age
             modelBuilder.Entity<Battle>()

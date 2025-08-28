@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Enums;
 
 namespace Application.Models.Dto
 {
     public class CharacterDtoCard
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string? HonorificTitle { get; set; }
         public string? ImageUrl { get; set; }
@@ -20,16 +15,18 @@ namespace Application.Models.Dto
         {
             return new CharacterDtoCard
             {
+                Id = character.Id,
                 Name = character.Name,
                 HonorificTitle = character.HonorificTitle,
                 ImageUrl = character.ImageUrl,
                 LifePeriod = character.LifePeriod,
             };
         }
-        
     }
+
     public class CharacterDtoDetail
     {
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? HonorificTitle { get; set; }
         public string? ImageUrl { get; set; }
@@ -38,9 +35,12 @@ namespace Application.Models.Dto
 
         // Relacion N<-1 con Civilization
         public CivilizationGalleryDto? Civilization { get; set; }
-       public AgeAccordionDto? Age { get; set; }
-        //Enums 
+
+        public AgeAccordionDto? Age { get; set; }
+
+        //Enums
         public RoleCharacter? Role { get; set; }
+
         //Relacion N-N con Battle
         public ICollection<BattleTableDto>? Battles { get; set; } = new List<BattleTableDto>();
 
@@ -51,6 +51,7 @@ namespace Application.Models.Dto
         {
             return new CharacterDtoDetail //Ver relacion
             {
+                Id = character.Id,
                 Name = character.Name,
                 HonorificTitle = character.HonorificTitle,
                 ImageUrl = character.ImageUrl,
@@ -72,5 +73,3 @@ namespace Application.Models.Dto
         }
     }
 }
-
-

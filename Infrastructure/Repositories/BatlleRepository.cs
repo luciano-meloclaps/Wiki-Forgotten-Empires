@@ -13,62 +13,39 @@ namespace Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<List<Battle>> GetAll(CancellationToken ct)
+        public async Task<IEnumerable<Battle>> GetAllBattles(CancellationToken ct)
         {
             return await _context.Battles
             .AsNoTracking()
-            .Include(b => b.Civilizations)
-                .ThenInclude(cb => cb.Civilization)
-            .OrderBy(b => b.Name)
             .ToListAsync(ct);
         }
 
-        public async Task<Battle?> GetByIdAsync(int id, CancellationToken ct)
+        public async Task<Battle?> GetByIdBattle(int id, CancellationToken ct)
         {
             return await _context.Battles
-                .AsNoTracking()
-                .Include(b => b.Characters)
-                    .ThenInclude(cb => cb.Character)
-                        .ThenInclude(ch => ch.Civilization)
-                .Include(b => b.Characters)
-                    .ThenInclude(cb => cb.Character)
-                        .ThenInclude(ch => ch.Age)
-                .Include(b => b.Civilizations)
-                    .ThenInclude(cb => cb.Civilization)
-                .FirstOrDefaultAsync(b => b.Id == id, ct);
+            .Include(b => b.Age)
+            .Include(b => b.Characters)
+                .ThenInclude(cb => cb.Character)
+            .Include(b => b.Civilizations)
+                .ThenInclude(cb => cb.Civilization)
+            .FirstOrDefaultAsync(b => b.Id == id, ct);
         }
 
-        public async Task CreateAsync(Battle battle, CancellationToken ct)
+        public async Task<Battle> CreateBattle(Battle battle, CancellationToken ct)
         {
             await _context.Battles.AddAsync(battle, ct);
+            await _context.SaveChangesAsync(ct);
+            return battle;
         }
 
-        public async Task<Battle?> UpdateAsync(int id, CancellationToken ct)
+        public async Task UpdateBattle(Battle battle, CancellationToken ct)
         {
-            return await _context.Battles
-                .Include(b => b.Characters)
-                    .ThenInclude(cb => cb.Character)
-                        .ThenInclude(ch => ch.Civilization)
-                .Include(b => b.Characters)
-                    .ThenInclude(cb => cb.Character)
-                        .ThenInclude(ch => ch.Age)
-                .Include(b => b.Civilizations)
-                    .ThenInclude(cb => cb.Civilization)
-                .FirstOrDefaultAsync(b => b.Id == id, ct);
+            await _context.SaveChangesAsync(ct);
         }
 
-        public async Task<(bool Eliminado, string? Nombre)> DeleteAsync(int id, CancellationToken ct)
+        public async Task DeleteBattle(Battle battle, CancellationToken ct)
         {
-            var battle = await _context.Battles.FindAsync(new object[] { id }, ct);
-            if (battle is null) return (false, null);
-
-            var nombre = battle.Name;
             _context.Battles.Remove(battle);
-            return (true, nombre);
-        }
-
-        public async Task SaveChangesAsync(CancellationToken ct)
-        {
             await _context.SaveChangesAsync(ct);
         }
     }

@@ -1,13 +1,10 @@
-
 using Application.Interfaces;
 using Application.Services;
 using Domain.Interfaces;
 using ForgottenEmpires.Application.Services;
 using Infrastructure;
 using Infrastructure.Repositories;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,10 +30,10 @@ using (var command = connection.CreateCommand())
 
 builder.Services.AddDbContext<ApplicationContext>(dbContextOptions => dbContextOptions.UseSqlite(connection, options =>
 options.MigrationsAssembly("ForgottenEmpire")));
-*/ 
+*/
 // Alternative way to configure the DbContext with a connection string from appsettings.json
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString"))); 
+    options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString")));
 
 //Age
 builder.Services.AddScoped<IAgeRepository, AgeRepository>();
@@ -55,7 +52,6 @@ builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 // Register other services and repositories as needed
 // For example, if you have a UserService and UserRepository
-
 
 var app = builder.Build();
 

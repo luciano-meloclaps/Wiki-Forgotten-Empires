@@ -1,11 +1,8 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
-using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Application.Models.Dto.BattleTableDto;
-using static Application.Models.Request.CreateBattleDto;
 
 namespace ForgottenEmpire.Controllers
 {
@@ -14,13 +11,14 @@ namespace ForgottenEmpire.Controllers
     public class BattleController : ControllerBase
     {
         private readonly IBattleService _battleService;
+
         public BattleController(IBattleService battleService)
         {
             _battleService = battleService ?? throw new ArgumentNullException(nameof(battleService));
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<AgeAccordionDto>>> Get(CancellationToken ct)
+        public async Task<ActionResult<IEnumerable<BattleTableDto>>> Get(CancellationToken ct)
         {
             try
             {
@@ -38,9 +36,9 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var battle = await _battleService.GetBattleById(id, ct);
+                var battle = await _battleService.GetByIdBattle(id, ct);
                 if (battle == null)
-                    return NotFound($"No se encontro la Batalla con id {id}");
+                    return NotFound($"No se encontro la Batalla con ID: {id}");
 
                 return Ok(battle);
             }
@@ -51,11 +49,11 @@ namespace ForgottenEmpire.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BattleDetailDto>> Create([FromBody] CreateBattleDto dto,CancellationToken ct)
+        public async Task<ActionResult<BattleDetailDto>> Create([FromBody] BattleCreateRequest request, CancellationToken ct)
         {
             try
             {
-                var newBattle = await _battleService.CreateBattle(dto, ct);
+                var newBattle = await _battleService.CreateBattle(request, ct);
                 return Ok(newBattle);
             }
             catch (Exception ex)
@@ -65,15 +63,15 @@ namespace ForgottenEmpire.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateBattleDto dto,CancellationToken ct)
+        public async Task<IActionResult> Update(int id, [FromBody] BattleUpdateRequest request, CancellationToken ct)
         {
             try
             {
-                var existing = await _battleService.GetBattleById(id, ct);
-                if (existing == null)
+                var battleSuccess = await _battleService.UpdateBattle(id, request, ct);
+                if (battleSuccess is null)
                     return NotFound($"No se encontró la Batalla con ID {id}");
 
-                await _battleService.UpdateBattle(id, dto, ct);
+                await _battleService.UpdateBattle(id, request, ct);
                 return NoContent(); //204 sin contenido para el payload
             }
             catch (Exception ex)
@@ -87,12 +85,12 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var existing = await _battleService.GetBattleById(id, ct);
-                if (existing == null)
+                var battleSuccess = await _battleService.DeleteBattle(id, ct);
+                if (!battleSuccess)
+                {
                     return NotFound($"No se encontró la Batalla con ID {id}");
-
-                await _battleService.DeleteBattle(id, ct);
-                return NoContent(); // 204
+                }
+                return NoContent(); //204 (vacio)
             }
             catch (Exception ex)
             {
