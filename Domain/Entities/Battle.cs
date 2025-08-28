@@ -12,7 +12,7 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Name es obligatorio.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         public string? DetailedDescription { get; set; }
         public string? Summary { get; set; }

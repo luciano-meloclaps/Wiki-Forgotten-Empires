@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
         }
 
         public async Task<Character?> GetCharacterById(int id, CancellationToken ct)
-        {
+        {   
             return await _context.Characters
                 .Include(c => c.Civilization)
                 .Include(c => c.Age)

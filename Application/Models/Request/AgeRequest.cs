@@ -7,7 +7,7 @@ namespace Application.Models.Request
     {
         [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [StringLength(150, ErrorMessage = "El campo Summary no debe superar los 150 caracteres.")]
         public string? Summary { get; set; }

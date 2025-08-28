@@ -35,11 +35,11 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var character = await _characterService.GetCharacterById(id, ct);
-                if (character == null)
+                var characterDetail = await _characterService.GetCharacterById(id, ct);
+                if (characterDetail == null)
                     return NotFound($"No se encontró el Personaje con ID: {id}");
 
-                return Ok(character);
+                return Ok(characterDetail);
             }
             catch (Exception ex)
             {

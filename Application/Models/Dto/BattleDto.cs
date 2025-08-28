@@ -13,9 +13,6 @@ namespace Application.Models.Dto
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public TerritoryType? Territory { get; set; }
 
-        //public List<int> CharacterIds { get; set; }
-        // public List<int> CivilizationIds { get; set; }
-
         public static BattleTableDto ToDto(Battle battle)
         {
             return new BattleTableDto
@@ -24,8 +21,6 @@ namespace Application.Models.Dto
                 Date = battle.Date,
                 Name = battle.Name,
                 Territory = battle.Territory,
-                //CharacterIds = battle?.Characters?.Select(cb => cb.CharacterId).ToList(),
-                //CivilizationIds = battle?.Civilizations?.Select(cb => cb.CivilizationId).ToList()
             };
         }
 
@@ -53,16 +48,8 @@ namespace Application.Models.Dto
                     DetailedDescription = battle.DetailedDescription,
                     Date = battle.Date,
                     Territory = battle.Territory,
-
-                    /*Characters = battle.Characters?
-                                      .Select(cb => CharacterDtoCard.ToDto(cb.Character))
-                                      .ToList()
-                                  ?? new List<CharacterDtoCard>(),
-
-                    Civilizations = battle.Civilizations?
-                                         .Select(cb => CivilizationGalleryDto.ToDto(cb.Civilization))
-                                         .ToList()
-                                     ?? new List<CivilizationGalleryDto>(),*/
+                    //Characters = battle.Characters.Select(cb => CharacterDtoCard.ToDto(cb.Character)).ToList(),
+                    //Civilizations = battle.Civilizations.Select(cb => CivilizationGalleryDto.ToDto(cb.Civilization)).ToList()
                 };
             }
         }

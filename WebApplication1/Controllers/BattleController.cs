@@ -22,8 +22,8 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var battles = await _battleService.GetAllBattles(ct);
-                return Ok(battles);
+                var battlesDetail = await _battleService.GetAllBattles(ct);
+                return Ok(battlesDetail);
             }
             catch (Exception ex)
             {
@@ -36,11 +36,11 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var battle = await _battleService.GetByIdBattle(id, ct);
-                if (battle == null)
+                var battleDetail = await _battleService.GetByIdBattle(id, ct);
+                if (battleDetail == null)
                     return NotFound($"No se encontro la Batalla con ID: {id}");
 
-                return Ok(battle);
+                return Ok(battleDetail);
             }
             catch (Exception ex)
             {
@@ -53,8 +53,8 @@ namespace ForgottenEmpire.Controllers
         {
             try
             {
-                var newBattle = await _battleService.CreateBattle(request, ct);
-                return Ok(newBattle);
+                var battleDto = await _battleService.CreateBattle(request, ct);
+                return Ok(battleDto);
             }
             catch (Exception ex)
             {

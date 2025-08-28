@@ -12,7 +12,7 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
@@ -30,7 +30,7 @@ namespace Domain.Entities
         [ForeignKey("Civilization")]
         public int? CivilizationId { get; set; } //Los hice nulleabe por la autoreferencia ID del problema referencia. Una vez con personajes SACARLO
 
-        public Civilization Civilization { get; set; }
+        public Civilization Civilization { get; set; } 
 
         // Relacion N<-1 con Age
         [ForeignKey("Age")]

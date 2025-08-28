@@ -8,7 +8,7 @@ namespace Application.Models.Request
     {
         [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         public TerritoryType Territory { get; set; } = TerritoryType.None;
         public CivilizationState State { get; set; } = CivilizationState.None;
@@ -17,6 +17,7 @@ namespace Application.Models.Request
         {
             return new Civilization
             {
+               
                 Name = req.Name,
                 Territory = req.Territory,
                 State = req.State,
