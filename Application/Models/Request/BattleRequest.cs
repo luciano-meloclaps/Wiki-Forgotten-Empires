@@ -12,16 +12,12 @@ namespace Application.Models.Request
 
         public string? Date { get; set; }
 
-        //[Required(ErrorMessage = "Toda Batalla debe pertenecer a una Edad.")]
-        //public int AgeId { get; set; }
-
         public static Battle ToEntity(BattleCreateRequest dto)
         {
             return new Battle
             {
                 Name = dto.Name,
                 Date = dto.Date,
-                //AgeId = dto.AgeId
             };
         }
     }
@@ -35,7 +31,12 @@ namespace Application.Models.Request
         public string? DetailedDescription { get; set; }
         public string? Date { get; set; }
         public TerritoryType? Territory { get; set; }
+
+        //Relaciones
         //public int? AgeId { get; set; }
+
+        //public List<int>? CharactersIds { get; set; }
+        //public List<int>? CivilizationsIds { get; set; }
 
         public static void ApplyToEntity(BattleUpdateRequest dto, Battle battle)
         {

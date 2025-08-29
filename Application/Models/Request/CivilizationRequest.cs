@@ -17,7 +17,6 @@ namespace Application.Models.Request
         {
             return new Civilization
             {
-               
                 Name = req.Name,
                 Territory = req.Territory,
                 State = req.State,

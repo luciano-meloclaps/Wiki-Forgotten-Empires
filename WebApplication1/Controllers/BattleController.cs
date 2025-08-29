@@ -58,7 +58,7 @@ namespace ForgottenEmpire.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrió un error al crear las Batallas: {ex.Message}");
+                return StatusCode(500, $"Ocurrió un error al crear las Batallas: {ex.GetType().Name}{ex.Message}");
             }
         }
 

@@ -12,16 +12,12 @@ namespace Application.Models.Request
 
         public string? Description { get; set; }
 
-        //[Required(ErrorMessage = "Todo Personaje debe pertenecer a una Edad.")]
-        //public int AgeId { get; set; }
-
         public static Character ToEntity(CharacterCreateRequest req)
         {
             return new Character
             {
                 Name = req.Name,
                 Description = req.Description,
-                //AgeId = req.AgeId
             };
         }
     }
@@ -37,10 +33,12 @@ namespace Application.Models.Request
         public string? ImageUrl { get; set; }
         public string? LifePeriod { get; set; }
         public string? Dynasty { get; set; }
-
-        //public int? CivilizationId { get; set; }
-        //public int? AgeId { get; set; }
         public RoleCharacter? Role { get; set; }
+
+        //Relaciones
+        /*public int? CivilizationId { get; set; }
+
+        public int? AgeId { get; set; }*/
 
         public static void ApplyToEntity(CharacterUpdateRequest req, Character character)
         {
@@ -51,9 +49,8 @@ namespace Application.Models.Request
             if (req.LifePeriod is not null) character.LifePeriod = req.LifePeriod;
             if (req.Dynasty is not null) character.Dynasty = req.Dynasty;
             if (req.Role is not null) character.Role = req.Role;
-            //if (req.CivilizationId is not null) character.CivilizationId = req.CivilizationId.Value;
-            //if (req.AgeId is not null) character.AgeId = req.AgeId.Value;
-            //if (req.AgeId.HasValue) character.AgeId = req.AgeId.Value;
+            /*if (req.CivilizationId.HasValue) character.CivilizationId = req.CivilizationId;
+            if (req.AgeId.HasValue) character.AgeId = req.AgeId;*/
         }
     }
 }

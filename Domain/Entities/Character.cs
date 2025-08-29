@@ -30,13 +30,13 @@ namespace Domain.Entities
         [ForeignKey("Civilization")]
         public int? CivilizationId { get; set; } //Los hice nulleabe por la autoreferencia ID del problema referencia. Una vez con personajes SACARLO
 
-        public Civilization Civilization { get; set; } 
+        public Civilization? Civilization { get; set; }
 
         // Relacion N<-1 con Age
         [ForeignKey("Age")]
         public int? AgeId { get; set; }
 
-        public Age Age { get; set; }
+        public Age? Age { get; set; }
 
         // Relacion N->N con Battle
         public ICollection<CharacterBattle> Battles { get; set; } = new List<CharacterBattle>();
