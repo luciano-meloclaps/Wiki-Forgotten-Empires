@@ -24,9 +24,9 @@ namespace Infrastructure.Repositories
         {
             return await _context.Battles
             .Include(b => b.Age)
-            .Include(b => b.Characters)
+            .Include(b => b.Character) //Tabla intermedia
                 .ThenInclude(cb => cb.Character)
-            .Include(b => b.Civilizations)
+            .Include(b => b.Civilization)//Tabla intermedia
                 .ThenInclude(cb => cb.Civilization)
             .FirstOrDefaultAsync(b => b.Id == id, ct);
         }

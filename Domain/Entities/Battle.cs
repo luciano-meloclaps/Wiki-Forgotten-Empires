@@ -22,10 +22,10 @@ namespace Domain.Entities
         public TerritoryType? Territory { get; set; }
 
         // Relacion N->N con Character
-        public ICollection<CharacterBattle> Characters { get; set; } = new List<CharacterBattle>();
+        public ICollection<CharacterBattle> Character { get; set; } = new List<CharacterBattle>();
 
         // Relacion N->N con Civilization
-        public ICollection<CivilizationBattle> Civilizations { get; set; } = new List<CivilizationBattle>();
+        public ICollection<CivilizationBattle> Civilization { get; set; } = new List<CivilizationBattle>();
 
         //Relacion N->1 con Age
         [ForeignKey("Age")]

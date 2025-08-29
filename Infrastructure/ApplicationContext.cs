@@ -71,7 +71,7 @@ namespace Infrastructure
             //CharacterBattle --> Battle
             modelBuilder.Entity<CharacterBattle>()
                 .HasOne(cb => cb.Battle)
-                .WithMany(battle => battle.Characters)
+                .WithMany(battle => battle.Character)
                 .HasForeignKey(cb => cb.BattleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -89,7 +89,7 @@ namespace Infrastructure
             //CivilizationBattle --> Battle
             modelBuilder.Entity<CivilizationBattle>()
                 .HasOne(cb => cb.Battle)
-                .WithMany(battle => battle.Civilizations)
+                .WithMany(battle => battle.Civilization)
                 .HasForeignKey(cb => cb.BattleId)
                 .OnDelete(DeleteBehavior.Cascade);
 

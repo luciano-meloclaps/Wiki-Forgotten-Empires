@@ -9,7 +9,6 @@ namespace Application.Models.Dto
         public string? Summary { get; set; }
         public string? Date { get; set; }
 
-
         //Entidad → DTO, salida
         public static AgeAccordionDto ToDto(Age age)
         {

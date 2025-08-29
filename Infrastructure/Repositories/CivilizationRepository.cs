@@ -18,9 +18,9 @@ namespace Infrastructure.Repositories
         public async Task<Civilization?> GetCivizlizationById(int id, CancellationToken ct)
         {
             return await _context.Civilizations
-                .Include(c => c.Characters).ThenInclude(ch => ch.Age)
-                .Include(c => c.Ages).ThenInclude(ca => ca.Age)
-                .Include(c => c.Battles).ThenInclude(cb => cb.Battle)
+                .Include(c => c.Characters).ThenInclude(ch => ch.Age) //Ver mas de los pj
+                .Include(c => c.Ages).ThenInclude(ca => ca.Age) //Tabla intermedia
+                .Include(c => c.Battles).ThenInclude(cb => cb.Battle) //Tabla intermedia
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id, ct);
         }
