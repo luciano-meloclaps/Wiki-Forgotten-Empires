@@ -5,16 +5,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure
 {
     public class ApplicationContext : DbContext
-    {
-        // Constructor de la clase ApplicationContext que recibe las opciones de DbContext y un booleano para indicar si es un entorno de prueba
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
-        : base(options)
-        { }
-
-        // EF usa estos DbSet<> para mapear ent. -> tablas y relacionar
+    { // EF usa estos DbSet<> para mapear ent. -> tablas y relacionar
         //Tablas principales
-        public DbSet<Character> Characters { get; set; }
 
+        public DbSet<Character> Characters { get; set; }
         public DbSet<Civilization> Civilizations { get; set; }
         public DbSet<Battle> Battles { get; set; }
         public DbSet<Age> Ages { get; set; }
@@ -22,79 +16,100 @@ namespace Infrastructure
         //Tablas de relaciones N->N
         public DbSet<CharacterBattle> CharacterBattles { get; set; }
 
-        //public DbSet<CivilizationBattle> CivilizationBattles { get; set; }
-        public DbSet<CivilizationAge> CivilizationPeriods { get; set; }
+        public DbSet<CivilizationBattle> CivilizationBattles { get; set; }
 
         public DbSet<CivilizationAge> CivilizationAges { get; set; }
+
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
+        {
+            // Constructor de la clase ApplicationContext que recibe las opciones de DbContext
+            // y un booleano para indicar si es un entorno de prueba.
+            // Al registrarlo le psasamos las opciones de conexion
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //CharacterBattle N--N Character >< Battle
+            //////////////////////Relaciones Uno a Muchos 1--N////////////////////////////
+
+            //Age 1--N Battle
+            modelBuilder.Entity<Battle>()
+                .HasOne(battle => battle.Age)
+                .WithMany(age => age.Battles)
+                .HasForeignKey(battle => battle.AgeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Civilization 1--N Character
+            modelBuilder.Entity<Character>()
+                .HasOne(character => character.Civilization)
+                .WithMany(civilization => civilization.Characters)
+                .HasForeignKey(character => character.CivilizationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Age 1--N Character
+            modelBuilder.Entity<Character>()
+                .HasOne(character => character.Age)
+                .WithMany(age => age.Characters)
+                .HasForeignKey(character => character.AgeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //////////////////Relaciones Muchos a Muchos N--N///////////////////////////
+
+            //Character N--N Battle
             modelBuilder.Entity<CharacterBattle>()
+                //clave primaria compuesta. Asi un personaje no se repit
                 .HasKey(cb => new { cb.CharacterId, cb.BattleId });
 
+            //CharacterBattle --> Character
             modelBuilder.Entity<CharacterBattle>()
                 .HasOne(cb => cb.Character)
-                .WithMany(c => c.Battles)
+                .WithMany(character => character.Battles)
                 .HasForeignKey(cb => cb.CharacterId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            //CharacterBattle --> Battle
             modelBuilder.Entity<CharacterBattle>()
                 .HasOne(cb => cb.Battle)
-                .WithMany(b => b.Characters)
+                .WithMany(battle => battle.Characters)
                 .HasForeignKey(cb => cb.BattleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //CivilizationBattle N--N Civilization >< Battle
+            //Civilization N--N Battle
             modelBuilder.Entity<CivilizationBattle>()
                 .HasKey(cb => new { cb.CivilizationId, cb.BattleId });
+
+            //CivilizationBattle --> Civilization
             modelBuilder.Entity<CivilizationBattle>()
                 .HasOne(cb => cb.Civilization)
-                .WithMany(c => c.Battles)
+                .WithMany(civilization => civilization.Battles)
                 .HasForeignKey(cb => cb.CivilizationId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //CivilizationBattle --> Battle
             modelBuilder.Entity<CivilizationBattle>()
                 .HasOne(cb => cb.Battle)
-                .WithMany(b => b.Civilizations)
+                .WithMany(battle => battle.Civilizations)
                 .HasForeignKey(cb => cb.BattleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //CivilizationAge N--N Civilization >< Age
+            //Civilization N--N Age
             modelBuilder.Entity<CivilizationAge>()
                 .HasKey(ca => new { ca.CivilizationId, ca.AgeId });
+
+            //CivilizationAge --> Civilization
             modelBuilder.Entity<CivilizationAge>()
                 .HasOne(ca => ca.Civilization)
-                .WithMany(c => c.Ages)
+                .WithMany(Civilization => Civilization.Ages)
                 .HasForeignKey(ca => ca.CivilizationId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //CivilizationAge --> Age
             modelBuilder.Entity<CivilizationAge>()
                 .HasOne(ca => ca.Age)
-                .WithMany(a => a.Civilizations)
+                .WithMany(Age => Age.Civilizations)
                 .HasForeignKey(ca => ca.AgeId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            // Chacater N--1 Civilization
-            modelBuilder.Entity<Character>()
-                .HasOne(c => c.Civilization)
-                .WithMany(civ => civ.Characters)
-                .HasForeignKey(c => c.CivilizationId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Chacater N--1 Age
-            modelBuilder.Entity<Character>()
-                 .HasOne(c => c.Age)
-                 .WithMany(a => a.Characters)
-                 .HasForeignKey(c => c.AgeId)
-                 .OnDelete(DeleteBehavior.Restrict);
-
-            // Battle N--1 Age
-            modelBuilder.Entity<Battle>()
-                .HasOne(b => b.Age)
-                .WithMany(a => a.Battles)
-                .HasForeignKey(b => b.AgeId)
-                .OnDelete(DeleteBehavior.Restrict); //Impide borrar una edad si tiene batallas
         }
     }
 }

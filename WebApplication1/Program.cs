@@ -4,6 +4,7 @@ using Domain.Interfaces;
 using ForgottenEmpires.Application.Services;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,25 +16,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Connection BD
-/*
-string connectionString = builder.Configuration["ConnectionStrings:ForgottenEmpireBDConnectionString"]!;
-
-var connection = new SqliteConnection(connectionString);
+//Configure DbContext with SQLite /
+var connection = new SqliteConnection("Data Source=ForgottenEmpire.db");
 connection.Open();
 
+//Set journal mode to DELETE using PRAGMA statement
 using (var command = connection.CreateCommand())
 {
-    command.CommandText = "PRAGMA journal_mode = DELETE;";
+    command.CommandText = "PRAGMA journal_mode=DELETE;"; //Para que no nos cree mas de un archivo cuando persisnte los objetos
     command.ExecuteNonQuery();
 }
 
-builder.Services.AddDbContext<ApplicationContext>(dbContextOptions => dbContextOptions.UseSqlite(connection, options =>
-options.MigrationsAssembly("ForgottenEmpire")));
-*/
-// Alternative way to configure the DbContext with a connection string from appsettings.json
-builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString")));
+//Registrar el Context en el contenedor de serivicos
+builder.Services.AddDbContext<ApplicationContext>(DbContextOptions =>
+    DbContextOptions.UseSqlite(connection));
+
+// Alternative way to configure the DbContext with a connection string from appsettings.json CONEXION ANTERIOR
+/*builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString")));*/
 
 //Age
 builder.Services.AddScoped<IAgeRepository, AgeRepository>();
@@ -50,8 +50,6 @@ builder.Services.AddScoped<IBattleService, BattleService>();
 //Character
 builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
-// Register other services and repositories as needed
-// For example, if you have a UserService and UserRepository
 
 var app = builder.Build();
 

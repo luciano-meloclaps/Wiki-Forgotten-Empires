@@ -57,13 +57,14 @@ namespace Application.Models.Dto
                 ImageUrl = character.ImageUrl,
                 LifePeriod = character.LifePeriod,
                 Dynasty = character.Dynasty,
-                Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
-                Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
-                Battles = character.Battles?.Select(cb => new BattleTableDto
+                Role = character.Role,
+                //Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
+                //Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
+                /*Battles = character.Battles?.Select(cb => new BattleTableDto
                 {
                     Name = cb.Battle.Name,
                     Date = cb.Battle.Date,
-                }).ToList(),
+                }).ToList(),*/
             };
         }
 

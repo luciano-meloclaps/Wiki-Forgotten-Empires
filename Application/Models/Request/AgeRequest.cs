@@ -14,14 +14,6 @@ namespace Application.Models.Request
 
         public string? Date { get; set; }
 
-        //Relacion N-N
-        public List<int>? CivilizationsIds { get; set; }
-
-        // Relaciónes 1-N
-        public List<int>? CharactersIds { get; set; }
-
-        public List<int>? BattlesIds { get; set; }
-
         public static Age ToEntity(CreateAgeDto dto)
         {
             return new Age

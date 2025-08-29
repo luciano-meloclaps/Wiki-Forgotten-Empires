@@ -10,13 +10,13 @@ namespace Domain.Relations
         [ForeignKey("Battle")]
         public int BattleId { get; set; }
 
-        public Battle Battle { get; set; }
+        public Battle Battle { get; set; } = new Battle();
 
         //Tabla con Ent. Character
         [ForeignKey("Character")]
         public int CharacterId { get; set; }
 
-        public Character Character { get; set; }
+        public Character Character { get; set; } = new Character();
 
         //public string FactionName { get; set; } Pensar en como implementar la facción, ya que puede ser por paises o pj
 
