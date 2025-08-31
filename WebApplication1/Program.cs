@@ -6,15 +6,62 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//  Swagger => Añadir un header de nombre Authorize con el siguiente valor Bearer
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("ApiBearerAuth", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Acá pega el token generado al loguearse."
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "ApiBearerAuth"
+                }
+            },
+            new List<string>()
+        }
+    });
+});
+
+//Configuración de JWT
+//Linea 52 a 54: Chequeos JWT de la Request
+//Linea 55 a 58: Contra que comparamos para validar el token
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(
+                    builder.Configuration["Authentication:SecretForKey"]
+                )
+            )
+        };
+    });
 
 //Configure DbContext with SQLite /
 var connection = new SqliteConnection("Data Source=ForgottenEmpire.db");
@@ -30,10 +77,6 @@ using (var command = connection.CreateCommand())
 //Registrar el Context en el contenedor de serivicos
 builder.Services.AddDbContext<ApplicationContext>(DbContextOptions =>
     DbContextOptions.UseSqlite(connection));
-
-// Alternative way to configure the DbContext with a connection string from appsettings.json CONEXION ANTERIOR
-/*builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString")));*/
 
 //Age
 builder.Services.AddScoped<IAgeRepository, AgeRepository>();
@@ -63,6 +106,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//Para que las Request pasen por el middleware de autenticación
+app.UseAuthentication();
 
 app.MapControllers();
 
