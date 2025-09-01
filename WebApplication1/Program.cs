@@ -1,3 +1,4 @@
+using System.Text; // Para Encoding
 using Application.Interfaces;
 using Application.Services;
 using Domain.Interfaces;
@@ -6,20 +7,19 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
 //  Swagger => Añadir un header de nombre Authorize con el siguiente valor Bearer
 builder.Services.AddSwaggerGen(setupAction =>
 {
-    setupAction.AddSecurityDefinition("ApiBearerAuth", new OpenApiSecurityScheme
+    setupAction.AddSecurityDefinition("ApiBearerAuth", new OpenApiSecurityScheme //Github ConsultaAlumnos
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
@@ -34,7 +34,7 @@ builder.Services.AddSwaggerGen(setupAction =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "ApiBearerAuth"
+                    Id = "ApiBearerAuth" // AddSecurityDefinition
                 }
             },
             new List<string>()
@@ -45,8 +45,8 @@ builder.Services.AddSwaggerGen(setupAction =>
 //Configuración de JWT
 //Linea 52 a 54: Chequeos JWT de la Request
 //Linea 55 a 58: Contra que comparamos para validar el token
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication("Bearer") //Especifica que el esquema de autenticación es Bearer
+    .AddJwtBearer(options =>// Configura de la autenicacion JWT
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -63,7 +63,7 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
-//Configure DbContext with SQLite /
+//Configure DbContext with SQLite
 var connection = new SqliteConnection("Data Source=ForgottenEmpire.db");
 connection.Open();
 
@@ -74,7 +74,7 @@ using (var command = connection.CreateCommand())
     command.ExecuteNonQuery();
 }
 
-//Registrar el Context en el contenedor de serivicos
+//Contex
 builder.Services.AddDbContext<ApplicationContext>(DbContextOptions =>
     DbContextOptions.UseSqlite(connection));
 
