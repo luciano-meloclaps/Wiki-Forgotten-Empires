@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums
 {
-    public enum TerritoryType
+    public enum TerritoryType //Hacer tabla para que sean multiples
     {
         Europe,
         Asia,

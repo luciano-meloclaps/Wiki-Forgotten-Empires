@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForgottenEmpire.Controllers
@@ -47,6 +48,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<CharacterDtoDetail>> CreateCharacter([FromBody] CharacterCreateRequest request, CancellationToken ct)
         {
@@ -61,6 +63,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCharacter(int id, [FromBody] CharacterUpdateRequest request, CancellationToken ct)
         {
@@ -79,6 +82,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id, CancellationToken ct)
         {

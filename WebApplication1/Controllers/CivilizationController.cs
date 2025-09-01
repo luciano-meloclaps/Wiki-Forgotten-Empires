@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForgottenEmpire.Controllers
@@ -49,6 +50,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<CivilizationDetailDto>> CreateCivilization(CreateCivilizationRequest request, CancellationToken ct)
         {
@@ -63,6 +65,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCivilization(int id, [FromBody] UpdateCivilizationRequest request, CancellationToken ct)
         {
@@ -82,6 +85,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCivilization(int id, CancellationToken ct)
         {

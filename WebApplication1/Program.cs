@@ -105,10 +105,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 //Para que las Request pasen por el middleware de autenticación
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
