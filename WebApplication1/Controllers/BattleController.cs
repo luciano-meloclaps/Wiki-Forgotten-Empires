@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Dto;
 using Application.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Application.Models.Dto.BattleTableDto;
 
@@ -48,6 +49,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<BattleDetailDto>> Create([FromBody] BattleCreateRequest request, CancellationToken ct)
         {
@@ -62,6 +64,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] BattleUpdateRequest request, CancellationToken ct)
         {
@@ -80,6 +83,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {

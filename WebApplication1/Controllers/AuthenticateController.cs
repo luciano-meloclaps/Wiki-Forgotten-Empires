@@ -33,7 +33,7 @@ public class AuthenticationController : ControllerBase
         {
             userRole = "Admin";
         }
-        else if (request.Username == "user" && request.Password == "userpassword")
+        else if (request.Username == "RamonAyala" && request.Password == "Moncho")
         {
             userRole = "User";
         }

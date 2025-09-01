@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using System.Text.Json.Serialization;
+using Domain.Entities;
 using Domain.Enums;
 
 namespace Application.Models.Dto
@@ -11,6 +12,9 @@ namespace Application.Models.Dto
         public string? ImageUrl { get; set; }
         public string? LifePeriod { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public RoleCharacter? Role { get; set; }
+
         public static CharacterDtoCard ToDto(Character character)
         {
             return new CharacterDtoCard
@@ -20,6 +24,7 @@ namespace Application.Models.Dto
                 HonorificTitle = character.HonorificTitle,
                 ImageUrl = character.ImageUrl,
                 LifePeriod = character.LifePeriod,
+                Role = character.Role,
             };
         }
     }
@@ -32,14 +37,16 @@ namespace Application.Models.Dto
         public string? ImageUrl { get; set; }
         public string? LifePeriod { get; set; }
         public string? Dynasty { get; set; }
+        public string? Description { get; set; }
+
+        //Enums
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public RoleCharacter? Role { get; set; }
 
         // Relacion N<-1 con Civilization
         public CivilizationGalleryDto? Civilization { get; set; }
 
         public AgeAccordionDto? Age { get; set; }
-
-        //Enums
-        public RoleCharacter? Role { get; set; }
 
         //Relacion N-N con Battle
         public ICollection<BattleTableDto>? Battles { get; set; } = new List<BattleTableDto>();
@@ -58,6 +65,7 @@ namespace Application.Models.Dto
                 LifePeriod = character.LifePeriod,
                 Dynasty = character.Dynasty,
                 Role = character.Role,
+                Description = character.Description,
                 //Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
                 //Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
                 /*Battles = character.Battles?.Select(cb => new BattleTableDto

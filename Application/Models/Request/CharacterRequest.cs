@@ -10,14 +10,18 @@ namespace Application.Models.Request
         [MinLength(5, ErrorMessage = "El campo nombre debe tener al menos 3 caracteres.")]
         public string Name { get; set; } = default!;
 
-        public string? Description { get; set; }
+        public string? HonorificTitle { get; set; }
+        public string? LifePeriod { get; set; }
+        public RoleCharacter? Role { get; set; }
 
         public static Character ToEntity(CharacterCreateRequest req)
         {
             return new Character
             {
                 Name = req.Name,
-                Description = req.Description,
+                HonorificTitle = req.HonorificTitle,
+                LifePeriod = req.LifePeriod,
+                Role = req.Role,
             };
         }
     }
@@ -29,6 +33,7 @@ namespace Application.Models.Request
         public string? Name { get; set; }
 
         public string? Description { get; set; }
+
         public string? HonorificTitle { get; set; }
         public string? ImageUrl { get; set; }
         public string? LifePeriod { get; set; }

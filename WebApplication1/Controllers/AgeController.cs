@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForgottenEmpire.Controllers
@@ -48,6 +49,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateAgeDto dto, CancellationToken ct)
         {
@@ -62,6 +64,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateAgeDto dto, CancellationToken ct)
         {
@@ -81,6 +84,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {

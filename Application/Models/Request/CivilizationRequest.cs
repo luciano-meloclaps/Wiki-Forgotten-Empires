@@ -6,7 +6,7 @@ namespace Application.Models.Request
 {
     public class CreateCivilizationRequest
     {
-        [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
+        [MinLength(5, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Name { get; set; } = default!;
 
@@ -26,7 +26,7 @@ namespace Application.Models.Request
 
     public class UpdateCivilizationRequest
     {
-        [MinLength(10, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
+        [MinLength(5, ErrorMessage = "El campo Nombre debe tener al menos 10 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Nombre es obligatorio.")]
         public string? Name { get; set; }
 
