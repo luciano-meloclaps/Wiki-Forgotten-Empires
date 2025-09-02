@@ -30,7 +30,9 @@ namespace Application.Models.Dto
         public string? Overview { get; set; }
         public string? Summary { get; set; }
 
+        //Relaciones
         public ICollection<CharacterDtoCard> Characters { get; set; } = new List<CharacterDtoCard>();
+
         public ICollection<BattleTableDto> Battles { get; set; } = new List<BattleTableDto>();
         public ICollection<CivilizationGalleryDto> Civilizations { get; set; } = new List<CivilizationGalleryDto>();
 
@@ -43,9 +45,9 @@ namespace Application.Models.Dto
                 Summary = age.Summary,
                 Date = age.Date,
                 Overview = age.Overview,
-                Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),
-                Battles = age.Battles.Select(BattleTableDto.ToDto).ToList(),
-                Civilizations = age.Civilizations.Select(c => CivilizationGalleryDto.ToDto(c.Civilization)).ToList()
+                Battles = age.Battles?.Select(BattleTableDto.ToDto).ToList() ?? new List<BattleTableDto>(),
+                Characters = age.Characters?.Select(CharacterDtoCard.ToDto).ToList() ?? new List<CharacterDtoCard>(),
+                Civilizations = age.Civilizations?.Select(ca => CivilizationGalleryDto.ToDto(ca.Civilization)).ToList() ?? new List<CivilizationGalleryDto>()
             };
         }
     }
