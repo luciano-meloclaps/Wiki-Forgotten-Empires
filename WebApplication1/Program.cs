@@ -64,7 +64,8 @@ builder.Services.AddAuthentication("Bearer") //Especifica que el esquema de aute
     });
 
 //Configure DbContext with SQLite
-var connection = new SqliteConnection("Data Source=ForgottenEmpire.db");
+var connectionString = builder.Configuration.GetConnectionString("ForgottenEmpireBDConnectionString");
+var connection = new SqliteConnection(connectionString);
 connection.Open();
 
 //Set journal mode to DELETE using PRAGMA statement

@@ -23,11 +23,13 @@ namespace Infrastructure.Repositories
         public async Task<Age?> GetAgeById(int id, CancellationToken ct)
         {
             return await _context.Ages
-            .Include(a => a.Battles)
-            .Include(a => a.Characters)
-            .Include(a => a.Civilizations) //Tabla intermedia
-                .ThenInclude(ca => ca.Civilization)
-            .FirstOrDefaultAsync(a => a.Id == id, ct);
+                .AsNoTracking() // Importante para consultas de solo lectura
+                .Include(a => a.Battles)
+                .Include(a => a.Characters)
+
+                 .Include(a => a.Civilizations)
+            .ThenInclude(ca => ca.Civilization)
+        .FirstOrDefaultAsync(a => a.Id == id, ct);
         }
 
         public async Task<Age> CreateAge(Age age, CancellationToken ct)
