@@ -38,14 +38,6 @@ namespace Application.Models.Request
         public string? Date { get; set; }
         public string? Overview { get; set; }
 
-        //Relacion N-N
-        public List<int>? CivilizationsIds { get; set; }
-
-        // Relaciónes 1-N
-        public List<int>? CharactersIds { get; set; }
-
-        public List<int>? BattlesIds { get; set; }
-
         public static void ApplyToEntity(UpdateAgeDto dto, Age age)
 
         {
@@ -54,5 +46,11 @@ namespace Application.Models.Request
             if (dto.Date is not null) age.Date = dto.Date;
             if (dto.Overview is not null) age.Overview = dto.Overview;
         }
+    }
+
+    public class UpdateAgeRelationsDto
+    {
+        public int? BattleId { get; set; }
+        public int? CharacterId { get; set; }
     }
 }

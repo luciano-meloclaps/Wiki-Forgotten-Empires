@@ -23,10 +23,9 @@ namespace Infrastructure.Repositories
         public async Task<Age?> GetAgeById(int id, CancellationToken ct)
         {
             return await _context.Ages
-                .AsNoTracking() // Importante para consultas de solo lectura
+
                 .Include(a => a.Battles)
                 .Include(a => a.Characters)
-
                  .Include(a => a.Civilizations)
             .ThenInclude(ca => ca.Civilization)
         .FirstOrDefaultAsync(a => a.Id == id, ct);
@@ -48,6 +47,11 @@ namespace Infrastructure.Repositories
         {
             _context.Ages.Remove(age);
             await _context.SaveChangesAsync(ct);
+        }
+
+        public async Task<Age?> GetTrackedAgeById(int id, CancellationToken ct)
+        {
+            return await _context.Ages.FirstOrDefaultAsync(a => a.Id == id, ct);
         }
     }
 }

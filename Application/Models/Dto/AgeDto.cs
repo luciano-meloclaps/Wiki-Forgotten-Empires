@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities;
 
 namespace Application.Models.Dto
 {
@@ -30,11 +31,10 @@ namespace Application.Models.Dto
         public string? Overview { get; set; }
         public string? Summary { get; set; }
 
-        //Relaciones
-        public ICollection<CharacterDtoCard> Characters { get; set; } = new List<CharacterDtoCard>();
+        // --- CAMBIO: De un objeto a una lista de objetos ---
+        public List<BattleTableDto> Battles { get; set; } = new();
 
-        public ICollection<BattleTableDto> Battles { get; set; } = new List<BattleTableDto>();
-        public ICollection<CivilizationGalleryDto> Civilizations { get; set; } = new List<CivilizationGalleryDto>();
+        public List<CharacterDtoCard> Characters { get; set; } = new();
 
         public static AgeDetailDto ToDto(Age age)
         {
@@ -45,9 +45,10 @@ namespace Application.Models.Dto
                 Summary = age.Summary,
                 Date = age.Date,
                 Overview = age.Overview,
-                Battles = age.Battles?.Select(BattleTableDto.ToDto).ToList() ?? new List<BattleTableDto>(),
-                Characters = age.Characters?.Select(CharacterDtoCard.ToDto).ToList() ?? new List<CharacterDtoCard>(),
-                Civilizations = age.Civilizations?.Select(ca => CivilizationGalleryDto.ToDto(ca.Civilization)).ToList() ?? new List<CivilizationGalleryDto>()
+
+                // --- CAMBIO: Usamos .Select() para convertir cada elemento de la colección ---
+                Battles = age.Battles.Select(BattleTableDto.ToDto).ToList(),
+                Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),
             };
         }
     }
