@@ -105,32 +105,45 @@ namespace ForgottenEmpire.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}/relations")]
-        public async Task<IActionResult> UpdateRelations(int id, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
+        [HttpPut("{ageId}/relations")]
+        public async Task<IActionResult> UpdateRelations(int ageId, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
         {
-            // Ddeconstrucción para obtener ambos valores de la tupla
-            var (success, errorMessage) = await _ageService.UpdateAgeRelations(id, dto, ct);
-
-            if (!success)
+            try
             {
-                return NotFound(new { message = errorMessage });
-            }
+                var (success, errorMessage) = await _ageService.UpdateAgeRelations(ageId, dto, ct);
 
-            return NoContent();
+                if (!success)
+                {
+                    return NotFound(new { message = errorMessage });
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al actualizar las relaciones de la Edad: {ex.Message}");
+            }
         }
 
         [Authorize]
         [HttpDelete("{ageId}/relations")]
         public async Task<IActionResult> RemoveRelations(int ageId, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
         {
-            var (success, errorMessage) = await _ageService.RemoveAgeRelationsAsync(ageId, dto, ct);
-
-            if (!success)
+            try
             {
-                return NotFound(new { message = errorMessage });
-            }
+                var (success, errorMessage) = await _ageService.RemoveAgeRelationsAsync(ageId, dto, ct);
 
-            return NoContent();
+                if (!success)
+                {
+                    return NotFound(new { message = errorMessage });
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al eliminar las relaciones de la Edad: {ex.Message}");
+            }
         }
     }
 }

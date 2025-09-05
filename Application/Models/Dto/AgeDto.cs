@@ -46,7 +46,7 @@ namespace Application.Models.Dto
                 Date = age.Date,
                 Overview = age.Overview,
 
-                // --- CAMBIO: Usamos .Select() para convertir cada elemento de la colección ---
+                // ---  .Select() para convertir cada elemento de la colección ---
                 Battles = age.Battles.Select(BattleTableDto.ToDto).ToList(),
                 Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),
             };
