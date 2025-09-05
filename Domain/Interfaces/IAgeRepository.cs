@@ -13,5 +13,7 @@ namespace Domain.Interfaces
         Task UpdateAge(Age ageFromRequest, CancellationToken ct);
 
         Task DeleteAge(Age age, CancellationToken ct);
+
+        Task<Age?> GetTrackedAgeById(int id, CancellationToken ct);
     }
 }

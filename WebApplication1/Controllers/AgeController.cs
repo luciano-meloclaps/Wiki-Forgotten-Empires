@@ -103,5 +103,34 @@ namespace ForgottenEmpire.Controllers
                 return StatusCode(500, new { mensaje = "Ocurrió un error inesperado." });
             }
         }
+
+        [Authorize]
+        [HttpPut("{id}/relations")]
+        public async Task<IActionResult> UpdateRelations(int id, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
+        {
+            // Ddeconstrucción para obtener ambos valores de la tupla
+            var (success, errorMessage) = await _ageService.UpdateAgeRelations(id, dto, ct);
+
+            if (!success)
+            {
+                return NotFound(new { message = errorMessage });
+            }
+
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpDelete("{ageId}/relations")]
+        public async Task<IActionResult> RemoveRelations(int ageId, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
+        {
+            var (success, errorMessage) = await _ageService.RemoveAgeRelationsAsync(ageId, dto, ct);
+
+            if (!success)
+            {
+                return NotFound(new { message = errorMessage });
+            }
+
+            return NoContent();
+        }
     }
 }

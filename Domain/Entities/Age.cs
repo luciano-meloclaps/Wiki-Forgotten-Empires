@@ -17,6 +17,11 @@ namespace Domain.Entities
         public string? Date { get; set; }
         public string? Overview { get; set; }
 
+        //Para seteear las relaciones
+        //public int? BattleId { get; set; }
+
+        //public int? CharacterId { get; set; }
+
         //Relaciones 1->N
         public ICollection<Character> Characters { get; set; } = new List<Character>();
 
