@@ -4,6 +4,7 @@ using Application.Models.Dto;
 using Application.Models.Request;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Relations;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,7 +64,7 @@ public class AgeService : IAgeService
         return true;
     }
 
-    public async Task<(bool Success, string ErrorMessage)> UpdateAgeRelations(int ageId, UpdateAgeRelationsDto dto, CancellationToken ct)
+    /*public async Task<(bool Success, string ErrorMessage)> UpdateAgeRelations(int ageId, UpdateAgeRelationsDto dto, CancellationToken ct)
     {
         //Validar que exista la Age
         var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
@@ -93,6 +94,82 @@ public class AgeService : IAgeService
         }
 
         await _context.SaveChangesAsync(ct);
+        return (true, string.Empty);
+    }*/
+
+    public async Task<(bool Success, string ErrorMessage)> UpdateAgeBattleRelation(int ageId, int battleId, CancellationToken ct)
+    {
+        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
+        if (!ageExists)
+        {
+            return (false, $"No se encontró la Age con id {ageId}.");
+        }
+
+        var battle = await _context.Battles.FindAsync(battleId);
+        if (battle is null)
+        {
+            return (false, $"No se encontró la Battle con id {battleId}.");
+        }
+
+        battle.AgeId = ageId;
+        _context.Update(battle);
+
+        await _context.SaveChangesAsync(ct);
+        return (true, string.Empty);
+    }
+
+    public async Task<(bool Success, string ErrorMessage)> UpdateAgeCharacterRelation(int ageId, int characterId, CancellationToken ct)
+    {
+        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
+        if (!ageExists)
+        {
+            return (false, $"No se encontró la Age con id {ageId}.");
+        }
+
+        var character = await _context.Characters.FindAsync(characterId);
+        if (character is null)
+        {
+            return (false, $"No se encontró el Character con id {characterId}.");
+        }
+
+        character.AgeId = ageId;
+        _context.Update(character);
+
+        await _context.SaveChangesAsync(ct);
+        return (true, string.Empty);
+    }
+
+    public async Task<(bool Success, string ErrorMessage)> UpdateAgeCivilizationRelation(int ageId, int civilizationId, CancellationToken ct)
+    {
+        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
+        if (!ageExists)
+        {
+            return (false, $"No se encontró la Age con id {ageId}.");
+        }
+
+        var civilizationExists = await _context.Civilizations.AnyAsync(c => c.Id == civilizationId, ct);
+        if (!civilizationExists)
+        {
+            return (false, $"No se encontró la Civilization con id {civilizationId}.");
+        }
+
+        var relationExists = await _context.CivilizationAges
+            .AnyAsync(ca => ca.AgeId == ageId && ca.CivilizationId == civilizationId, ct);
+
+        if (relationExists)
+        {
+            return (true, string.Empty); // La relación ya existe, operación exitosa.
+        }
+
+        var civilizationAge = new CivilizationAge
+        {
+            AgeId = ageId,
+            CivilizationId = civilizationId
+        };
+
+        _context.CivilizationAges.Add(civilizationAge);
+        await _context.SaveChangesAsync(ct);
+
         return (true, string.Empty);
     }
 

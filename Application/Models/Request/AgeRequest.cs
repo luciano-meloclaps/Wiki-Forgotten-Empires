@@ -52,5 +52,6 @@ namespace Application.Models.Request
     {
         public int? BattleId { get; set; }
         public int? CharacterId { get; set; }
+        public int? CivilizationId { get; set; }
     }
 }

@@ -9,12 +9,12 @@ namespace Domain.Relations
         [ForeignKey("Age")]
         public int AgeId { get; set; }
 
-        public Age Age { get; set; } = new Age();
+        public Age? Age { get; set; }
 
         //Tabla con Ent. Civilization
         [ForeignKey("Civilization")]
         public int CivilizationId { get; set; }
 
-        public Civilization Civilization { get; set; } = new Civilization();
+        public Civilization? Civilization { get; set; }
     }
 }

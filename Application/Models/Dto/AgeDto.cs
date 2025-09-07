@@ -35,6 +35,7 @@ namespace Application.Models.Dto
         public List<BattleTableDto> Battles { get; set; } = new();
 
         public List<CharacterDtoCard> Characters { get; set; } = new();
+        public List<CivilizationGalleryDto> Civilizations { get; set; } = new();
 
         public static AgeDetailDto ToDto(Age age)
         {
@@ -49,6 +50,7 @@ namespace Application.Models.Dto
                 // ---  .Select() para convertir cada elemento de la colección ---
                 Battles = age.Battles.Select(BattleTableDto.ToDto).ToList(),
                 Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),
+                Civilizations = age.Civilizations.Select(ca => CivilizationGalleryDto.ToDto(ca.Civilization)).ToList()
             };
         }
     }

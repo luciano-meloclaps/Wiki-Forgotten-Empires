@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.Models.Request;
+using Domain.Relations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForgottenEmpire.Controllers
 {
@@ -104,7 +106,7 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
-        [Authorize]
+        /*[Authorize]
         [HttpPut("{ageId}/relations")]
         public async Task<IActionResult> UpdateRelations(int ageId, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
         {
@@ -122,6 +124,78 @@ namespace ForgottenEmpire.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Ocurrio un error al actualizar las relaciones de la Edad: {ex.Message}");
+            }
+        }*/
+
+        [Authorize]
+        [HttpPut("{ageId}/battle")]
+        public async Task<IActionResult> UpdateAgeBattleRelation(int ageId, [FromQuery] int battleId, CancellationToken ct)
+        {
+            try
+            {
+                var (success, errorMessage) = await _ageService.UpdateAgeBattleRelation(ageId, battleId, ct);
+
+                if (!success)
+                {
+                    return NotFound(new { message = errorMessage });
+                }
+
+                return Ok(new { ageId, battleId });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al actualizar la relación de la Edad con la Batalla: {ex.Message}");
+            }
+        }
+
+        [Authorize]
+        [HttpPut("{ageId}/character")]
+        public async Task<IActionResult> UpdateAgeCharacterRelation(int ageId, [FromQuery] int characterId, CancellationToken ct)
+        {
+            try
+            {
+                var (success, errorMessage) = await _ageService.UpdateAgeCharacterRelation(ageId, characterId, ct);
+
+                if (!success)
+                {
+                    return NotFound(new { message = errorMessage });
+                }
+
+                return Ok(new { ageId, characterId });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrio un error al actualizar la relación de la Edad con el Personaje: {ex.Message}");
+            }
+        }
+
+        /////////////////////////////////////
+        [HttpPut("{ageId}/civilization")]
+        public async Task<IActionResult> UpdateAgeCivilizationRelation(int ageId, [FromQuery] int civilizationId, CancellationToken ct)
+        {
+            try
+            {
+                var (success, errorMessage) = await _ageService.UpdateAgeCivilizationRelation(ageId, civilizationId, ct);
+
+                if (!success)
+                {
+                    // Si el mensaje indica que no se encontró algo, devolvemos NotFound.
+                    if (errorMessage.Contains("No se encontró"))
+                    {
+                        return NotFound(new { message = errorMessage });
+                    }
+
+                    // Para cualquier otro error (especialmente el de la BD), devolvemos BadRequest.
+                    // Esto mostrará el mensaje detallado en la respuesta de la API.
+                    return BadRequest(new { message = errorMessage });
+                }
+
+                return Ok(new { ageId, civilizationId });
+            }
+            catch (Exception ex)
+            {
+                // Este catch es para errores verdaderamente inesperados en el controlador.
+                return StatusCode(500, $"Ocurrió un error de servidor no controlado: {ex.Message}");
             }
         }
 
