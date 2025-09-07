@@ -169,7 +169,6 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
-        /////////////////////////////////////
         [HttpPut("{ageId}/civilization")]
         public async Task<IActionResult> UpdateAgeCivilizationRelation(int ageId, [FromQuery] int civilizationId, CancellationToken ct)
         {
@@ -199,24 +198,87 @@ namespace ForgottenEmpire.Controllers
             }
         }
 
+        /* [Authorize]
+         [HttpDelete("{ageId}/relations")]
+         public async Task<IActionResult> RemoveRelations(int ageId, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
+         {
+             try
+             {
+                 var (success, errorMessage) = await _ageService.RemoveAgeRelationsAsync(ageId, dto, ct);
+
+                 if (!success)
+                 {
+                     return NotFound(new { message = errorMessage });
+                 }
+
+                 return NoContent();
+             }
+             catch (Exception ex)
+             {
+                 return StatusCode(500, $"Ocurrio un error al eliminar las relaciones de la Edad: {ex.Message}");
+             }
+         }*/
+
         [Authorize]
-        [HttpDelete("{ageId}/relations")]
-        public async Task<IActionResult> RemoveRelations(int ageId, [FromBody] UpdateAgeRelationsDto dto, CancellationToken ct)
+        [HttpDelete("{ageId}/battle")]
+        public async Task<IActionResult> RemoveAgeBattleRelation(int ageId, [FromQuery] int battleId, CancellationToken ct)
         {
             try
             {
-                var (success, errorMessage) = await _ageService.RemoveAgeRelationsAsync(ageId, dto, ct);
+                var (success, errorMessage) = await _ageService.RemoveAgeBattleRelation(ageId, battleId, ct);
 
                 if (!success)
                 {
                     return NotFound(new { message = errorMessage });
                 }
 
-                return NoContent();
+                return Ok(new { ageId, battleId });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Ocurrio un error al eliminar las relaciones de la Edad: {ex.Message}");
+                return StatusCode(500, $"Ocurrió un error al eliminar la relación de la Edad con la Batalla: {ex.Message}");
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("{ageId}/character")]
+        public async Task<IActionResult> RemoveAgeCharacterRelation(int ageId, [FromQuery] int characterId, CancellationToken ct)
+        {
+            try
+            {
+                var (success, errorMessage) = await _ageService.RemoveAgeCharacterRelation(ageId, characterId, ct);
+
+                if (!success)
+                {
+                    return NotFound(new { message = errorMessage });
+                }
+
+                return Ok(new { ageId, characterId });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error al eliminar la relación de la Edad con el Personaje: {ex.Message}");
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("{ageId}/civilization")]
+        public async Task<IActionResult> RemoveAgeCivilizationRelation(int ageId, [FromQuery] int civilizationId, CancellationToken ct)
+        {
+            try
+            {
+                var (success, errorMessage) = await _ageService.RemoveAgeCivilizationRelation(ageId, civilizationId, ct);
+
+                if (!success)
+                {
+                    return NotFound(new { message = errorMessage });
+                }
+
+                return Ok(new { ageId, civilizationId });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocurrió un error al eliminar la relación de la Edad con la Civilización: {ex.Message}");
             }
         }
     }
