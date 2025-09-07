@@ -57,8 +57,7 @@ public class AuthenticationController : ControllerBase
             new Claim("role", userRole)
             // Rol ventaja en claim =>
             // Preguntar si el usuario tiene X rol sin ir a la BD = > Más rápido y mas cash.
-        }
-        ;
+        };
 
         //Token para el usuario
         var jwtSecurityToekn = new JwtSecurityToken( //Objeto que representa el token y datos appsettings.json
