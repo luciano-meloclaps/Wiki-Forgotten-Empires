@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Relations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -52,6 +53,11 @@ namespace Infrastructure.Repositories
         public async Task<Age?> GetTrackedAgeById(int id, CancellationToken ct)
         {
             return await _context.Ages.FirstOrDefaultAsync(a => a.Id == id, ct);
+        }
+
+        public async Task<Battle?> GetBattleByIdAsync(int battleId, CancellationToken ct)
+        {
+            return await _context.Battles.FindAsync(new object[] { battleId }, cancellationToken: ct);
         }
     }
 }
