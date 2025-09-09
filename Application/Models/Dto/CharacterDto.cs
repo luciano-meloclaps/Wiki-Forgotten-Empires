@@ -43,20 +43,17 @@ namespace Application.Models.Dto
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public RoleCharacter? Role { get; set; }
 
-        // Relacion N<-1 con Civilization
+        // Relacion 1--N
         public CivilizationGalleryDto? Civilization { get; set; }
 
         public AgeAccordionDto? Age { get; set; }
 
         //Relacion N-N con Battle
-        public ICollection<BattleTableDto>? Battles { get; set; } = new List<BattleTableDto>();
-
-        // Relacion N->N con Battle
-        /* public ICollection<CharacterBattleDto>? Battles { get; set; } = new List<CharacterBattleDto>();*/
+        public List<BattleTableDto> Battles { get; set; } = new();
 
         public static CharacterDtoDetail ToDto(Character character)
         {
-            return new CharacterDtoDetail //Ver relacion
+            return new CharacterDtoDetail
             {
                 Id = character.Id,
                 Name = character.Name,
@@ -66,19 +63,11 @@ namespace Application.Models.Dto
                 Dynasty = character.Dynasty,
                 Role = character.Role,
                 Description = character.Description,
-                //Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
-                //Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
-                /*Battles = character.Battles?.Select(cb => new BattleTableDto
-                {
-                    Name = cb.Battle.Name,
-                    Date = cb.Battle.Date,
-                }).ToList(),*/
+                //Relaciones
+                Civilization = character.Civilization != null ? CivilizationGalleryDto.ToDto(character.Civilization) : null,
+                Age = character.Age != null ? AgeAccordionDto.ToDto(character.Age) : null,
+                Battles = character.Battles.Select(cb => BattleTableDto.ToDto(cb.Battle)).ToList()
             };
-        }
-
-        public static object ToEntity(CharacterDtoDetail characterDto)
-        {
-            throw new NotImplementedException();
         }
     }
 }

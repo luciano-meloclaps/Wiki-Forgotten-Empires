@@ -37,7 +37,7 @@ namespace Application.Models.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; } = default!;
-        public string? Overview { get; set; } //Agregar en BD
+        public string? Overview { get; set; }
         public string? ImageUrl { get; set; }
 
         //Enums
@@ -47,14 +47,11 @@ namespace Application.Models.Dto
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public CivilizationState? State { get; set; }
 
-        //Relacion 1->N
-        public ICollection<CharacterDtoCard>? Characters { get; set; } = new List<CharacterDtoCard>();
+        //Relacion N--N
+        public List<AgeAccordionDto>? Ages { get; set; } = new();
 
-        //Relacion N->N con Age
-        public ICollection<AgeAccordionDto>? Ages { get; set; } = new List<AgeAccordionDto>();
-
-        //Relaciones N->N con Battle
-        public ICollection<BattleTableDto>? Battles { get; set; } = new List<BattleTableDto>();
+        public List<CharacterDtoCard> Characters { get; set; } = new();
+        public List<BattleTableDto> Battles { get; set; } = new();
 
         public static CivilizationDetailDto ToDto(Civilization civilization)
         {
@@ -66,7 +63,9 @@ namespace Application.Models.Dto
                 ImageUrl = civilization.ImageUrl,
                 Territory = civilization.Territory,
                 State = civilization.State,
+                //Relaciones
                 Characters = civilization.Characters.Select(c => CharacterDtoCard.ToDto(c)).ToList(),
+                //Si da NULL hacer un where sino !
                 Ages = civilization.Ages.Select(a => AgeAccordionDto.ToDto(a.Age)).ToList(),
                 Battles = civilization.Battles.Select(b => BattleTableDto.ToDto(b.Battle)).ToList()
             };
