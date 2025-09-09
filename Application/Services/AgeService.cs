@@ -29,7 +29,7 @@ public class AgeService : IAgeService
 
     public async Task<AgeDetailDto?> GetAgeById(int id, CancellationToken ct)
     {
-        var age = await _ageRepository.GetAgeById(id, ct);
+        var age = await _ageRepository.GetAgeDetailById(id, ct);
         return age is null ? null : AgeDetailDto.ToDto(age);
     }
 
@@ -42,7 +42,7 @@ public class AgeService : IAgeService
 
     public async Task<bool> UpdateAge(int id, UpdateAgeDto request, CancellationToken ct)
     {
-        var age = await _ageRepository.GetAgeById(id, ct);
+        var age = await _ageRepository.GetAgeDetailById(id, ct);
         if (age is null)
         {
             return false;
@@ -55,7 +55,7 @@ public class AgeService : IAgeService
 
     public async Task<bool> DeleteAge(int id, CancellationToken ct)
     {
-        var age = await _ageRepository.GetAgeById(id, ct);
+        var age = await _ageRepository.GetAgeDetailById(id, ct);
         if (age is null)
         {
             return false;
@@ -99,78 +99,61 @@ public class AgeService : IAgeService
         return (true, string.Empty);
     }*/
 
+    /////// METODOS para VINCULAR relaciones por ID unico \\\\\\
+
     public async Task<(bool Success, string ErrorMessage)> UpdateAgeBattleRelation(int ageId, int battleId, CancellationToken ct)
     {
-        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
-        if (!ageExists)
+        // Lógica de negocio 1: Validar que la entidad principal (Age) exista.
+        var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
+        if (age is null)
         {
             return (false, $"No se encontró la Age con id {ageId}.");
         }
 
-        var battle = await _context.Battles.FindAsync(battleId);
-        if (battle is null)
+        // Lógica de negocio 2: Delegar la operación de vinculación al repositorio.
+        var success = await _ageRepository.LinkBattleAsync(ageId, battleId, ct);
+
+        // Lógica de negocio 3: Interpretar el resultado.
+        if (!success)
         {
             return (false, $"No se encontró la Battle con id {battleId}.");
         }
 
-        battle.AgeId = ageId;
-        _context.Update(battle);
-
-        await _context.SaveChangesAsync(ct);
         return (true, string.Empty);
     }
 
     public async Task<(bool Success, string ErrorMessage)> UpdateAgeCharacterRelation(int ageId, int characterId, CancellationToken ct)
     {
-        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
-        if (!ageExists)
+        var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
+        if (age is null)
         {
             return (false, $"No se encontró la Age con id {ageId}.");
         }
 
-        var character = await _context.Characters.FindAsync(characterId);
-        if (character is null)
+        var success = await _ageRepository.LinkCharacterAsync(ageId, characterId, ct);
+
+        if (!success)
         {
             return (false, $"No se encontró el Character con id {characterId}.");
         }
 
-        character.AgeId = ageId;
-        _context.Update(character);
-
-        await _context.SaveChangesAsync(ct);
         return (true, string.Empty);
     }
 
     public async Task<(bool Success, string ErrorMessage)> UpdateAgeCivilizationRelation(int ageId, int civilizationId, CancellationToken ct)
     {
-        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
-        if (!ageExists)
+        var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
+        if (age is null)
         {
             return (false, $"No se encontró la Age con id {ageId}.");
         }
 
-        var civilizationExists = await _context.Civilizations.AnyAsync(c => c.Id == civilizationId, ct);
-        if (!civilizationExists)
+        var success = await _ageRepository.LinkCivilizationAsync(ageId, civilizationId, ct);
+
+        if (!success)
         {
             return (false, $"No se encontró la Civilization con id {civilizationId}.");
         }
-
-        var relationExists = await _context.CivilizationAges
-            .AnyAsync(ca => ca.AgeId == ageId && ca.CivilizationId == civilizationId, ct);
-
-        if (relationExists)
-        {
-            return (true, string.Empty); // La relación ya existe, operación exitosa.
-        }
-
-        var civilizationAge = new CivilizationAge
-        {
-            AgeId = ageId,
-            CivilizationId = civilizationId
-        };
-
-        _context.CivilizationAges.Add(civilizationAge);
-        await _context.SaveChangesAsync(ct);
 
         return (true, string.Empty);
     }
@@ -209,70 +192,63 @@ public class AgeService : IAgeService
          return (true, string.Empty);
      }*/
 
+    /////// METODOS para DESVINCULAR relaciones por ID unico \\\\\\
     public async Task<(bool Success, string ErrorMessage)> RemoveAgeBattleRelation(int ageId, int battleId, CancellationToken ct)
     {
-        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
-        if (!ageExists)
+        // Lógica de negocio que se mantiene en el servicio:
+        var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
+        if (age is null)
         {
             return (false, $"No se encontró la Age con id {ageId}.");
         }
 
-        var battle = await _context.Battles.FindAsync(battleId);
-        if (battle is null)
-        {
-            return (false, $"No se encontró la Battle con id {battleId}.");
-        }
+        // Delegar la operación completa de desvinculación al repositorio
+        var success = await _ageRepository.UnlinkBattleAsync(ageId, battleId, ct);
 
-        if (battle.AgeId != ageId)
+        if (!success)
         {
-            return (false, $"La Batalla con id {battleId} no está relacionada con la Edad con id {ageId}.");
+            // Mensaje genérico, ya que el repositorio nos dijo que algo falló
+            // (o la batalla no existe o no estaba relacionada).
+            return (false, $"No se pudo remover la relación: la Batalla con id {battleId} no existe o no está relacionada con la Edad con id {ageId}.");
         }
-
-        battle.AgeId = null;
-        _context.Update(battle);
-        await _context.SaveChangesAsync(ct);
 
         return (true, string.Empty);
     }
 
     public async Task<(bool Success, string ErrorMessage)> RemoveAgeCharacterRelation(int ageId, int characterId, CancellationToken ct)
     {
-        var ageExists = await _context.Ages.AnyAsync(a => a.Id == ageId, ct);
-        if (!ageExists)
+        var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
+        if (age is null)
         {
             return (false, $"No se encontró la Age con id {ageId}.");
         }
 
-        var character = await _context.Characters.FindAsync(characterId);
-        if (character is null)
-        {
-            return (false, $"No se encontró el Character con id {characterId}.");
-        }
+        var success = await _ageRepository.UnlinkCharacterAsync(ageId, characterId, ct);
 
-        if (character.AgeId != ageId)
+        if (!success)
         {
-            return (false, $"El Personaje con id {characterId} no está relacionado con la Edad con id {ageId}.");
+            return (false, $"No se pudo remover la relación: el Personaje con id {characterId} no existe o no está relacionado con la Edad con id {ageId}.");
         }
-
-        character.AgeId = null;
-        _context.Update(character);
-        await _context.SaveChangesAsync(ct);
 
         return (true, string.Empty);
     }
 
     public async Task<(bool Success, string ErrorMessage)> RemoveAgeCivilizationRelation(int ageId, int civilizationId, CancellationToken ct)
     {
-        var relation = await _context.CivilizationAges
-            .FirstOrDefaultAsync(ca => ca.AgeId == ageId && ca.CivilizationId == civilizationId, ct);
+        // En este caso, la existencia de 'Age' se valida implícitamente al buscar la relación.
+        // Podrías mantener la validación explícita si es una regla de negocio.
+        var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
+        if (age is null)
+        {
+            return (false, $"No se encontró la Age con id {ageId}.");
+        }
 
-        if (relation is null)
+        var success = await _ageRepository.UnlinkCivilizationAsync(ageId, civilizationId, ct);
+
+        if (!success)
         {
             return (false, $"No se encontró una relación entre la Age con id {ageId} y la Civilization con id {civilizationId}.");
         }
-
-        _context.CivilizationAges.Remove(relation);
-        await _context.SaveChangesAsync(ct);
 
         return (true, string.Empty);
     }

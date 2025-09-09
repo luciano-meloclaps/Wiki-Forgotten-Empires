@@ -127,6 +127,7 @@ namespace ForgottenEmpire.Controllers
             }
         }*/
 
+        /////// METODOS para VINCULAR relaciones por ID unico \\\\\\
         [Authorize]
         [HttpPut("{ageId}/battle")]
         public async Task<IActionResult> UpdateAgeBattleRelation(int ageId, [FromQuery] int battleId, CancellationToken ct)
@@ -184,8 +185,6 @@ namespace ForgottenEmpire.Controllers
                         return NotFound(new { message = errorMessage });
                     }
 
-                    // Para cualquier otro error (especialmente el de la BD), devolvemos BadRequest.
-                    // Esto mostrará el mensaje detallado en la respuesta de la API.
                     return BadRequest(new { message = errorMessage });
                 }
 
@@ -219,6 +218,7 @@ namespace ForgottenEmpire.Controllers
              }
          }*/
 
+        /////// METODOS para DESVINCULAR relaciones por ID unico \\\\\\
         [Authorize]
         [HttpDelete("{ageId}/battle")]
         public async Task<IActionResult> RemoveAgeBattleRelation(int ageId, [FromQuery] int battleId, CancellationToken ct)
