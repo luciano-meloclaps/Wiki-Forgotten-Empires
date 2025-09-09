@@ -47,9 +47,10 @@ namespace Application.Models.Dto
                 Summary = age.Summary,
                 Date = age.Date,
                 Overview = age.Overview,
-
+                //Relaciones
                 Battles = age.Battles.Select(BattleTableDto.ToDto).ToList(),
                 Characters = age.Characters.Select(CharacterDtoCard.ToDto).ToList(),
+                //Si da NULL hacer un where sino !
                 Civilizations = age.Civilizations.Select(ca => CivilizationGalleryDto.ToDto(ca.Civilization)).ToList()
             };
         }

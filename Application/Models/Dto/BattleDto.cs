@@ -31,6 +31,9 @@ namespace Application.Models.Dto
             public string? DetailedDescription { get; set; }
             public string? Summary { get; set; }
             public string? Date { get; set; }
+
+            //Enum
+            [JsonConverter(typeof(JsonStringEnumConverter))]
             public TerritoryType? Territory { get; set; }
 
             // Relación 1--N
