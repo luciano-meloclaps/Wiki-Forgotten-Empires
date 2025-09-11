@@ -103,17 +103,15 @@ public class AgeService : IAgeService
 
     public async Task<(bool Success, string ErrorMessage)> UpdateAgeBattleRelation(int ageId, int battleId, CancellationToken ct)
     {
-        // Lógica de negocio 1: Validar que la entidad principal (Age) exista.
         var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
         if (age is null)
         {
             return (false, $"No se encontró la Age con id {ageId}.");
         }
 
-        // Lógica de negocio 2: Delegar la operación de vinculación al repositorio.
+        // Delegar la operación de vinculación al repositorio.
         var success = await _ageRepository.LinkBattleAsync(ageId, battleId, ct);
 
-        // Lógica de negocio 3: Interpretar el resultado.
         if (!success)
         {
             return (false, $"No se encontró la Battle con id {battleId}.");
@@ -195,20 +193,17 @@ public class AgeService : IAgeService
     /////// METODOS para DESVINCULAR relaciones por ID unico \\\\\\
     public async Task<(bool Success, string ErrorMessage)> RemoveAgeBattleRelation(int ageId, int battleId, CancellationToken ct)
     {
-        // Lógica de negocio que se mantiene en el servicio:
         var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
         if (age is null)
         {
             return (false, $"No se encontró la Age con id {ageId}.");
         }
 
-        // Delegar la operación completa de desvinculación al repositorio
+        // Delegar la op desvinculación al repositorio
         var success = await _ageRepository.UnlinkBattleAsync(ageId, battleId, ct);
 
         if (!success)
         {
-            // Mensaje genérico, ya que el repositorio nos dijo que algo falló
-            // (o la batalla no existe o no estaba relacionada).
             return (false, $"No se pudo remover la relación: la Batalla con id {battleId} no existe o no está relacionada con la Edad con id {ageId}.");
         }
 
@@ -235,8 +230,6 @@ public class AgeService : IAgeService
 
     public async Task<(bool Success, string ErrorMessage)> RemoveAgeCivilizationRelation(int ageId, int civilizationId, CancellationToken ct)
     {
-        // En este caso, la existencia de 'Age' se valida implícitamente al buscar la relación.
-        // Podrías mantener la validación explícita si es una regla de negocio.
         var age = await _ageRepository.GetTrackedAgeById(ageId, ct);
         if (age is null)
         {
